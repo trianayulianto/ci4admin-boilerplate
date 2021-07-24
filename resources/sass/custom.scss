@@ -1,0 +1,19 @@
+.dt-bootstrap4 {
+  .row {
+    &:first-child {
+      padding: 1rem !important;
+    }
+    &:last-child {
+      padding: 1rem !important;
+    }
+  }
+}
+
+.table-responsive {
+  .top-button {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    z-index: 1000;
+  }
+}

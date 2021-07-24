@@ -1,0 +1,66 @@
+{
+    "name": "trianayulianto/ci4-eloquent",
+    "description": "Eloquent, Blade, Auth, JWT and Defender roles & permissions for CodeIgniter 4",
+    "keywords": [
+        "codeigniter4",
+        "eloquent",
+        "bladeone",
+        "authentication",
+        "auth",
+        "jwt",
+        "json web token",
+        "defender",
+        "roles",
+        "permissions"
+    ],
+    "type": "library",
+    "require": {
+        "php": "^7.4|^8.0",
+        "codeigniter4/framework": "^4.1",
+        "illuminate/database": "^7.0",
+        "illuminate/events": "^7.0",
+        "illuminate/pagination": "^7.0",
+        "eftec/bladeone": "^3.37",
+        "lcobucci/jwt": "<3.4",
+        "nesbot/carbon": "^2.0"
+    },
+    "require-dev": {
+        "symfony/var-dumper": "^5.0"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Fluent\\Auth\\": "src/auth/",
+            "Fluent\\JWTAuth\\": "src/auth-jwt/",
+            "Artesaos\\Defender\\": "src/defender"
+        }
+    },
+    "authors": [
+        {
+            "name": "Sean Tymon",
+            "email": "tymon148@gmail.com",
+            "homepage": "https://tymon.xyz",
+            "role": "Developer"
+        },
+        {
+            "name": "Agung Sugiarto",
+            "email": "me.agungsugiarto@gmail.com",
+            "homepage": "https://agungsugiarto.github.io",
+            "role": "Developer"
+        },
+        {
+            "name": "Mauri de Souza Nunes",
+            "email": "mauri870@gmail.com",
+            "homepage": "https://mauri870.github.io"
+        },
+        {
+            "name": "Triana Yulianto",
+            "email": "triana.ylnt@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "provide": {
+        "codeigniter4/authentication-implementation": "1.0"
+    },
+    "prefer-stable": true
+}

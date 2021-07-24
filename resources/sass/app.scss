@@ -1,0 +1,16 @@
+// @import "_variables";
+
+// Font-Awesome
+@import "~startbootstrap-sb-admin-2/vendor/fontawesome-free/css/all.min";
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+
+// SB Admin 2
+@import "~metismenu/src/metisMenu";
+@import "~morris-js-module/morris";
+@import "~startbootstrap-sb-admin-2/css/sb-admin-2";
+
+// datatables
+@import "~datatables.net-bs4/css/dataTables.bootstrap4";
+@import "custom.scss";
