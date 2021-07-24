@@ -246,7 +246,8 @@ class JWT extends \Fluent\JWTAuth\Config\JWT
      */
     function __construct()
     {
-        if (isset(getenv('JWT_SECRET')))
-            $this->secret = getenv('JWT_SECRET');
+        if (($secret = getenv('JWT_SECRET')) !== null) {
+            $this->secret = $secret;
+        }
     }
 }
