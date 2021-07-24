@@ -12,6 +12,8 @@
 
 namespace Config;
 
+use function getenv;
+
 class JWT extends \Fluent\JWTAuth\Config\JWT
 {
     /**
@@ -28,7 +30,7 @@ class JWT extends \Fluent\JWTAuth\Config\JWT
      *
      * @var string
      */
-    public $secret = '797988f2e17b3d74ff72e9a307953c49769ad92f';
+    public $secret = '';
 
     /**
      * --------------------------------------------------------------------------
@@ -238,4 +240,13 @@ class JWT extends \Fluent\JWTAuth\Config\JWT
      * @var int
      */
     public $blacklist_grace_period = 60;
+
+    /**
+     * Get jwt secret from .env file
+     */
+    function __construct()
+    {
+        if (isset(getenv('JWT_SECRET')))
+            $this->secret = getenv('JWT_SECRET');
+    }
 }
