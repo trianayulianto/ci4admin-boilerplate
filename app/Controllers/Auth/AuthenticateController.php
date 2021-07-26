@@ -25,7 +25,7 @@ class AuthenticateController extends BaseController
         ];
 
         if (! $token = auth()->attempt($credentials)) {
-            return $this->fail('Auth failed!', 401);
+            return $this->fail(lang('Auth.failed'), 401);
         }
 
         return $this->respondWithToken($token);

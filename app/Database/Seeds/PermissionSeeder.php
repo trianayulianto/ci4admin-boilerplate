@@ -54,7 +54,8 @@ class PermissionSeeder extends Seeder
 				foreach ($menus as $index => $value) {
 					$data[] = [
 						'name' 			=> $group.'.'.$menu.'.'.$index,
-						'readable_name' => $value
+						'readable_name' => $value,
+			      'created_at' => date("Y-m-d H:i:s")
 					];
 				}
 			}

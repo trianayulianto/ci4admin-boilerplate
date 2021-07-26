@@ -1,16 +1,20 @@
-// @import "_variables";
+// @import "variables";
 
-// Font-Awesome
-@import "~startbootstrap-sb-admin-2/vendor/fontawesome-free/css/all.min";
+// Font Awesome
+@import '~@fortawesome/fontawesome-free/scss/fontawesome';
+@import '~@fortawesome/fontawesome-free/scss/regular';
+@import '~@fortawesome/fontawesome-free/scss/solid';
+@import '~@fortawesome/fontawesome-free/scss/brands';
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
 // SB Admin 2
-@import "~metismenu/src/metisMenu";
-@import "~morris-js-module/morris";
+// @import "~metismenu/src/metisMenu";
+// @import "~morris-js-module/morris";
 @import "~startbootstrap-sb-admin-2/css/sb-admin-2";
 
 // datatables
 @import "~datatables.net-bs4/css/dataTables.bootstrap4";
+@import "~datatables.net-responsive-bs4/css/responsive.bootstrap4";
 @import "custom.scss";

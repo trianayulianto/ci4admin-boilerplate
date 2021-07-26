@@ -4,7 +4,7 @@ window.refreshTokenExpiration = new Date(new Date().getTime() + 60 * 60 * 1000);
 // get refresh token
 window.onload = () => {
 	cookieStore.get('token').then((cookie) => {
-    	if (cookie === null) { return; }
+    if (cookie === null) { return; }
 
 		if (Date.now() > cookie.expires) {
 			$.ajax({
@@ -17,5 +17,5 @@ window.onload = () => {
 				}
 			});
 		}
-    });
+  });
 }

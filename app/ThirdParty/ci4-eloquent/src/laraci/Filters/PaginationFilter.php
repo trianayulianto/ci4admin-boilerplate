@@ -1,5 +1,6 @@
 <?php
-namespace App\Filters;
+
+namespace Fluent\Laraci\Filters;
 
 use CodeIgniter\Filters\FilterInterface;
 use CodeIgniter\HTTP\RequestInterface;

@@ -58,14 +58,15 @@ Events::on('pre_system', function () {
 Events::on('pre_system', function () {
 	// boot auth library
 	helper('auth');
-
 	// boot defender library
 	helper('defender');
+	// boot laraci library
+	helper('laraci');
 });
 
-Events::on('pre_system', [\App\Providers\EloquentServiceProvider::class, 'register']);
+Events::on('pre_system', [\Fluent\Laraci\EloquentServiceProvider::class, 'register']);
 
-Events::on('pre_system', [\App\Providers\DefenderGuardServiceProvider::class, 'register']);
+Events::on('pre_system', [\Artesaos\Defender\DefenderGuardServiceProvider::class, 'register']);
 
 Events::on('login', function () {
 	return (new UserEventSubscriber(auth('api')->user()))->handleUserLogin();

@@ -2047,7 +2047,7 @@
             "dist": {
                 "type": "path",
                 "url": "app/ThirdParty/ci4-eloquent",
-                "reference": "91945eac53ab636744e3ea3ad4a878b0caef136d"
+                "reference": "b7b65089796166dbb09dd0f7d8f857731c371ad4"
             },
             "require": {
                 "codeigniter4/framework": "^4.1",
@@ -2068,9 +2068,10 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
+                    "Fluent\\Laraci\\": "src/laraci/",
                     "Fluent\\Auth\\": "src/auth/",
                     "Fluent\\JWTAuth\\": "src/auth-jwt/",
-                    "Artesaos\\Defender\\": "src/defender"
+                    "Artesaos\\Defender\\": "src/defender/"
                 }
             },
             "license": [
@@ -2078,24 +2079,28 @@
             ],
             "authors": [
                 {
-                    "name": "Sean Tymon",
-                    "email": "tymon148@gmail.com",
-                    "homepage": "https://tymon.xyz",
-                    "role": "Developer"
-                },
-                {
                     "name": "Agung Sugiarto",
                     "email": "me.agungsugiarto@gmail.com",
                     "homepage": "https://agungsugiarto.github.io",
                     "role": "Developer"
                 },
                 {
-                    "name": "trianayulianto",
-                    "email": "triana.yulianto2018@gmail.com",
+                    "name": "Sean Tymon",
+                    "email": "tymon148@gmail.com",
+                    "homepage": "https://tymon.xyz",
                     "role": "Developer"
+                },
+                {
+                    "name": "Mauri de Souza Nunes",
+                    "email": "mauri870@gmail.com",
+                    "homepage": "https://mauri870.github.io"
+                },
+                {
+                    "name": "Triana Yulianto",
+                    "email": "triana.ylnt@gmail.com"
                 }
             ],
-            "description": "JWT and Defender roles & permissions for codeigniter4 authentication.",
+            "description": "Eloquent, Blade, Auth, JWT and Defender roles & permissions for CodeIgniter 4",
             "keywords": [
                 "auth",
                 "authentication",

@@ -1,6 +1,6 @@
 <?php
 
-namespace Fluent\Auth\Database\Migrations;
+namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 

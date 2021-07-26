@@ -11,27 +11,21 @@
     },
     "devDependencies": {
         "axios": "^0.21.1",
-        "bootstrap": "^4.0.0",
         "browser-sync": "^2.27.4",
-        "browser-sync-webpack-plugin": "^2.0.1",
         "cross-env": "^5.1",
-        "jquery": "^3.2",
+        "datatables.net-responsive-bs4": "^2.2.9",
+        "jquery-easing": "^0.0.1",
+        "js-cookie": "^2.2.1",
         "laravel-mix": "^4.0.7",
         "lodash": "^4.17.13",
-        "popper.js": "^1.12",
-        "resolve-url-loader": "^2.3.1",
-        "sass": "^1.35.1",
-        "sass-loader": "^7.1.0",
-        "vue-template-compiler": "^2.6.11"
-    },
-    "dependencies": {
-        "datatables.net-responsive-bs": "^2.2.9",
-        "jquery-easing": "0.0.1",
-        "js-cookie": "^2.2.1",
         "metismenu": "^3.0.4",
         "morris-js-module": "^1.2.1",
         "popper.js": "^1.16.0",
         "raphael": "^2.3.0",
-        "startbootstrap-sb-admin-2": "^4.0.7"
+        "resolve-url-loader": "^2.3.1",
+        "sass": "^1.35.1",
+        "sass-loader": "^7.1.0",
+        "startbootstrap-sb-admin-2": "^4.0.7",
+        "vue-template-compiler": "^2.6.14"
     }
 }

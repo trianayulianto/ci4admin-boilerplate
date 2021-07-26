@@ -30,22 +30,23 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
+            "Fluent\\Laraci\\": "src/laraci/",
             "Fluent\\Auth\\": "src/auth/",
             "Fluent\\JWTAuth\\": "src/auth-jwt/",
-            "Artesaos\\Defender\\": "src/defender"
+            "Artesaos\\Defender\\": "src/defender/"
         }
     },
     "authors": [
         {
-            "name": "Sean Tymon",
-            "email": "tymon148@gmail.com",
-            "homepage": "https://tymon.xyz",
-            "role": "Developer"
-        },
-        {
             "name": "Agung Sugiarto",
             "email": "me.agungsugiarto@gmail.com",
             "homepage": "https://agungsugiarto.github.io",
+            "role": "Developer"
+        },
+        {
+            "name": "Sean Tymon",
+            "email": "tymon148@gmail.com",
+            "homepage": "https://tymon.xyz",
             "role": "Developer"
         },
         {

@@ -3,9 +3,9 @@
 namespace Artesaos\Defender;
 
 use CodeIgniter\HTTP\RequestInterface;
-use Fluent\JWTAuth\JWT;
 use Config\Services;
 use Fluent\Auth\Contracts\UserProviderInterface;
+use Fluent\JWTAuth\JWT;
 use Fluent\JWTAuth\JWTGuard;
 
 /**

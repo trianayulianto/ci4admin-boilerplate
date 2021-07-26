@@ -1,21 +1,22 @@
 window._ = require('lodash');
 
 try {
-    // window.Popper = require('popper.js').default;
+    window.Popper = require('popper.js').default;
     window.$ = window.jQuery = require('jquery');
-    // require('jquery-easing');
-
+    
     window.Cookies = require('js-cookie');
-	require('bootstrap');
+
+    require('jquery-easing');
+	  require('bootstrap');
 
     // datatables
     require('datatables.net-bs4')($);
-    require('datatables.net-responsive-bs');
+    require('datatables.net-responsive-bs4')($);
 
     // sb admin 2
-    require('metismenu');
-    require('raphael');
-    require('morris-js-module/morris');
+    // require('metismenu');
+    // require('raphael');
+    // require('morris-js-module/morris');
     require('startbootstrap-sb-admin-2/js/sb-admin-2');
 } catch (e) {}
 

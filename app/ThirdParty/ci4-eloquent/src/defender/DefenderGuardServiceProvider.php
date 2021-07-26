@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Providers;
+namespace Artesaos\Defender;
 
 use Artesaos\Defender\DefenderGuard;
 use Fluent\Auth\Config\Services;

@@ -1,6 +1,6 @@
 <?php 
 
-namespace App\Providers;
+namespace Fluent\Laraci;
 
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Illuminate\Events\Dispatcher as Dispatcher;
@@ -81,5 +81,4 @@ class EloquentServiceProvider
             ]
         );
     }
-
 }

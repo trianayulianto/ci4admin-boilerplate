@@ -2,7 +2,6 @@
 
 namespace Config;
 
-use App\Filters\PaginationFilter;
 use Artesaos\Defender\Middlewares\NeedsPermissionMiddleware;
 use Artesaos\Defender\Middlewares\NeedsRoleMiddleware;
 use CodeIgniter\Config\BaseConfig;
@@ -14,6 +13,7 @@ use Fluent\Auth\Http\Middleware\EnsureEmailIsVerifiedFilter;
 use Fluent\Auth\Http\Middleware\RedirectAuthenticatedFilter;
 use Fluent\Auth\Http\Middleware\ThrottleFilter;
 use Fluent\JWTAuth\Http\Middleware\RefreshTokenFilter;
+use Fluent\Laraci\Filters\PaginationFilter;
 
 class Filters extends BaseConfig
 {

@@ -16,7 +16,7 @@
             <div class="card shadow-sm h-100 py-4">
                 <div>
                     <div class="table-responsive" style="font-size: 11pt">
-                        <table class="table table-md table-striped datatable" width="100%">
+                        <table class="table table-md table-striped datatable display" cellspacing="0" width="100%">
                             <thead>
                                 <tr>
                                     <th width="40">No</th>
@@ -75,6 +75,7 @@
         let table = $('.datatable').DataTable({
             processing: true,
             serverSide: true,
+            responsive: true,
             ajax:{
                 url: '{{ route_to('permissions.data') }}',
                 type: 'GET'
