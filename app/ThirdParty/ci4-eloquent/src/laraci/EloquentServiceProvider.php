@@ -10,16 +10,6 @@ use PDO;
 class EloquentServiceProvider 
 {
     /**
-     * Confertion db ci4 driver to eloquent db driver
-     * 
-     * @return array
-     */
-    protected static $drivers = [
-        'MySQLi' => 'mysql',
-        'Postgre' => 'pgsql'
-    ];
-
-    /**
      * Register the service provider.
      *
      * @return void
@@ -57,17 +47,22 @@ class EloquentServiceProvider
     private static function dbConfig()
     {
         $db = config('Database');
-
+        $drivers = [
+            'MySQLi'  => 'mysql',
+            'Postgre' => 'pgsql'
+        ];
+        
         return array(
-            'driver'    => static::$drivers[$db->default['DBDriver']],
+            'driver'    => $drivers[$db->default['DBDriver']],
             'database'  => $db->default['database'],
             'host'      => $db->default['hostname'],
+            'port'      => $db->default['port'],
             'username'  => $db->default['username'],
             'password'  => $db->default['password'],
             'charset'   => $db->default['charset'],
             'collation' => $db->default['DBCollat'],
             'prefix'    => $db->default['DBPrefix'],
-            'options' => [
+            'options'   => [
                 // Turn off persistent connections
                 PDO::ATTR_PERSISTENT => false,
                 // Enable exceptions
