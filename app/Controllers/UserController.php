@@ -124,7 +124,7 @@ class UserController extends BaseController
 						->toArray()
 				];
 			});
-
+			
 		$user = User::with('permissions')->where('id', $id)->first();
 
 		return render('modules.users.index_assign', compact('permissions', 'user'));

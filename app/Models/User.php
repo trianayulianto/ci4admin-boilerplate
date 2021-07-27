@@ -23,10 +23,10 @@ class User extends Eloquent implements
 {
     use AuthenticatableTrait;
     use CanResetPasswordTrait;
-    use MustVerifyEmailTrait;
-    use UserProviderTrait;
-    use UserLogableTrait;
     use HasDefender;
+    use MustVerifyEmailTrait;
+    use UserLogableTrait;
+    use UserProviderTrait;
 
     /**
      * The attributes that are mass assignable.

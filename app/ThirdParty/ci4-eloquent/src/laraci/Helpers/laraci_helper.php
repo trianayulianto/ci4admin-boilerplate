@@ -26,9 +26,7 @@ if (!function_exists('render')) {
     {
         $blade = Services::getSharedInstance('render');
 
-        if (auth()->check()) {
-            $auth = auth()->user();
-
+        if (($auth = auth()->user())) {
             $blade->setAuth($auth->name);
         }
 
@@ -67,29 +65,6 @@ if ( ! function_exists('time_parser') ) {
     
     function timeParser($value) {
         return Time::parse($value, 'Asia/Jakarta');
-    }
-
-}
-
-/**
- * Dump variable.
- */
-if ( ! function_exists('d') ) {
-    
-    function d() {
-        call_user_func_array( 'dump' , func_get_args() );
-    }
-
-}
-
-/**
- * Dump variables and die.
- */
-if ( ! function_exists('dd') ) {
-
-    function dd() {
-        call_user_func_array( 'dump' , func_get_args() );
-        die();
     }
 
 }
