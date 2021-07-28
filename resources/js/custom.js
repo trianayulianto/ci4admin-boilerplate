@@ -17,5 +17,28 @@ window.onload = () => {
 				}
 			});
 		}
-  });
+    });
+}
+
+$(window).resize(function () {
+    if ($(window).width() < 992) {
+        $('#accordionSidebar').addClass('toggled');
+        
+        if ($(window).width() < 768) {
+            $('#page-top').addClass('sidebar-toggled');
+        }
+        
+        return false;
+    }
+    
+    $('#accordionSidebar').removeClass('toggled');
+    $('#page-top').removeClass('sidebar-toggled');
+});
+
+if ($(window).width() < 992) {
+    if ($(window).width() < 768) {
+        $('#page-top').addClass('sidebar-toggled');
+    }
+    
+    $('#accordionSidebar').addClass('toggled');
 }
