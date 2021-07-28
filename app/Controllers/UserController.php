@@ -84,10 +84,6 @@ class UserController extends BaseController
 			// force email mark as verified
 			$user->markEmailAsVerified();
 
-			$role = auth('api')->defender()->findRole($data['roles']);
-
-			$user->attachRole($role);
-
 			DB::commit();
 		} catch (\Exception $e) {
 			DB::rollBack();
