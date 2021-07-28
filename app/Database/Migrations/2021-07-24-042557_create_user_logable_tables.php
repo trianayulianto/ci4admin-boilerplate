@@ -33,11 +33,11 @@ class CreateUserLogableTables extends Migration
             	'unsigned' => true
 			],
 			'new_data' => [
-            	'type' => 'longtext',
+            	'type' => 'json',
             	'null' => true
             ],
 			'old_data' => [
-            	'type' => 'longtext',
+            	'type' => 'json',
             	'null' => true
             ],
 			'type' => [

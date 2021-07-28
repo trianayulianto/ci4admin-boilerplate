@@ -105,6 +105,8 @@ class UserController extends BaseController
 	public function show($id)
 	{
 		defender('api')->canDo('account.users.assign');
+		
+		$user = User::with('permissions')->where('id', $id)->first();
 
 		$permissions = Permission::select(DB::raw("SUBSTRING_INDEX(`name`, '.', 2) as `group`"))
 			->groupBy('group')
@@ -124,8 +126,8 @@ class UserController extends BaseController
 						->toArray()
 				];
 			});
-			
-		$user = User::with('permissions')->where('id', $id)->first();
+		
+		// dd($permissions->toArray());
 
 		return render('modules.users.index_assign', compact('permissions', 'user'));
 	}

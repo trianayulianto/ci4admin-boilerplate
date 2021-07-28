@@ -80,7 +80,9 @@ class RoleController extends BaseController
 	public function show($id)
 	{
 		defender('api')->canDo('access.roles.assign');
-		
+
+		$role = Role::with('permissions')->where('id', $id)->first();
+
 		$permissions = Permission::select(DB::raw("SUBSTRING_INDEX(`name`, '.', 2) as `group`"))
 			->groupBy('group')
 			->cursor()
@@ -99,8 +101,6 @@ class RoleController extends BaseController
 						->toArray()
 				];
 			});
-
-		$role = Role::with('permissions')->where('id', $id)->first();
 
 		return render('modules.roles.index_assign', compact('permissions', 'role'));
 	}
