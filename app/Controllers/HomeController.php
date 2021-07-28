@@ -2,23 +2,19 @@
 
 namespace App\Controllers;
 
-use App\Models\User;
+use App\Models\Permission;
 
 class HomeController extends BaseController
 {
 	public function index()
 	{
-		$users = User::query()
+		$permissions = Permission::query()
 			->when($this->request->getGet('search', null), function ($q, $s) {
-				return $q->orWhere('email', 'like', '%'.$s.'%')
-					->orWhere('name', 'like', '%'.$s.'%');
-			})
-			->whereHas('roles', function($q) {
-				$q->where('name', '!=', 'superuser');
+				return $q->where('name', 'like', '%'.$s.'%');
 			})
 			->paginate(10);
 
-		return render('welcome', ['users' => $users]);
+		return render('welcome', compact('permissions'));
 	}
 
 	//--------------------------------------------------------------------

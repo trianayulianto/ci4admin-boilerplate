@@ -97,16 +97,16 @@
 						<tr>
 							<th>No</th>
 							<th>Name</th>
-							<th>Email</th>
+							<th>Description</th>
 							<th>Created At</th>
 						</tr>
 					</thead>
 					<tbody>
-						@forelse ($users as $i => $item)
+						@forelse ($permissions as $i => $item)
 							<tr>
-								<td>{{ $i + $users->firstItem() }}</td>
+								<td>{{ $i + $permissions->firstItem() }}</td>
 								<td>{{ $item->name }}</td>
-								<td>{{ $item->email }}</td>
+								<td>{{ $item->readable_name }}</td>
 								<td>{{ timeParser($item->created_at)->toLocalizedString('MMM d, yyyy') }}</td>
 							</tr>
 						@empty
@@ -120,7 +120,7 @@
 				<div class="clearfix">
 				  	<!-- Float either directions -->
 				  	<div class="float-right">
-						{!! paginator($users->appends(['search' => request()->getGet('search')])) !!}
+						{!! paginator($permissions->appends(['search' => request()->getGet('search')])) !!}
 				  	</div>
 				</div>
 			</div>
