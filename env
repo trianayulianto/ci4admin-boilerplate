@@ -17,7 +17,7 @@
 # CI_ENVIRONMENT = production
 
 JWT's secret token
-# JWT_SECRET = ''
+# jwt.secret = ''
 
 #--------------------------------------------------------------------
 # APP
@@ -53,6 +53,17 @@ JWT's secret token
 # database.tests.password = root
 # database.tests.DBDriver = MySQLi
 # database.tests.DBPrefix =
+
+#--------------------------------------------------------------------
+# EMAIL
+#--------------------------------------------------------------------
+
+email.protocol = smtp
+email.SMTPHost = smtp.mailtrap.io
+email.SMTPUser = 8a559f2e0b9ea2
+email.SMTPPass = 49e2d2844243a0
+email.SMTPPort = 2525
+email.SMTPCrypto = tls
 
 #--------------------------------------------------------------------
 # CONTENT SECURITY POLICY
