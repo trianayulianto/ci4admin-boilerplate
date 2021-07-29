@@ -38,7 +38,7 @@ trait MustVerifyEmailTrait
      */
     public function sendEmailVerificationNotification()
     {
-        Events::trigger(VerifyEmailInterface::class, $this->getEmailForVerification());
+        return Events::trigger(VerifyEmailInterface::class, $this->getEmailForVerification());
     }
 
     /**
