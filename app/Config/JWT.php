@@ -240,14 +240,4 @@ class JWT extends \Fluent\JWTAuth\Config\JWT
      * @var int
      */
     public $blacklist_grace_period = 60;
-
-    /**
-     * Get jwt secret from .env file
-     */
-    function __construct()
-    {
-        if (($secret = getenv('JWT_SECRET')) !== null) {
-            $this->secret = $secret;
-        }
-    }
 }
