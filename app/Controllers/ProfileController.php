@@ -21,11 +21,7 @@ class ProfileController extends BaseController
 		];
 
 		if (!$this->validate($rules)) {
-			return $this->respond([
-				'status' => 'fail',
-				'message' => 'Validation error',
-				'errors' => $this->validator->getErrors()
-			], 200);
+			return $this->fail($this->validator->getErrors());
 		}
 
 		$request = (object) $this->request->getRawInput();
@@ -47,17 +43,12 @@ class ProfileController extends BaseController
 
 		if ($user->wasChanged('email') && $user instanceof VerifyEmailInterface) {
 			$user->sendEmailVerificationNotification();
-
-			return $this->respond([
-				'status' => 'success',
-				'message' => 'Profile updated successfuly',
-			])
-			->deleteCookie('token');
 		}
 
-		return $this->respond([
-			'status' => 'success',
-			'message' => 'Profile updated successfuly'
+		return $this->respondCreated([
+			'status' => $this->codes['created'],
+			'message' => 'Profile updated successfuly',
+			'data' => $user
 		]);
 	}
 }

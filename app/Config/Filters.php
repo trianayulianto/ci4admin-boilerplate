@@ -87,8 +87,7 @@ class Filters extends BaseConfig
 		],
 		'auth' => [
 			'before' => [
-				'/email/verify',
-				'/email/resend',
+				'/email/*',
 				'/logout'
 			]
 		]

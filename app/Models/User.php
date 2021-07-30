@@ -37,7 +37,6 @@ class User extends Eloquent implements
         'name',
         'email',
         'password',
-        'email_verified_at',
     ];
 
     /**

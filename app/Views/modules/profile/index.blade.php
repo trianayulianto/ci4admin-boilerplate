@@ -82,8 +82,9 @@
                     $('#save').prop('disabled', true);
 
                     $('.form-control')
-                        .removeClass('is-invalid')
-                        .find('.invalid-feedback')
+                        .removeClass('is-invalid');
+                        
+                    $('.invalid-feedback')
                         .remove();
 
                     $('#status').collapse('hide')
@@ -92,11 +93,11 @@
                         .html('');
                 },
                 success: (response) => {
-                    if (Cookies.get('token') === undefined) {
+                    if (response.data.email_verified_at == null) {
                         showAlert('alert-warning', 'Your email was changed, you must reverification your account!');
                         
                         return setTimeout(() => {
-                            window.location = "{{ route_to('homepage') }}";
+                            window.location = "{{ route_to('verification.notice') }}";
                         }, 1000);
                     }
                     
@@ -124,7 +125,7 @@
 
                 return setTimeout(() => {
                     $('#status').collapse('hide');
-                }, 3200);
+                }, 3600);
             });
         });
     </script>

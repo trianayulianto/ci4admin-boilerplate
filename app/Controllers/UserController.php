@@ -152,7 +152,7 @@ class UserController extends BaseController
 		}
 
 		return $this->respondCreated([
-			'status' => $this->codes['created'],
+			'status' => ResponseInterface::HTTP_CREATED,
 			'message' => 'User\'s roles and permissions was updated',
 			'data' => [
 				'roles' => $user->roles,
