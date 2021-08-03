@@ -48,6 +48,15 @@ class CreatePermissionPivotTables extends Migration
 				'type' => 'bigint',
             	'constraint' => 20,
             	'unsigned' => true
+			],
+			'value' => [
+				'type' => 'tinyint',
+				'constraint' => 4,
+				'default' => -1
+			],
+			'expires' => [
+            	'type' => 'datetime',
+            	'null' => true
 			]
 		]);
 
