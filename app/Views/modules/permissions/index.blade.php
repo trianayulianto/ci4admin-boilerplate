@@ -75,7 +75,6 @@
         let table = $('.datatable').DataTable({
             processing: true,
             serverSide: true,
-            responsive: true,
             ajax:{
                 url: '{{ route_to('permissions.data') }}',
                 type: 'GET'

@@ -11,11 +11,6 @@ try {
 
     // datatables
     require('datatables.net-bs4')($);
-
-    // sb admin 2
-    // require('metismenu');
-    // require('raphael');
-    // require('morris-js-module/morris');
 } catch (e) {}
 
 /**
