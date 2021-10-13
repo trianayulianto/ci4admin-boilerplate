@@ -60,8 +60,8 @@ JWT's secret token
 
 email.protocol = smtp
 email.SMTPHost = smtp.mailtrap.io
-email.SMTPUser = 8a559f2e0b9ea2
-email.SMTPPass = 49e2d2844243a0
+email.SMTPUser = yourname
+email.SMTPPass = yourpass
 email.SMTPPort = 2525
 email.SMTPCrypto = tls
 
