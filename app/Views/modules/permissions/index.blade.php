@@ -10,7 +10,7 @@
     <div class="row">
         <div class="col-md-12 mb-4">
             <div id="status" class="collapse">
-                <div class="alert alert-danger" role="alert">Do know with own your act! You can break the system.</div>
+                <div class="alert alert-danger" role="alert"></div>
             </div>
 
             <div class="card shadow-sm h-100 py-4">
@@ -83,7 +83,7 @@
                 {data: 'index', name: 'index'},
                 {data: 'name', name: 'name'},
                 {data: 'readable_name', name: 'readable_name'},
-                {data: 'created_at', name: 'created_at'},
+                {data: 'created_at', name: 'created_at', searchable: false},
                 {data: 'button', name: 'button'}
             ],
             order: [[1, 'asc']]
@@ -108,10 +108,6 @@
                 .attr('class', 'alert')
                 .html('');
         }
-
-        $(document).ready(function() {
-            $('#status').collapse('show');
-        });
 
         $(document).on('click', '.btn-create', function(e) {
             e.preventDefault();

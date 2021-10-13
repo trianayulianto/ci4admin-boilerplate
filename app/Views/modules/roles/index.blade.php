@@ -77,7 +77,7 @@
             columns: [
                 {data: 'index', name: 'index'},
                 {data: 'name', name: 'name'},
-                {data: 'created_at', name: 'created_at'},
+                {data: 'created_at', name: 'created_at', searchable: false},
                 {data: 'assignment', name: 'assignment'},
                 {data: 'button', name: 'button'}
             ]
