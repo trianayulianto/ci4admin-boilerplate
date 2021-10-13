@@ -21,7 +21,6 @@
                                 <tr>
                                     <th width="40">No</th>
                                     <th>Role Name</th>
-                                    <th>Created At</th>
                                     <th>Assign Permission</th>
                                     <th width="80"></th>
                                 </tr>
@@ -77,7 +76,6 @@
             columns: [
                 {data: 'index', name: 'index'},
                 {data: 'name', name: 'name'},
-                {data: 'created_at', name: 'created_at', searchable: false},
                 {data: 'assignment', name: 'assignment'},
                 {data: 'button', name: 'button'}
             ]

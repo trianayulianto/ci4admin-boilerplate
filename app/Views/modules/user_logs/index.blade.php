@@ -31,7 +31,6 @@
                                 <tr>
                                     <th>No</th>
                                     <th>User</th>
-                                    <th>Created</th>
                                     <th>Model</th>
                                     <th>Type</th>
                                     <th></th>
@@ -59,7 +58,6 @@
             columns: [
                 {data: 'index', name: 'index'},
                 {data: 'name', name: 'name'},
-                {data: 'created_at', name: 'created_at', searchable: false},
                 {data: 'logable_type', name: 'logable_type'},
                 {data: 'type', name: 'type'},
                 {data: 'button', name: 'button'},

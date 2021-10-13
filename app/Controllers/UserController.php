@@ -25,7 +25,7 @@ class UserController extends BaseController
 
 		return DataTables::use('users')
 			->addIndexColumn()
-			->select('id, name, email, created_at')
+			->select('id, name, email')
 			->addColumn('assignment', function ($data) {
 				return '<a
 					href="'.route_to('users.show', $data->id).'" 

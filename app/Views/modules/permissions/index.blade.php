@@ -22,7 +22,6 @@
                                     <th width="40">No</th>
                                     <th>Permission Name</th>
                                     <th>Readable Name</th>
-                                    <th>Created At</th>
                                     <th width="80"></th>
                                 </tr>
                             </thead>
@@ -83,7 +82,6 @@
                 {data: 'index', name: 'index'},
                 {data: 'name', name: 'name'},
                 {data: 'readable_name', name: 'readable_name'},
-                {data: 'created_at', name: 'created_at', searchable: false},
                 {data: 'button', name: 'button'}
             ],
             order: [[1, 'asc']]
