@@ -17,7 +17,6 @@ The user guide corresponding to this version of the framework can be found
 ## Installation
 
 ```bash
-
 $ composer Install
 $ npm install && npm run dev
 ```
@@ -28,11 +27,10 @@ Copy `env` to `.env` and tailor for your app, specifically the baseURL
 and any database settings.
 
 ```bash
-
 $ php spark migrate
 ```
 
-## Inspire
+## Inspires
 - agungsugiarto/codeigniter4-authentication https://github.com/agungsugiarto/codeigniter4-authentication
 - agungsugiarto/codeigniter4-authentication-jwt https://github.com/agungsugiarto/codeigniter4-authentication-jwt
 - Laravel Defender https://github.com/artesaos/defender
