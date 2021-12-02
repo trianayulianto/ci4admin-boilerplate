@@ -33,7 +33,7 @@ abstract class AbstractDefenderMiddleware
             return $this->forbiddenResponse();
         }
 
-        if (is_null($roles)) {
+        if (is_null($roles) || in_array('*', $roles)) {
             if (!($this->user->roles)) {
                 return $this->forbiddenResponse();
             }

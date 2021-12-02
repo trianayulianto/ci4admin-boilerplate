@@ -36,7 +36,9 @@
             <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Account setting:</h6>
-                    <a class="collapse-item" href="{{ route_to('users.index') }}">Users</a>
+                    @if (defender()->canDo('account.users.index'))
+                        <a class="collapse-item" href="{{ route_to('users.index') }}">Users</a>
+                    @endif
                 </div>
             </div>
         </li>
@@ -50,8 +52,12 @@
             <div id="collapseAccess" class="collapse" aria-labelledby="headingAccess" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Access setting:</h6>
-                    <a class="collapse-item" href="{{ route_to('roles.index') }}">Roles</a>
-                    <a class="collapse-item" href="{{ route_to('permissions.index') }}">Permissions</a>
+                    @if (defender()->canDo('access.roles.index'))
+                        <a class="collapse-item" href="{{ route_to('roles.index') }}">Roles</a>
+                    @endif
+                    @if (defender()->canDo('access.permissions.index'))
+                        <a class="collapse-item" href="{{ route_to('permissions.index') }}">Permissions</a>
+                    @endif
                 </div>
             </div>
         </li>
@@ -65,7 +71,9 @@
             <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">System setting:</h6>
-                    <a class="collapse-item" href="{{ route_to('activity.index') }}">User Activity</a>
+                    @if (defender()->canDo('system.activity.index'))
+                        <a class="collapse-item" href="{{ route_to('activity.index') }}">User Activity</a>
+                    @endif
                 </div>
             </div>
         </li>
