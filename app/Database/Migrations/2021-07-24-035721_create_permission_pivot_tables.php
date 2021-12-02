@@ -29,7 +29,7 @@ class CreatePermissionPivotTables extends Migration
 
 		$role_table = config('Defender')->role_table ?? 'roles';
 		$this->forge->addForeignKey('user_id','users','id','CASCADE','CASCADE');
-		$this->forge->addForeignKey($role_key, $role_table,'id','CASCADE','CASCADE');
+		$this->forge->addForeignKey($role_key, $role_table,'id','RESTRICT','RESTRICT');
 
 		$role_user_table = config('Defender')->role_user_table ?? 'role_user';
 		$this->forge->createTable($role_user_table, true);
@@ -62,7 +62,7 @@ class CreatePermissionPivotTables extends Migration
 
 		$permission_table = config('Defender')->permission_table ?? 'permissions';
 		$this->forge->addForeignKey('user_id','users','id','CASCADE','CASCADE');
-		$this->forge->addForeignKey($permission_key, $permission_table,'id','CASCADE','CASCADE');
+		$this->forge->addForeignKey($permission_key, $permission_table,'id','RESTRICT','RESTRICT');
 
 		$permission_user_table = config('Defender')->permission_user_table ?? 'permission_user';
 		$this->forge->createTable($permission_user_table, true);
@@ -93,7 +93,7 @@ class CreatePermissionPivotTables extends Migration
 		]);
 
 		$this->forge->addForeignKey($role_key, $role_table,'id','CASCADE','CASCADE');
-		$this->forge->addForeignKey($permission_key, $permission_table,'id','CASCADE','CASCADE');
+		$this->forge->addForeignKey($permission_key, $permission_table,'id','RESTRICT','RESTRICT');
 
 		$permission_role_table = config('Defender')->permission_role_table ?? 'permission_role';
 		$this->forge->createTable($permission_role_table, true);
