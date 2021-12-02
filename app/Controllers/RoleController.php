@@ -113,7 +113,7 @@ class RoleController extends BaseController
 
 		$data = (array) $this->request->getRawInput();
 
-		$permissions = Arr::get($data, 'permissions.id');
+		$permissions = Arr::get($data, 'permissions.id') ?? [];
 
 		try {
 			$role->syncPermissions((array) $permissions);

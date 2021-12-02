@@ -136,9 +136,9 @@ class UserController extends BaseController
 
 		$data = (array) $this->request->getRawInput();
 
-		$roles = Arr::get($data, 'roles.id');
+		$roles = Arr::get($data, 'roles.id') ?? [];
 
-		$permissions = Arr::get($data, 'permissions.id');
+		$permissions = Arr::get($data, 'permissions.id') ?? [];
 
 		if (auth()->user()->isSuperUser()) {
 			Arr::pull($roles, config('Defender', true)->superuser_role, null);
