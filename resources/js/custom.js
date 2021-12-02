@@ -1,18 +1,16 @@
-// set refresh token expiration global
-window.refreshTokenExpiration = new Date(new Date().getTime() + 60 * 60 * 1000); // 15 minutes
-
 // get refresh token
 window.onload = () => {
 	cookieStore.get('token').then((cookie) => {
-    if (cookie === null) { return; }
+    	if (cookie === null) { return; }
+    	let expiration = Math.floor((cookie.expires - Date.now()) / 1000 / 60);
 
-		if (Date.now() > cookie.expires) {
+		if (expiration < 2850) {
 			$.ajax({
 				url: '/refresh',
 				type: 'POST',
 				success: (response) => {
 					Cookies.set('token', response.access_token, { 
-						expires: refreshTokenExpiration 
+						expires: new Date(new Date().getTime() + response.expires_in * 60 * 1000)
 					});
 				}
 			});

@@ -77,7 +77,7 @@
             },
             success: (response) => {
                 Cookies.set('token', response.access_token, { 
-                    expires: refreshTokenExpiration
+                    expires: new Date(new Date().getTime() + response.expires_in * 60 * 1000)
                 });
 
                 return setTimeout(() => {
