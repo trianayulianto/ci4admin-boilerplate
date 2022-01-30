@@ -35,6 +35,11 @@ class EloquentServiceProvider
 
         $capsule->bootEloquent();
 
+        // Enabling query log
+        if (CI_DEBUG) {
+            $capsule->connection()->enableQueryLog();
+        }
+
         return $capsule;
     }
 
