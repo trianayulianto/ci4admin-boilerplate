@@ -63,7 +63,10 @@
                         </ul>
 
                         <div class="row-cols-1">
-                            <button type="submit" class="btn btn-sm btn-primary float-right">Save Permission</button>
+                            <div class="float-right">
+                                <a href="{{ route_to('users.index') }}" class="btn btn-sm btn-secondary">Cancel</a>
+                                <button type="submit" class="btn btn-sm btn-primary">Save Permission</button>
+                            </div>
                         </div>
                     </form>
                 </div>
