@@ -2,28 +2,55 @@
 
 namespace Fluent\Auth\Entities;
 
-use CodeIgniter\Entity;
+use App\Traits\UserLogableTrait;
+use Artesaos\Defender\Traits\HasDefender;
+use Illuminate\Database\Eloquent\Model as Eloquent;
 use Fluent\Auth\Contracts\AuthenticatorInterface;
 use Fluent\Auth\Contracts\ResetPasswordInterface;
+use Fluent\Auth\Contracts\UserProviderInterface;
 use Fluent\Auth\Contracts\VerifyEmailInterface;
 use Fluent\Auth\Support\AuthenticatableTrait;
 use Fluent\Auth\Support\CanResetPasswordTrait;
 use Fluent\Auth\Support\MustVerifyEmailTrait;
+use Fluent\Auth\Support\UserProviderTrait;
+use Fluent\JWTAuth\Contracts\JWTSubjectInterface;
 
-use function password_hash;
-
-class User extends Entity implements
+class User extends Eloquent implements
     AuthenticatorInterface,
+    JWTSubjectInterface,
     ResetPasswordInterface,
-    VerifyEmailInterface
+    VerifyEmailInterface,
+    UserProviderInterface
 {
     use AuthenticatableTrait;
     use CanResetPasswordTrait;
+    use HasDefender;
     use MustVerifyEmailTrait;
+    use UserLogableTrait;
+    use UserProviderTrait;
 
     /**
-     * Array of field names and the type of value to cast them as
-     * when they are accessed.
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+    ];
+
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'password', 'remember_token',
+    ];
+
+    /**
+     * The attributes that should be cast to native types.
      *
      * @var array
      */
@@ -32,14 +59,18 @@ class User extends Entity implements
     ];
 
     /**
-     * Fill set password hash.
-     *
-     * @return $this
+     * {@inheritdoc}
      */
-    public function setPassword(string $password)
+    public function getJWTIdentifier()
     {
-        $this->attributes['password'] = password_hash($password, PASSWORD_BCRYPT);
+        return $this->id;
+    }
 
-        return $this;
+    /**
+     * {@inheritdoc}
+     */
+    public function getJWTCustomClaims()
+    {
+        return [];
     }
 }
