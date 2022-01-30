@@ -4,8 +4,8 @@ namespace Fluent\Auth\Entities;
 
 use CodeIgniter\Entity;
 use Fluent\Auth\Contracts\AuthenticatorInterface;
-use Fluent\Auth\Contracts\CanResetPasswordInterface;
-use Fluent\Auth\Contracts\MustVerifyEmailInterface;
+use Fluent\Auth\Contracts\ResetPasswordInterface;
+use Fluent\Auth\Contracts\VerifyEmailInterface;
 use Fluent\Auth\Support\AuthenticatableTrait;
 use Fluent\Auth\Support\CanResetPasswordTrait;
 use Fluent\Auth\Support\MustVerifyEmailTrait;
@@ -14,8 +14,8 @@ use function password_hash;
 
 class User extends Entity implements
     AuthenticatorInterface,
-    CanResetPasswordInterface,
-    MustVerifyEmailInterface
+    ResetPasswordInterface,
+    VerifyEmailInterface
 {
     use AuthenticatableTrait;
     use CanResetPasswordTrait;
