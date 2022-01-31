@@ -53,6 +53,11 @@ class EloquentCollector extends BaseCollector
      */
     public function display(): string
     {
+        $config = config('Toolbar');
+
+        // Provide default in case it's not set
+        $max = $config->maxQueries ?: 100;
+
         $queries = $this->connections->getQueryLog();
         if ($queries) {
 	        $queryDuplicates = array_count_values(array_column($queries, 'query'));
@@ -62,6 +67,8 @@ class EloquentCollector extends BaseCollector
 	        $queryDuplicatesCount = array_sum($queryDuplicates);
         	$queryCount = count($queries);
         	$unique = $queryCount - $queryDuplicatesCount;
+            $queries = array_slice($queries, 0, $max);
+
             $html  = "<h3>{$queryCount} statements were executed. {$queryDuplicatesCount} of which were duplicated. {$unique} unique.</h3>";
             $html .= '<hr>';
             $html .= '<table><thead>';
@@ -101,7 +108,7 @@ class EloquentCollector extends BaseCollector
      */
     public function icon(): string
     {
-        return 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADLSURBVEhL5ZRLCsIwGAa7UkE9gd5HUfEoekxxJx7AhXoCca/fhESkJiQxBHwMDG3S/9EmJc0n0JMruZVXK/fMdWQRY7mXt4A7OZJvwZu74hRayIEc2nv3jGtXZrOWrnifiRY0OkhiWK5sWGeS52bkZymJ2ZhRJmwmySxLCL6CmIsZZUIixkiNezCRR+kSUyWH3Cgn6SuQIk2iuOBckvN+t8FMnq1TJloUN3jefN9mhvJeCAVWb8CyUDj0vxc3iPFHDaofFdUPu2+iae7nYJMCY/1bpAAAAABJRU5ErkJggg==';
+        return 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADMSURBVEhLY6A3YExLSwsA4nIycQDIDIhRWEBqamo/UNF/SjDQjF6ocZgAKPkRiFeEhoYyQ4WIBiA9QAuWAPEHqBAmgLqgHcolGQD1V4DMgHIxwbCxYD+QBqcKINseKo6eWrBioPrtQBq/BcgY5ht0cUIYbBg2AJKkRxCNWkDQgtFUNJwtABr+F6igE8olGQD114HMgHIxAVDyAhA/AlpSA8RYUwoeXAPVex5qHCbIyMgwBCkAuQJIY00huDBUz/mUlBQDqHGjgBjAwAAACexpph6oHSQAAAAASUVORK5CYII=';
     }
 
     /**
