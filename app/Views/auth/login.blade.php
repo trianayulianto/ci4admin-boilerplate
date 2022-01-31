@@ -13,6 +13,11 @@
             <div id="status" class="collapse">
                 <div class="alert alert-danger" role="alert"></div>
             </div>
+            @if ($err = session('error'))
+                <div id="status" class="">
+                    <div class="alert alert-danger" role="alert">{{ $err }}</div>
+                </div>
+            @endif
 
             <div class="form-group row">
                 <input id="email" type="email" class="form-control form-control-user" name="email" required autocomplete="email" autofocus placeholder="Enter Email Address...">

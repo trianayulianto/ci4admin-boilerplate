@@ -79,12 +79,14 @@ class AuthenticationFilter implements FilterInterface
             return $this->fail('Unauthenticated.', ResponseInterface::HTTP_UNAUTHORIZED);
         }
 
-        throw new AuthenticationException(
+        $error = new AuthenticationException(
             'Unauthenticated.',
             $guards,
             ResponseInterface::HTTP_UNAUTHORIZED,
             $this->redirectTo($request)
         );
+
+        return redirect()->to($error->redirectTo())->with('error', $error->getMessage());
     }
 
     /**
@@ -95,5 +97,6 @@ class AuthenticationFilter implements FilterInterface
      */
     protected function redirectTo($request)
     {
+        return route_to('login');
     }
 }
