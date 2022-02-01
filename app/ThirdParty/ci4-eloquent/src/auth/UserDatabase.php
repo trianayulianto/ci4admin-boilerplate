@@ -6,7 +6,7 @@ use CodeIgniter\Database\BaseBuilder;
 use CodeIgniter\Database\Config;
 use Fluent\Auth\Contracts\AuthenticatorInterface;
 use Fluent\Auth\Contracts\UserProviderInterface;
-use Fluent\Auth\Entities\User;
+use App\Models\User;
 use Fluent\Auth\Facades\Hash;
 use Fluent\Auth\Helpers\Str;
 
