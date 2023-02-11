@@ -17,13 +17,12 @@
     "require": {
         "php": "^7.4|^8.0",
         "codeigniter4/framework": "^4.1",
-        "illuminate/database": "^7.0",
-        "illuminate/events": "^7.0",
-        "illuminate/pagination": "^7.0",
-        "eftec/bladeone": "^3.37",
-        "lcobucci/jwt": "<3.4",
-        "nesbot/carbon": "^2.0",
-        "symfony/var-dumper": "^5.0"
+        "illuminate/database": "^8.0",
+        "illuminate/events": "^8.0",
+        "illuminate/pagination": "^8.0",
+        "eftec/bladeone": "^4.0",
+        "lcobucci/jwt": "^4.0",
+        "nesbot/carbon": "^2.0"
     },
     "require-dev": {
     },

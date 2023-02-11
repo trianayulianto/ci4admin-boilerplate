@@ -73,8 +73,6 @@ class Services extends BaseService
         }
 
         return new Lcobucci(
-            new Builder(),
-            new Parser(),
             static::config('secret'),
             static::config('algo'),
             static::config('keys')

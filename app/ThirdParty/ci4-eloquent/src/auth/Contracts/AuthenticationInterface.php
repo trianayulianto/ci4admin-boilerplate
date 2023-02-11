@@ -51,7 +51,7 @@ interface AuthenticationInterface
 
     /**
      * Logs the given user in.
-     * 
+     *
      * @return mixed
      */
     public function login(AuthenticatorInterface $user, bool $remember = false);

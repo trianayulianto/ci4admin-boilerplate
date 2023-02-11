@@ -11,7 +11,7 @@ if (! function_exists('auth')) {
      *
      * @param string|null $guard
      * @return AuthFactoryInterface|AuthenticationInterface|Factory
-     * 
+     *
      */
     function auth($guard = null)
     {
