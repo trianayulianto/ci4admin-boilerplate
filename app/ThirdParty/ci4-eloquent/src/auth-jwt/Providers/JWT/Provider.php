@@ -1,10 +1,9 @@
 <?php
 
-/**
+/*
  * This file is part of jwt-auth.
  *
  * (c) Sean Tymon <tymon148@gmail.com>
- * (c) Agung Sugiarto <me.agungsugiarto@gmail.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -12,12 +11,20 @@
 
 namespace Fluent\JWTAuth\Providers\JWT;
 
-use Fluent\JWTAuth\Exceptions\JWTException;
-use Lcobucci\JWT\Signer\Key;
 use Illuminate\Support\Arr;
 
 abstract class Provider
 {
+    const ALGO_HS256 = 'HS256';
+    const ALGO_HS384 = 'HS384';
+    const ALGO_HS512 = 'HS512';
+    const ALGO_RS256 = 'RS256';
+    const ALGO_RS384 = 'RS384';
+    const ALGO_RS512 = 'RS512';
+    const ALGO_ES256 = 'ES256';
+    const ALGO_ES384 = 'ES384';
+    const ALGO_ES512 = 'ES512';
+
     /**
      * The secret.
      *
@@ -40,6 +47,8 @@ abstract class Provider
     protected $algo;
 
     /**
+     * Constructor.
+     *
      * @param  string  $secret
      * @param  string  $algo
      * @param  array  $keys
@@ -48,8 +57,8 @@ abstract class Provider
     public function __construct($secret, $algo, array $keys)
     {
         $this->secret = $secret;
-        $this->algo   = $algo;
-        $this->keys   = $keys;
+        $this->algo = $algo;
+        $this->keys = $keys;
     }
 
     /**
@@ -112,8 +121,7 @@ abstract class Provider
     }
 
     /**
-     * Get the array of keys used to sign tokens
-     * with an asymmetric algorithm.
+     * Get the array of keys used to sign tokens with an asymmetric algorithm.
      *
      * @return array
      */
@@ -123,10 +131,9 @@ abstract class Provider
     }
 
     /**
-     * Get the public key used to sign tokens
-     * with an asymmetric algorithm.
+     * Get the public key used to sign tokens with an asymmetric algorithm.
      *
-     * @return resource|string
+     * @return string|null
      */
     public function getPublicKey()
     {
@@ -134,10 +141,9 @@ abstract class Provider
     }
 
     /**
-     * Get the private key used to sign tokens
-     * with an asymmetric algorithm.
+     * Get the private key used to sign tokens with an asymmetric algorithm.
      *
-     * @return resource|string
+     * @return string|null
      */
     public function getPrivateKey()
     {
@@ -148,7 +154,7 @@ abstract class Provider
      * Get the passphrase used to sign tokens
      * with an asymmetric algorithm.
      *
-     * @return string
+     * @return string|null
      */
     public function getPassphrase()
     {
@@ -158,7 +164,7 @@ abstract class Provider
     /**
      * Get the key used to sign the tokens.
      *
-     * @return Key|null
+     * @return string|null
      */
     protected function getSigningKey()
     {
@@ -168,7 +174,7 @@ abstract class Provider
     /**
      * Get the key used to verify the tokens.
      *
-     * @return resource|string
+     * @return string|null
      */
     protected function getVerificationKey()
     {
@@ -176,10 +182,8 @@ abstract class Provider
     }
 
     /**
-     * Determine if the algorithm is asymmetric, and thus
-     * requires a public/private key combo.
+     * Determine if the algorithm is asymmetric, and thus requires a public/private key combo.
      *
-     * @throws JWTException
      * @return bool
      */
     abstract protected function isAsymmetric();
