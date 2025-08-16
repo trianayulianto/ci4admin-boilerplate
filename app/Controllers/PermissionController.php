@@ -15,31 +15,31 @@ class PermissionController extends BaseController
     public function index()
     {
         defender('api')->canDo('access.permissions.index');
-        
+
         return render('modules.permissions.index');
     }
 
     public function getData()
     {
         defender('api')->canDo('access.permissions.index');
-        
+
         return DataTables::use('permissions')
             ->addIndexColumn()
-            ->addColumn('button', function ($data) {
-                return render('modules.permissions.partials._table_button', compact('data'));
-            })
+            ->addColumn('button', fn($data) => render('modules.permissions.partials._table_button', ['data' => $data]))
             ->rawColumns(['assignment','button'])
             ->make();
     }
 
     public function store($id = null)
     {
-        if ($this->request->getMethod() === 'post')
+        if ($this->request->getMethod() === 'POST') {
             defender('api')->canDo('access.permissions.create');
+        }
 
-        if ($this->request->getMethod() === 'put')
+        if ($this->request->getMethod() === 'PUT') {
             defender('api')->canDo('access.permissions.update');
-        
+        }
+
         if (
             ! $this->validate([
                 'name' => 'required|is_unique[permissions.name,id,'.$id.',]',
@@ -51,7 +51,7 @@ class PermissionController extends BaseController
 
         $data = (array) $this->request->getPost();
 
-        if ($this->request->getMethod() === 'put') {
+        if ($this->request->getMethod() === 'PUT') {
             $data = (array) $this->request->getRawInput();
 
             $message = 'Permission data was updated';
@@ -62,10 +62,10 @@ class PermissionController extends BaseController
             $newRole = Permission::updateOrCreate(['id' => $id], $data);
 
             DB::commit();
-        } catch (\Exception $e) {
+        } catch (\Exception $exception) {
             DB::rollBack();
 
-            return $this->fail(['error' => $e->getMessage()]);
+            return $this->fail(['error' => $exception->getMessage()]);
         }
 
         return $this->respondCreated([
@@ -78,7 +78,7 @@ class PermissionController extends BaseController
     public function destroy($id)
     {
         defender('api')->canDo('access.permissions.delete');
-        
+
         $role = Permission::find($id);
 
         $role->delete();

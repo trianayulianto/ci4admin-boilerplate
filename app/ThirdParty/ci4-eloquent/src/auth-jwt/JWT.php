@@ -14,19 +14,13 @@ namespace Fluent\JWTAuth;
 
 use BadMethodCallException;
 use CodeIgniter\Http\Request;
-use Fluent\JWTAuth\Blacklist;
 use Fluent\JWTAuth\Contracts\JWTSubjectInterface;
 use Fluent\JWTAuth\Exceptions\JWTException;
-use Fluent\JWTAuth\Factory;
 use Fluent\JWTAuth\Http\Parser\HttpParser;
-use Fluent\JWTAuth\Manager;
-use Fluent\JWTAuth\Payload;
 use Fluent\JWTAuth\Support\CustomClaimsTrait;
-use Fluent\JWTAuth\Token;
 
 use function array_merge;
 use function call_user_func_array;
-use function get_class;
 use function is_object;
 use function method_exists;
 use function sha1;
@@ -69,13 +63,13 @@ class JWT
     public function __construct(Manager $manager, HttpParser $parser)
     {
         $this->manager = $manager;
-        $this->parser  = $parser;
+        $this->parser = $parser;
     }
 
     /**
      * Generate a token for a given subject.
      *
-     * @param JWTSubjectInterface $subject
+     * @param  JWTSubjectInterface  $subject
      * @return string
      */
     public function fromSubject($subject)
@@ -88,7 +82,7 @@ class JWT
     /**
      * Alias to generate a token for a given user.
      *
-     * @param JWTSubjectInterface $user
+     * @param  JWTSubjectInterface  $user
      * @return string
      */
     public function fromUser($user)
@@ -131,8 +125,9 @@ class JWT
      * Alias to get the payload, and as a result checks that
      * the token is valid i.e. not expired or blacklisted.
      *
-     * @throws JWTException
      * @return Payload
+     *
+     * @throws JWTException
      */
     public function checkOrFail()
     {
@@ -149,7 +144,7 @@ class JWT
     {
         try {
             $payload = $this->checkOrFail();
-        } catch (JWTException $e) {
+        } catch (JWTException) {
             return false;
         }
 
@@ -166,7 +161,7 @@ class JWT
         if ($this->token === null) {
             try {
                 $this->parseToken();
-            } catch (JWTException $e) {
+            } catch (JWTException) {
                 $this->token = null;
             }
         }
@@ -177,8 +172,9 @@ class JWT
     /**
      * Parse the token from the request.
      *
-     * @throws JWTException
      * @return $this
+     *
+     * @throws JWTException
      */
     public function parseToken()
     {
@@ -225,7 +221,7 @@ class JWT
     /**
      * Create a Payload instance.
      *
-     * @param JWTSubjectInterface $subject
+     * @param  JWTSubjectInterface  $subject
      * @return Payload
      */
     public function makePayload($subject)
@@ -236,7 +232,7 @@ class JWT
     /**
      * Build the claims array and return it.
      *
-     * @param JWTSubjectInterface $subject
+     * @param  JWTSubjectInterface  $subject
      * @return array
      */
     protected function getClaimsArray($subject)
@@ -251,7 +247,7 @@ class JWT
     /**
      * Get the claims associated with a given subject.
      *
-     * @param JWTSubjectInterface $subject
+     * @param  JWTSubjectInterface  $subject
      * @return array
      */
     protected function getClaimsForSubject($subject)
@@ -269,7 +265,7 @@ class JWT
      */
     protected function hashSubjectModel($model)
     {
-        return sha1(is_object($model) ? get_class($model) : $model);
+        return sha1(is_object($model) ? $model::class : $model);
     }
 
     /**
@@ -290,7 +286,7 @@ class JWT
     /**
      * Set the token.
      *
-     * @param Token|string $token
+     * @param  Token|string  $token
      * @return $this
      */
     public function setToken($token)
@@ -315,8 +311,9 @@ class JWT
     /**
      * Ensure that a token is available.
      *
-     * @throws JWTException
      * @return void
+     *
+     * @throws JWTException
      */
     protected function requireToken()
     {
@@ -395,8 +392,9 @@ class JWT
      *
      * @param  string  $method
      * @param  array  $parameters
-     * @throws BadMethodCallException
      * @return mixed
+     *
+     * @throws BadMethodCallException
      */
     public function __call($method, $parameters)
     {
@@ -404,6 +402,6 @@ class JWT
             return call_user_func_array([$this->manager, $method], $parameters);
         }
 
-        throw new BadMethodCallException("Method [$method] does not exist.");
+        throw new BadMethodCallException(sprintf('Method [%s] does not exist.', $method));
     }
 }

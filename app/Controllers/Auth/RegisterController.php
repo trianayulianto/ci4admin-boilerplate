@@ -23,7 +23,7 @@ class RegisterController extends BaseController
 
 		$data = (array) $this->request->getPost();
 
-		$data['password'] = password_hash($data['password'], PASSWORD_BCRYPT);
+		$data['password'] = password_hash((string) $data['password'], PASSWORD_BCRYPT);
 
 		DB::beginTransaction();
 		try {
@@ -47,10 +47,10 @@ class RegisterController extends BaseController
 			$accessToken = auth()->login($user);
 
 			DB::commit();
-		} catch (\Exception $e) {
+		} catch (\Exception $exception) {
 			DB::rollBack();
 
-			return $this->fail(['error' => $e->getMessage()]);
+			return $this->fail(['error' => $exception->getMessage()]);
 		}
 
 		return $this->respondWithToken($accessToken);

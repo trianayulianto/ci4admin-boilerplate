@@ -25,7 +25,7 @@ class Services extends BaseService
             return self::getSharedInstance('auth');
         }
 
-        return new AuthManager(new Factories(), $getShared);
+        return new AuthManager(new Factories, $getShared);
     }
 
     /**
@@ -39,7 +39,7 @@ class Services extends BaseService
             return self::getSharedInstance('passwords');
         }
 
-        return new PasswordBrokerManager(new Factories(), $getShared);
+        return new PasswordBrokerManager(new Factories, $getShared);
     }
 
     /**
@@ -53,6 +53,6 @@ class Services extends BaseService
             return self::getSharedInstance('hash');
         }
 
-        return new HashManager(new Factories(), $getShared);
+        return new HashManager(new Factories, $getShared);
     }
 }

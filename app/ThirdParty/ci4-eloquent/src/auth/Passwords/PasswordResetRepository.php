@@ -38,15 +38,15 @@ class PasswordResetRepository implements PasswordResetRepositoryInterface
 
     /**
      * Create new token repository instance.
-     * 
-     * @param string|null $connection
+     *
+     * @param  string|null  $connection
      * @return void
      */
     public function __construct(string $table, $connection = null, int $expires = 60, int $throttle = 60)
     {
         $this->connection = Config::connect($connection)->table($table);
-        $this->expires    = $expires * 60;
-        $this->throttle   = $throttle;
+        $this->expires = $expires * 60;
+        $this->throttle = $throttle;
     }
 
     /**
@@ -73,7 +73,7 @@ class PasswordResetRepository implements PasswordResetRepositoryInterface
      */
     public function createNewToken()
     {
-        return hash_hmac('sha256', bin2hex(random_bytes(20)), config('Encryption')->key);
+        return hash_hmac('sha256', bin2hex(random_bytes(20)), (string) config('Encryption')->key);
     }
 
     /**
@@ -132,8 +132,8 @@ class PasswordResetRepository implements PasswordResetRepositoryInterface
     protected function getPayload($email, $token)
     {
         return [
-            'email'      => $email,
-            'token'      => Hash::make($token),
+            'email' => $email,
+            'token' => Hash::make($token),
             'created_at' => Time::now(),
         ];
     }

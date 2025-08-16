@@ -5,6 +5,4 @@ namespace Artesaos\Defender\Exceptions;
 /**
  * Class RoleExistsException.
  */
-class RoleExistsException extends DefenderException
-{
-}
+class RoleExistsException extends DefenderException {}

@@ -10,8 +10,6 @@ class Services extends BaseService
 {
     /**
      * The base auth class.
-     *
-     * @return 
      */
     public static function render(bool $getShared = true)
     {
@@ -19,8 +17,8 @@ class Services extends BaseService
             return self::getSharedInstance('render');
         }
 
-        $path = APPPATH .'Views';
-        $cache = WRITEPATH .'cache';
+        $path = APPPATH.'Views';
+        $cache = WRITEPATH.'cache';
 
         return new Blade($path, $cache, Blade::MODE_AUTO);
     }
@@ -28,7 +26,7 @@ class Services extends BaseService
     /**
      * Helper to get the config values.
      *
-     * @param string $key
+     * @param  string  $key
      * @return mixed
      */
     protected static function config($key)

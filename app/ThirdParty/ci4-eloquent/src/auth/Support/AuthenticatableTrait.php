@@ -63,6 +63,8 @@ trait AuthenticatableTrait
         if (! empty($this->getRememberColumn())) {
             return (string) $this->{$this->getRememberColumn()};
         }
+
+        return null;
     }
 
     /**

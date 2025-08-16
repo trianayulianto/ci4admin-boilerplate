@@ -12,6 +12,4 @@
 
 namespace Fluent\JWTAuth\Exceptions;
 
-class UserNotDefinedException extends JWTException
-{
-}
+class UserNotDefinedException extends JWTException {}

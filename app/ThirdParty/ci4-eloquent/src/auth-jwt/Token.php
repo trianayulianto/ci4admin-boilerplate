@@ -14,7 +14,7 @@ namespace Fluent\JWTAuth;
 
 use Fluent\JWTAuth\Validators\TokenValidator;
 
-class Token
+class Token implements \Stringable
 {
     /** @var string */
     private $value;
@@ -27,7 +27,7 @@ class Token
      */
     public function __construct($value)
     {
-        $this->value = (string) (new TokenValidator())->check($value);
+        $this->value = (string) (new TokenValidator)->check($value);
     }
 
     /**
@@ -42,10 +42,8 @@ class Token
 
     /**
      * Get the token when casting to string.
-     *
-     * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->get();
     }

@@ -1,123 +1,122 @@
-<?php namespace Irsyadulibad\DataTables;
+<?php
+
+namespace Irsyadulibad\DataTables;
 
 use Irsyadulibad\DataTables\Utilities\Request;
 
 class DataProcessor
 {
-	protected $processColumn;
+    protected $results;
 
-	protected $result;
+    public function __construct(protected $result, protected $processColumn)
+    {
+        $this->results = $this->result->getResultArray();
+    }
 
-	protected $results;
+    public function process()
+    {
+        if (! empty($this->processColumn['appends'])) {
+            $this->addColumns();
+        }
 
-	public function __construct($result, $process)
-	{
-		$this->result = $result;
-		$this->results = $result->getResultArray();
-		$this->processColumn = $process;
-	}
+        if ($this->processColumn['index']) {
+            $this->addIndexColumn();
+        }
 
-	public function process()
-	{
-		if(!empty($this->processColumn['appends']))
-			$this->addColumns();
+        if (! empty($this->processColumn['edit'])) {
+            $this->editColumns();
+        }
 
-		if($this->processColumn['index'])
-			$this->addIndexColumn();
+        if (! empty($this->processColumn['hidden'])) {
+            $this->hide();
+        }
 
-		if(!empty($this->processColumn['edit']))
-			$this->editColumns();
+        $this->escapeColumns();
 
-		if(!empty($this->processColumn['hidden']))
-			$this->hide();
+        return $this->results;
+    }
 
-		$this->escapeColumns();
+    public function addColumns()
+    {
+        $result = $this->result->getResult();
+        $appendCols = $this->processColumn['appends'];
+        $i = 0;
 
-		return $this->results;
-	}
+        foreach ($this->results as $data) {
 
-	public function addColumns()
-	{
-		$result = $this->result->getResult();
-		$appendCols = $this->processColumn['appends'];
-		$i = 0;
+            foreach ($appendCols as $append) {
+                $name = $append['name'];
+                $callback = $append['callback'];
 
-		foreach($this->results as $data) {
+                $this->results[$i][$name] = $callback($result[$i]);
+            }
 
-			foreach($appendCols as $append) {
-				$name = $append['name'];
-				$callback = $append['callback'];
+            $i++;
+        }
+    }
 
-				$this->results[$i][$name] = $callback($result[$i]);
-			}
+    public function addIndexColumn()
+    {
+        $request = Request::staticInstance()->getLimiting();
 
-			$i++;
-		}
-	}
+        foreach ($this->results as $i => $data) {
+            $this->results[$i]['index'] = $i + $request['offset'] + 1;
+        }
+    }
 
-	public function addIndexColumn()
-	{
-		$request = Request::staticInstance()->getLimiting();
-		
-		foreach($this->results as $i => $data) {
-			$this->results[$i]['index'] = $i + $request['offset'] + 1;
-		}
-	}
+    public function editColumns()
+    {
+        $editCols = $this->processColumn['edit'];
+        $i = 0;
 
-	public function editColumns()
-	{
-		$editCols = $this->processColumn['edit'];
-		$i = 0;
+        foreach ($this->results as $data) {
 
-		foreach($this->results as $data) {
+            foreach ($editCols as $edit) {
+                $name = $edit['name'];
+                $callback = $edit['callback'];
+                $result = $this->results[$i][$name];
 
-			foreach($editCols as $edit) {
-				$name = $edit['name'];
-				$callback = $edit['callback'];
-				$result = $this->results[$i][$name];
+                $this->results[$i][$name] = $callback($result);
+            }
 
-				$this->results[$i][$name] = $callback($result);
-			}
+            $i++;
+        }
+    }
 
-			$i++;
-		}
-	}
+    public function hide()
+    {
 
-	public function hide()
-	{
+        $hideCols = $this->processColumn['hidden'];
+        $i = 0;
 
-		$hideCols = $this->processColumn['hidden'];
-		$i = 0;
+        foreach ($this->results as $data) {
+            foreach ($data as $key => $val) {
+                // Check if hide columns exist
+                if (in_array($key, $hideCols)) {
+                    unset($this->results[$i][$key]);
+                }
+            }
 
-		foreach ($this->results as $data) {
-			foreach($data as $key => $val) {
-				// Check if hide columns exist
-				if(in_array($key, $hideCols)) {
-					unset($this->results[$i][$key]);
-				}
+            $i++;
+        }
+    }
 
-				continue;
-			}
+    public function escapeColumns()
+    {
+        $rawCols = $this->processColumn['raws'];
+        $i = 0;
 
-			$i++;
-		}
-	}
+        foreach ($this->results as $data) {
+            foreach ($data as $key => $val) {
+                // Check if raw columns exist
+                if (in_array($key, $rawCols)) {
+                    continue;
+                }
 
-	public function escapeColumns()
-	{
-		$rawCols = $this->processColumn['raws'];
-		$i = 0;
+                $this->results[$i][$key] = esc($val);
+            }
 
-		foreach ($this->results as $data) {
-			foreach($data as $key => $val) {
-				// Check if raw columns exist
-				if(in_array($key, $rawCols)) 
-					continue;
-
-				$this->results[$i][$key] = esc($val);
-			}
-
-			$i++;
-		}
-	}
+            $i++;
+        }
+    }
 }

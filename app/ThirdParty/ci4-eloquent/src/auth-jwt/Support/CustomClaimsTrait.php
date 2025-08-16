@@ -37,7 +37,6 @@ trait CustomClaimsTrait
     /**
      * Alias to set the custom claims.
      *
-     * @param  array  $CustomClaims
      * @return $this
      */
     public function claims(array $CustomClaims)

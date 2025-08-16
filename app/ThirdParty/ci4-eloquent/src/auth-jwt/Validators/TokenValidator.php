@@ -35,8 +35,9 @@ class TokenValidator extends AbstractValidator
 
     /**
      * @param  string  $token
-     * @throws TokenInvalidException
      * @return string
+     *
+     * @throws TokenInvalidException
      */
     protected function validateStructure($token)
     {

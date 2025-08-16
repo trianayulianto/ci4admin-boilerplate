@@ -42,7 +42,7 @@ class PayloadValidator extends AbstractValidator
     /**
      * Run the validations on the payload array.
      *
-     * @param Collection $value
+     * @param  Collection  $value
      * @return Collection
      */
     public function check($value)
@@ -56,8 +56,9 @@ class PayloadValidator extends AbstractValidator
      * Ensure the payload contains the required claims and
      * the claims have the relevant type.
      *
-     * @throws TokenInvalidException
      * @return void
+     *
+     * @throws TokenInvalidException
      */
     protected function validateStructure(Collection $claims)
     {
@@ -69,9 +70,10 @@ class PayloadValidator extends AbstractValidator
     /**
      * Validate the payload timestamps.
      *
+     * @return Collection
+     *
      * @throws TokenExpiredException
      * @throws TokenInvalidException
-     * @return Collection
      */
     protected function validatePayload(Collection $claims)
     {
@@ -81,8 +83,9 @@ class PayloadValidator extends AbstractValidator
     /**
      * Check the token in the refresh flow context.
      *
-     * @throws TokenExpiredException
      * @return Collection
+     *
+     * @throws TokenExpiredException
      */
     protected function validateRefresh(Collection $claims)
     {
@@ -92,7 +95,6 @@ class PayloadValidator extends AbstractValidator
     /**
      * Set the required claims.
      *
-     * @param  array  $claims
      * @return $this
      */
     public function setRequiredClaims(array $claims)

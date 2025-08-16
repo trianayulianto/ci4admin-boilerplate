@@ -4,7 +4,7 @@ use CodeIgniter\CLI\CLI;
 
 // The main Exception
 CLI::newLine();
-CLI::write('[' . get_class($exception) . ']', 'light_gray', 'red');
+CLI::write('[' . $exception::class . ']', 'light_gray', 'red');
 CLI::newLine();
 CLI::write($message);
 CLI::newLine();
@@ -50,19 +50,12 @@ if (defined('SHOW_DEBUG_BACKTRACE') && SHOW_DEBUG_BACKTRACE)
 			$function .= $padClass . $error['function'];
 		}
 
-		$args = implode(', ', array_map(function ($value) {
-			switch (true)
-			{
-				case is_object($value):
-					return 'Object(' . get_class($value) . ')';
-				case is_array($value):
-					return count($value) ? '[...]' : '[]';
-				case is_null($value):
-					return 'null'; // return the lowercased version
-				default:
-					return var_export($value, true);
-			}
-		}, array_values($error['args'] ?? [])));
+		$args = implode(', ', array_map(fn($value) => match (true) {
+            is_object($value) => 'Object(' . $value::class . ')',
+            is_array($value) => count($value) ? '[...]' : '[]',
+            is_null($value) => 'null',
+            default => var_export($value, true),
+        }, array_values($error['args'] ?? [])));
 
 		$function .= '(' . $args . ')';
 

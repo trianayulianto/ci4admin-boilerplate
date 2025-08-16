@@ -38,16 +38,15 @@ class AuthenticationFilter implements FilterInterface
     /**
      * {@inheritdoc}
      */
-    public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
-    {
-    }
+    public function after(RequestInterface $request, ResponseInterface $response, $arguments = null) {}
 
     /**
      * Determine if the user is logged in to any of the given guards.
      *
-     * @param RequestInterface $request
-     * @param array $guards
+     * @param  RequestInterface  $request
+     * @param  array  $guards
      * @return void
+     *
      * @throws AuthenticationException
      */
     protected function authenticate($request, $guards)
@@ -65,17 +64,18 @@ class AuthenticationFilter implements FilterInterface
         return $this->unauthenticated($request, $guards);
     }
 
-     /**
-      * Handle an unauthenticated user.
-      *
-      * @param RequestInterface $request
-      * @param array $guards
-      * @return void
-      * @throws AuthenticationException
-      */
+    /**
+     * Handle an unauthenticated user.
+     *
+     * @param  RequestInterface  $request
+     * @param  array  $guards
+     * @return void
+     *
+     * @throws AuthenticationException
+     */
     protected function unauthenticated($request, $guards)
     {
-        if ($request->isAJAX() || !!($request->getJSON())) {
+        if ($request->isAJAX() || (bool) $request->getJSON()) {
             return $this->fail('Unauthenticated.', ResponseInterface::HTTP_UNAUTHORIZED);
         }
 
@@ -92,7 +92,7 @@ class AuthenticationFilter implements FilterInterface
     /**
      * Get the path the user should be redirected to when they are not authenticated.
      *
-     * @param RequestInterface $request
+     * @param  RequestInterface  $request
      * @return string|null
      */
     protected function redirectTo($request)

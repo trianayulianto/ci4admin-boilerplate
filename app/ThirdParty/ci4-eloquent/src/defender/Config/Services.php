@@ -7,12 +7,9 @@ use Artesaos\Defender\Repositories\Eloquent\EloquentRoleRepository;
 use CodeIgniter\Config\BaseService;
 use CodeIgniter\Config\Factories;
 
-/**
- * 
- */
 class Services extends BaseService
 {
-	public static function defRoles(bool $getShared = true)
+    public static function defRoles(bool $getShared = true)
     {
         if ($getShared) {
             return self::getSharedInstance('defRoles');
@@ -33,7 +30,7 @@ class Services extends BaseService
     /**
      * Helper to get the config values.
      *
-     * @param string $key
+     * @param  string  $key
      * @return mixed
      */
     protected static function config($key)

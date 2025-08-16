@@ -12,7 +12,7 @@ use Artesaos\Defender\Exceptions\RoleExistsException;
 class EloquentRoleRepository extends AbstractEloquentRepository implements RoleRepository
 {
     /**
-     * @param Role  $model
+     * @param  Role  $model
      */
     public function __construct($model)
     {
@@ -22,11 +22,10 @@ class EloquentRoleRepository extends AbstractEloquentRepository implements RoleR
     /**
      * Create a new role with the given name.
      *
-     * @param $roleName
-     *
-     * @throws \RoleExistsException
      *
      * @return Role
+     *
+     * @throws \RoleExistsException
      */
     public function create($roleName)
     {

@@ -2,8 +2,6 @@
 
 namespace Fluent\Auth\Contracts;
 
-use Fluent\Auth\Contracts\ResetPasswordInterface;
-
 interface PasswordResetRepositoryInterface
 {
     /**
@@ -23,7 +21,7 @@ interface PasswordResetRepositoryInterface
     /**
      * Determine if a token record exists and is valid.
      *
-     * @param string $token
+     * @param  string  $token
      * @return bool
      */
     public function exists(ResetPasswordInterface $user, $token);

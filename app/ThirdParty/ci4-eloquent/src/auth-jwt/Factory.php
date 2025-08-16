@@ -15,7 +15,6 @@ namespace Fluent\JWTAuth;
 use Fluent\JWTAuth\Claims\Claim;
 use Fluent\JWTAuth\Claims\Collection;
 use Fluent\JWTAuth\Claims\Factory as ClaimFactory;
-use Fluent\JWTAuth\Payload;
 use Fluent\JWTAuth\Support\CustomClaimsTrait;
 use Fluent\JWTAuth\Support\RefreshFlowTrait;
 use Fluent\JWTAuth\Validators\PayloadValidator;
@@ -67,8 +66,8 @@ class Factory
     public function __construct(ClaimFactory $claimFactory, PayloadValidator $validator)
     {
         $this->claimFactory = $claimFactory;
-        $this->validator    = $validator;
-        $this->claims       = new Collection();
+        $this->validator = $validator;
+        $this->claims = new Collection;
     }
 
     /**
@@ -93,7 +92,7 @@ class Factory
      */
     public function emptyClaims()
     {
-        $this->claims = new Collection();
+        $this->claims = new Collection;
 
         return $this;
     }
@@ -101,7 +100,6 @@ class Factory
     /**
      * Add an array of claims to the Payload.
      *
-     * @param  array  $claims
      * @return $this
      */
     protected function addClaims(array $claims)
@@ -135,7 +133,7 @@ class Factory
     protected function buildClaims()
     {
         // remove the exp claim if it exists and the ttl is null
-        if ($this->claimFactory->getTTL() === null && $key = array_search('exp', $this->defaultClaims)) {
+        if ($this->claimFactory->getTTL() === null && $key = array_search('exp', $this->defaultClaims, true)) {
             unset($this->defaultClaims[$key]);
         }
 
@@ -155,9 +153,7 @@ class Factory
      */
     protected function resolveClaims()
     {
-        return $this->claims->map(function ($value, $name) {
-            return $value instanceof Claim ? $value : $this->claimFactory->get($name, $value);
-        });
+        return $this->claims->map(fn ($value, $name) => $value instanceof Claim ? $value : $this->claimFactory->get($name, $value));
     }
 
     /**
@@ -183,7 +179,6 @@ class Factory
     /**
      * Set the default claims to be added to the Payload.
      *
-     * @param  array  $claims
      * @return $this
      */
     public function setDefaultClaims(array $claims)

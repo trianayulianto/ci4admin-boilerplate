@@ -28,7 +28,7 @@ class CheckFilter extends AbstractBaseFilter implements FilterInterface
             try {
                 $this->auth->check();
             } catch (Exception $e) {
-                throw new Exception($e->getMessage(), [], $e->getCode());  
+                throw new Exception($e->getMessage(), [], $e->getCode());
             }
         }
 
@@ -38,7 +38,5 @@ class CheckFilter extends AbstractBaseFilter implements FilterInterface
     /**
      * {@inheritdoc}
      */
-    public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
-    {
-    }
+    public function after(RequestInterface $request, ResponseInterface $response, $arguments = null) {}
 }

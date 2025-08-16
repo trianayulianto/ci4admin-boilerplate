@@ -2,9 +2,9 @@
 
 namespace Artesaos\Defender\Traits;
 
+use Artesaos\Defender\Config\Services;
 use Artesaos\Defender\Traits\Users\HasPermissions;
 use Artesaos\Defender\Traits\Users\HasRoles;
-use Artesaos\Defender\Config\Services;
 use CodeIgniter\Config\Factories;
 
 /**
@@ -12,7 +12,7 @@ use CodeIgniter\Config\Factories;
  */
 trait HasDefender
 {
-    use HasRoles, HasPermissions;
+    use HasPermissions, HasRoles;
 
     /**
      * @var \Illuminate\Support\Collection
@@ -28,9 +28,8 @@ trait HasDefender
      * Returns if the current user has the given permission.
      * User permissions override role permissions.
      *
-     * @param string $permission
-     * @param bool   $force
-     *
+     * @param  string  $permission
+     * @param  bool  $force
      * @return bool
      */
     public function hasPermission($permission, $force = false)
@@ -50,9 +49,9 @@ trait HasDefender
      * Returns if the current user has all or one permission of the given array.
      * User permissions override role permissions.
      *
-     * @param array $permissions Array of permissions
-     * @param bool $strict       Check if has all permissions from array or one of them
-     * @param bool $force
+     * @param  array  $permissions  Array of permissions
+     * @param  bool  $strict  Check if has all permissions from array or one of them
+     * @param  bool  $force
      * @return bool
      */
     public function hasPermissions(array $permissions, $strict = true, $force = false)
@@ -60,20 +59,16 @@ trait HasDefender
         $allPermissions = $this->getAllPermissions($force)->pluck('name')->toArray();
         $equalPermissions = array_intersect($permissions, $allPermissions);
         $countEqual = count($equalPermissions);
-        if ($countEqual > 0 && ($strict === false || $countEqual === count($permissions))) {
-            return true;
-        }
 
-        return false;
+        return $countEqual > 0 && ($strict === false || $countEqual === count($permissions));
     }
 
     /**
      * Checks for permission
      * If has superuser group automatically passes.
      *
-     * @param string $permission
-     * @param bool   $force
-     *
+     * @param  string  $permission
+     * @param  bool  $force
      * @return bool
      */
     public function canDo($permission, $force = false)
@@ -100,9 +95,8 @@ trait HasDefender
      * Check if the user has the given permission using
      * only his roles.
      *
-     * @param string $permission
-     * @param bool   $force
-     *
+     * @param  string  $permission
+     * @param  bool  $force
      * @return bool
      */
     public function roleHasPermission($permission, $force = false)
@@ -115,13 +109,12 @@ trait HasDefender
     /**
      * Retrieve all user permissions.
      *
-     * @param bool $force
-     *
+     * @param  bool  $force
      * @return \Illuminate\Support\Collection
      */
     public function getAllPermissions($force = false)
     {
-        if (empty($this->cachedPermissions) or $force) {
+        if (empty($this->cachedPermissions) || $force) {
             $this->cachedPermissions = $this->getFreshAllPermissions();
         }
 
@@ -131,13 +124,12 @@ trait HasDefender
     /**
      * Get permissions from database based on roles.
      *
-     * @param bool $force
-     *
+     * @param  bool  $force
      * @return \Illuminate\Support\Collection
      */
     public function getRolesPermissions($force = false)
     {
-        if (empty($this->cachedRolePermissions) or $force) {
+        if (empty($this->cachedRolePermissions) || $force) {
             $this->cachedRolePermissions = $this->getFreshRolesPermissions();
         }
 
@@ -180,7 +172,7 @@ trait HasDefender
     /**
      * Helper to get the config values.
      *
-     * @param string $key
+     * @param  string  $key
      * @return mixed
      */
     protected static function config($key)

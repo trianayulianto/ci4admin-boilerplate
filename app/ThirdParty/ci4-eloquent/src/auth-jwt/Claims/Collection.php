@@ -12,7 +12,6 @@
 
 namespace Fluent\JWTAuth\Claims;
 
-use Fluent\JWTAuth\Claims\Claim;
 use Illuminate\Support\Collection as IlluminateCollection;
 
 use function array_shift;
@@ -44,9 +43,7 @@ class Collection extends IlluminateCollection
      */
     public function getByClaimName($name, ?callable $callback = null, $default = null)
     {
-        return $this->filter(function (Claim $claim) use ($name) {
-            return $claim->getName() === $name;
-        })->first($callback, $default);
+        return $this->filter(fn (Claim $claim) => $claim->getName() === $name)->first($callback, $default);
     }
 
     /**
@@ -62,7 +59,7 @@ class Collection extends IlluminateCollection
 
         $this->each(function ($claim) use ($context, $args) {
             call_user_func_array(
-                [$claim, 'validate' . ucfirst($context)],
+                [$claim, 'validate'.ucfirst($context)],
                 $args
             );
         });
@@ -88,9 +85,7 @@ class Collection extends IlluminateCollection
      */
     public function toPlainArray()
     {
-        return $this->map(function (Claim $claim) {
-            return $claim->getValue();
-        })->toArray();
+        return $this->map(fn (Claim $claim) => $claim->getValue())->toArray();
     }
 
     /**

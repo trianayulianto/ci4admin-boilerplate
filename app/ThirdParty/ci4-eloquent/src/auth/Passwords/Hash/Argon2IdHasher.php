@@ -2,13 +2,11 @@
 
 namespace Fluent\Auth\Passwords\Hash;
 
-use Fluent\Auth\Passwords\Hash\ArgonHasher;
+use const PASSWORD_ARGON2ID;
+
 use RuntimeException;
 
 use function password_verify;
-use function strlen;
-
-use const PASSWORD_ARGON2ID;
 
 class Argon2IdHasher extends ArgonHasher
 {
@@ -17,8 +15,8 @@ class Argon2IdHasher extends ArgonHasher
      *
      * @param  string  $value
      * @param  string  $hashedValue
-     * @param  array  $options
      * @return bool
+     *
      * @throws RuntimeException
      */
     public function check($value, $hashedValue, array $options = [])
@@ -27,7 +25,7 @@ class Argon2IdHasher extends ArgonHasher
             throw new RuntimeException('This password does not use the Argon2id algorithm.');
         }
 
-        if (strlen($hashedValue) === 0) {
+        if ((string) $hashedValue === '') {
             return false;
         }
 

@@ -1,12 +1,12 @@
-<?php 
+<?php
 
 namespace Fluent\Laraci;
 
+use Illuminate\Container\Container;
 use Illuminate\Database\Capsule\Manager as Capsule;
-use Illuminate\Events\Dispatcher as Dispatcher;
-use Illuminate\Container\Container as Container;
+use Illuminate\Events\Dispatcher;
 
-class EloquentServiceProvider 
+class EloquentServiceProvider
 {
     /**
      * Register the service provider.
@@ -20,17 +20,17 @@ class EloquentServiceProvider
 
     /**
      * Eloquent manager
-     * 
+     *
      * @return Capsule
      */
     public static function registerConnectionServices()
     {
         $capsule = new Capsule;
- 
+
         $capsule->addConnection(static::dbConfig());
 
         $capsule->setAsGlobal();
-        
+
         $capsule->setEventDispatcher(new Dispatcher(new Container));
 
         $capsule->bootEloquent();
@@ -45,27 +45,28 @@ class EloquentServiceProvider
 
     /**
      * Database settings
-     * 
+     *
      * @return array
      */
     private static function dbConfig()
     {
         $db = config('Database');
         $drivers = [
-            'MySQLi'  => 'mysql',
-            'Postgre' => 'pgsql'
+            'MySQLi' => 'mysql',
+            'Postgre' => 'pgsql',
+            'SQLite3' => 'sqlite',
         ];
-        
-        return array(
-            'driver'    => $drivers[$db->default['DBDriver']],
-            'database'  => $db->default['database'],
-            'host'      => $db->default['hostname'],
-            'port'      => $db->default['port'],
-            'username'  => $db->default['username'],
-            'password'  => $db->default['password'],
-            'charset'   => $db->default['charset'],
+
+        return [
+            'driver' => $drivers[$db->default['DBDriver']],
+            'database' => $db->default['database'],
+            'host' => $db->default['hostname'],
+            'port' => $db->default['port'],
+            'username' => $db->default['username'],
+            'password' => $db->default['password'],
+            'charset' => $db->default['charset'],
             'collation' => $db->default['DBCollat'],
-            'prefix'    => $db->default['DBPrefix']
-        );
+            'prefix' => $db->default['DBPrefix'],
+        ];
     }
 }

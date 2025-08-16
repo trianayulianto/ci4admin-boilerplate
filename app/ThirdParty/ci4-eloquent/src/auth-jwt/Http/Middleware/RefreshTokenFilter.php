@@ -29,8 +29,8 @@ class RefreshTokenFilter extends AbstractBaseFilter implements FilterInterface
 
         try {
             $token = $this->auth->parseToken()->refresh();
-        } catch (JWTException $e) {
-            throw new AuthenticationException($e->getMessage(), [], $e->getCode());
+        } catch (JWTException $jwtException) {
+            throw new AuthenticationException($jwtException->getMessage(), [], $jwtException->getCode());
         }
 
         // Send the refreshed token back to the client.
@@ -40,7 +40,5 @@ class RefreshTokenFilter extends AbstractBaseFilter implements FilterInterface
     /**
      * {@inheritdoc}
      */
-    public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
-    {
-    }
+    public function after(RequestInterface $request, ResponseInterface $response, $arguments = null) {}
 }

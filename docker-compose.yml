@@ -1,0 +1,58 @@
+services:
+    app:
+        image: 'dunglas/frankenphp:ci4admin'
+        build:
+            context: .
+            dockerfile: Dockerfile
+            args:
+                MYSQL_CLIENT: mariadb-client
+        extra_hosts:
+            - 'host.docker.internal:host-gateway'
+        environment:
+            SERVER_NAME: '${APP_URL:-localhost}'
+            APP_USER: '${APP_USER:-ci4admin}'
+            XDG_CONFIG_HOME: '/home/${APP_USER:-ci4admin}/config'
+            XDG_DATA_HOME: '/home/${APP_USER:-ci4admin}/data'
+        volumes:
+            - './:/app'
+        ports:
+            - '80:80'
+            - '443:443'
+            - '443:443/udp'
+            - '2019:2019'
+        depends_on:
+            - mariadb
+        networks:
+            - ci4admin
+
+    mariadb:
+        image: 'mariadb:11'
+        ports:
+            - '${FORWARD_DB_PORT:-3306}:3306'
+        environment:
+            MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
+            MYSQL_ROOT_HOST: '%'
+            MYSQL_DATABASE: '${DB_DATABASE}'
+            MYSQL_USER: '${DB_USERNAME}'
+            MYSQL_PASSWORD: '${DB_PASSWORD}'
+            MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+        volumes:
+            - 'ci4admin-mariadb:/var/lib/mysql'
+        networks:
+            - ci4admin
+        healthcheck:
+            test:
+                - CMD
+                - healthcheck.sh
+                - '--connect'
+                - '--innodb_initialized'
+            retries: 3
+            timeout: 5s
+
+networks:
+    ci4admin:
+        driver: bridge
+
+volumes:
+    ci4admin-mariadb:
+        driver: local

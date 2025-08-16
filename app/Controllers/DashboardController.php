@@ -16,7 +16,7 @@ class DashboardController extends BaseController
 		$activities = UserLogable::count();
 		$users = User::count();
 
-		return render('dashboard', compact('roles', 'permissions', 'activities', 'users'));
+		return render('dashboard', ['roles' => $roles, 'permissions' => $permissions, 'activities' => $activities, 'users' => $users]);
 	}
 
 	//--------------------------------------------------------------------

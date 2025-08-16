@@ -3,9 +3,6 @@
 namespace Fluent\Auth\Passwords\Hash;
 
 use Fluent\Auth\Contracts\HasherInterface;
-use Fluent\Auth\Passwords\Hash\Argon2IdHasher;
-use Fluent\Auth\Passwords\Hash\ArgonHasher;
-use Fluent\Auth\Passwords\Hash\BcryptHasher;
 
 class HashManager extends AbstractManager implements HasherInterface
 {
@@ -54,7 +51,6 @@ class HashManager extends AbstractManager implements HasherInterface
      * Hash the given value.
      *
      * @param  string  $value
-     * @param  array  $options
      * @return string
      */
     public function make($value, array $options = [])
@@ -67,7 +63,6 @@ class HashManager extends AbstractManager implements HasherInterface
      *
      * @param  string  $value
      * @param  string  $hashedValue
-     * @param  array  $options
      * @return bool
      */
     public function check($value, $hashedValue, array $options = [])
@@ -79,7 +74,6 @@ class HashManager extends AbstractManager implements HasherInterface
      * Check if the given hash has been hashed using the given options.
      *
      * @param  string  $hashedValue
-     * @param  array  $options
      * @return bool
      */
     public function needsRehash($hashedValue, array $options = [])

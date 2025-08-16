@@ -12,6 +12,4 @@
 
 namespace Fluent\JWTAuth\Exceptions;
 
-class TokenInvalidException extends JWTException
-{
-}
+class TokenInvalidException extends JWTException {}

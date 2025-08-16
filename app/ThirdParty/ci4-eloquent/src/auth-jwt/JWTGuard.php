@@ -12,7 +12,6 @@
 
 namespace Fluent\JWTAuth;
 
-use Artesaos\Defender\Config\Services;
 use Artesaos\Defender\Defender;
 use BadMethodCallException;
 use CodeIgniter\Events\Events;
@@ -24,9 +23,6 @@ use Fluent\Auth\Contracts\UserProviderInterface;
 use Fluent\Auth\Support\GuardHelperTrait;
 use Fluent\JWTAuth\Exceptions\JWTException;
 use Fluent\JWTAuth\Exceptions\UserNotDefinedException;
-use Fluent\JWTAuth\JWT;
-use Fluent\JWTAuth\Payload;
-use Fluent\JWTAuth\Token;
 
 use function call_user_func_array;
 use function method_exists;
@@ -58,8 +54,8 @@ class JWTGuard implements AuthenticationInterface
      */
     public function __construct(JWT $jwt, RequestInterface $request, UserProviderInterface $provider)
     {
-        $this->jwt      = $jwt;
-        $this->request  = $request;
+        $this->jwt = $jwt;
+        $this->request = $request;
         $this->provider = $provider;
     }
 
@@ -88,12 +84,13 @@ class JWTGuard implements AuthenticationInterface
      * Get the currently authenticated user or throws an exception.
      *
      * @return AuthenticatorInterface
+     *
      * @throws UserNotDefinedException
      */
     public function userOrFail()
     {
         if (! $user = $this->user()) {
-            throw new UserNotDefinedException();
+            throw new UserNotDefinedException;
         }
 
         return $user;
@@ -104,7 +101,8 @@ class JWTGuard implements AuthenticationInterface
      */
     public function validate(array $credentials): bool
     {
-        $this->lastAttempted = $user = $this->provider->findByCredentials($credentials);
+        $this->lastAttempted = $this->provider->findByCredentials($credentials);
+        $user = $this->lastAttempted;
 
         return $this->hasValidCredentials($user, $credentials);
     }
@@ -115,8 +113,8 @@ class JWTGuard implements AuthenticationInterface
     public function attempt(array $credentials, bool $remember = true)
     {
         Events::trigger('fireAttemptEvent', $credentials, $remember);
-
-        $this->lastAttempted = $user = $this->provider->findByCredentials($credentials);
+        $this->lastAttempted = $this->provider->findByCredentials($credentials);
+        $user = $this->lastAttempted;
 
         if ($this->hasValidCredentials($user, $credentials)) {
             // We can return JWT token if pass second argument set to true,
@@ -165,8 +163,8 @@ class JWTGuard implements AuthenticationInterface
     /**
      * Refresh the token.
      *
-     * @param bool $forceForever
-     * @param bool $resetClaims
+     * @param  bool  $forceForever
+     * @param  bool  $resetClaims
      * @return string
      */
     public function refresh($forceForever = false, $resetClaims = false)
@@ -196,12 +194,13 @@ class JWTGuard implements AuthenticationInterface
         if ($user = $this->provider->findById($id)) {
             return $this->jwt->fromUser($user);
         }
+
+        return null;
     }
 
     /**
      * Log a user into the application using their credentials.
      *
-     * @param  array  $credentials
      * @return bool
      */
     public function once(array $credentials = [])
@@ -249,7 +248,6 @@ class JWTGuard implements AuthenticationInterface
     /**
      * Add any custom claims.
      *
-     * @param  array  $claims
      * @return $this
      */
     public function claims(array $claims)
@@ -282,7 +280,7 @@ class JWTGuard implements AuthenticationInterface
     /**
      * Set the token.
      *
-     * @param Token|string $token
+     * @param  Token|string  $token
      * @return $this
      */
     public function setToken($token)
@@ -295,7 +293,7 @@ class JWTGuard implements AuthenticationInterface
     /**
      * Set the token ttl.
      *
-     * @param int $ttl
+     * @param  int  $ttl
      * @return $this
      */
     public function setTTL($ttl)
@@ -368,8 +366,8 @@ class JWTGuard implements AuthenticationInterface
     /**
      * Determine if the user matches the credentials.
      *
-     * @param mixed $user
-     * @param array $credentials
+     * @param  mixed  $user
+     * @param  array  $credentials
      * @return bool
      */
     protected function hasValidCredentials($user, $credentials)
@@ -386,8 +384,9 @@ class JWTGuard implements AuthenticationInterface
     /**
      * Ensure that a token is available in the request.
      *
-     * @throws JWTException
      * @return JWT
+     *
+     * @throws JWTException
      */
     protected function requireToken()
     {
@@ -401,7 +400,7 @@ class JWTGuard implements AuthenticationInterface
     /**
      * {@inheritdoc}
      */
-    public function getSessionName()
+    public function getSessionName(): never
     {
         throw new Exception('Not implemented.');
     }
@@ -409,7 +408,7 @@ class JWTGuard implements AuthenticationInterface
     /**
      * {@inheritdoc}
      */
-    public function getCookieName()
+    public function getCookieName(): never
     {
         throw new Exception('Not implemented.');
     }
@@ -417,7 +416,7 @@ class JWTGuard implements AuthenticationInterface
     /**
      * {@inheritdoc}
      */
-    public function viaRemember()
+    public function viaRemember(): never
     {
         throw new Exception('Not implemented.');
     }
@@ -427,8 +426,9 @@ class JWTGuard implements AuthenticationInterface
      *
      * @param  string  $method
      * @param  array  $parameters
-     * @throws BadMethodCallException
      * @return mixed
+     *
+     * @throws BadMethodCallException
      */
     public function __call($method, $parameters)
     {
@@ -436,6 +436,6 @@ class JWTGuard implements AuthenticationInterface
             return call_user_func_array([$this->jwt, $method], $parameters);
         }
 
-        throw new BadMethodCallException("Method [$method] does not exist.");
+        throw new BadMethodCallException(sprintf('Method [%s] does not exist.', $method));
     }
 }

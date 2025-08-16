@@ -13,7 +13,6 @@
 namespace Fluent\JWTAuth\Claims;
 
 use CodeIgniter\Http\Request;
-use Fluent\JWTAuth\Claims\Claim;
 use Fluent\JWTAuth\Support\UtilsTrait;
 
 use function array_key_exists;
@@ -116,7 +115,7 @@ class Factory
      */
     public function iss()
     {
-        return $this->request->getUri()->getScheme() . '://' . $this->request->getUri()->getHost();
+        return $this->request->getUri()->getScheme().'://'.$this->request->getUri()->getHost();
     }
 
     /**

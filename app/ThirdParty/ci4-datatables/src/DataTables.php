@@ -1,20 +1,20 @@
-<?php namespace Irsyadulibad\DataTables;
+<?php
 
-use Irsyadulibad\DataTables\Processor;
+namespace Irsyadulibad\DataTables;
+
 use Config\Database;
-use Config\Services;
 
 class DataTables
 {
+    public static function use($table)
+    {
+        return self::create($table);
+    }
 
-	public static function use($table)
-	{
-		return self::create($table);
-	}
+    public static function create($table)
+    {
+        $db = Database::connect();
 
-	public static function create($table)
-	{
-		$db = Database::connect();
-		return new TableProcessor($db, $table);
-	}
+        return new TableProcessor($db, $table);
+    }
 }

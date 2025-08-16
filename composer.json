@@ -16,19 +16,17 @@
 	    }
   	],
 	"require": {
-		"php": "^7.3||^8.0",
+		"php": "^8.1",
 		"codeigniter4/framework": "^4.1",
         "trianayulianto/ci4-eloquent": "1.0-dev"
 	},
 	"require-dev": {
 		"fakerphp/faker": "^1.9",
 		"mikey179/vfsstream": "^1.6",
-		"phpunit/phpunit": "^9.1"
+		"phpunit/phpunit": "^9.1",
+		"rector/rector": "^2.1"
 	},
     "config": {
-        "platform":{
-            "php": "7.4"
-        },
         "optimize-autoloader": true,
         "preferred-install": "dist",
         "sort-packages": true

@@ -2,11 +2,11 @@
 
 namespace Fluent\Auth;
 
+use App\Models\User;
 use CodeIgniter\Database\BaseBuilder;
 use CodeIgniter\Database\Config;
 use Fluent\Auth\Contracts\AuthenticatorInterface;
 use Fluent\Auth\Contracts\UserProviderInterface;
-use App\Models\User;
 use Fluent\Auth\Facades\Hash;
 use Fluent\Auth\Helpers\Str;
 
@@ -27,7 +27,7 @@ class UserDatabase implements UserProviderInterface
     /**
      * Create a new database user provider.
      *
-     * @param string|null $connection
+     * @param  string|null  $connection
      * @return void
      */
     public function __construct(string $table, $connection = null)
@@ -74,11 +74,11 @@ class UserDatabase implements UserProviderInterface
     public function findByCredentials(array $credentials)
     {
         if (
-            empty($credentials) ||
+            $credentials === [] ||
             (count($credentials) === 1 &&
             array_key_exists('password', $credentials))
         ) {
-            return;
+            return null;
         }
 
         // First we will add each credential element to the query as a where clause.

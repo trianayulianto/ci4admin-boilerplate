@@ -17,13 +17,6 @@ use CodeIgniter\Http\Request;
 class HttpParser
 {
     /**
-     * The chain.
-     *
-     * @var array
-     */
-    private $chain;
-
-    /**
      * The request.
      *
      * @var Request
@@ -31,13 +24,14 @@ class HttpParser
     protected $request;
 
     /**
-     * @param  array  $chain
      * @return void
      */
-    public function __construct(Request $request, array $chain = [])
+    public function __construct(Request $request, /**
+     * The chain.
+     */
+        private array $chain = [])
     {
         $this->request = $request;
-        $this->chain   = $chain;
     }
 
     /**
@@ -53,8 +47,7 @@ class HttpParser
     /**
      * Add a new parser to the chain.
      *
-     * @param array|\Fluent\JWTAuth\Contracts\Http\ParserInterface $parsers
-     *
+     * @param  array|\Fluent\JWTAuth\Contracts\Http\ParserInterface  $parsers
      * @return $this
      */
     public function addParser($parsers)
@@ -67,7 +60,6 @@ class HttpParser
     /**
      * Set the order of the parser chain.
      *
-     * @param  array  $chain
      * @return $this
      */
     public function setChain(array $chain)
@@ -80,7 +72,6 @@ class HttpParser
     /**
      * Alias for setting the order of the chain.
      *
-     * @param  array  $chain
      * @return $this
      */
     public function setChainOrder(array $chain)
@@ -101,6 +92,8 @@ class HttpParser
                 return $response;
             }
         }
+
+        return null;
     }
 
     /**

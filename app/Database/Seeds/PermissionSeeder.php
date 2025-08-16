@@ -11,8 +11,8 @@ class PermissionSeeder extends Seeder
 		$permissions = [
 			'system' => [
 				'activity' => [
-					'index'  => 'Can read user\'s activity logs',
-					'delete' => 'Can delete user\'s activity logs'
+					'index'  => "Can read user's activity logs",
+					'delete' => "Can delete user's activity logs"
 				]
 			],
 			'account' => [
@@ -21,7 +21,7 @@ class PermissionSeeder extends Seeder
 					'create' => 'Can create users data',
 					'update' => 'Can update users data',
 					'delete' => 'Can delete users data',
-					'assign' => 'Can assign user\'s role & permission'
+					'assign' => "Can assign user's role & permission"
 				],
 			],
 			'access' => [
@@ -30,7 +30,7 @@ class PermissionSeeder extends Seeder
 					'create' => 'Can create roles data',
 					'update' => 'Can update roles data',
 					'delete' => 'Can delete roles data',
-					'assign' => 'Can assign role\'s permission'
+					'assign' => "Can assign role's permission"
 				],
 				'permissions' => [
 					'index'  => 'Can read permissions data',

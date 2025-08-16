@@ -12,8 +12,7 @@ trait HasRoles
     /**
      * Returns true if the given user has any of the given roles.
      *
-     * @param string|array $roles array or many strings of role name
-     *
+     * @param  string|array  $roles  array or many strings of role name
      * @return bool
      */
     public function hasRoles($roles)
@@ -32,8 +31,7 @@ trait HasRoles
     /**
      * Returns if the given user has an specific role.
      *
-     * @param string $role
-     *
+     * @param  string  $role
      * @return bool
      */
     public function hasRole($role)
@@ -46,7 +44,7 @@ trait HasRoles
     /**
      * Attach the given role.
      *
-     * @param \Artesaos\Defender\Role $role
+     * @param  \Artesaos\Defender\Role  $role
      */
     public function attachRole($role)
     {
@@ -72,8 +70,7 @@ trait HasRoles
     /**
      * Detach the given role from the model.
      *
-     * @param \Artesaos\Defender\Role $role
-     *
+     * @param  \Artesaos\Defender\Role  $role
      * @return int
      */
     public function detachRole($role)
@@ -84,7 +81,6 @@ trait HasRoles
     /**
      * Sync the given roles.
      *
-     * @param array $roles
      *
      * @return array
      */
@@ -96,9 +92,8 @@ trait HasRoles
     /**
      * Take user by roles.
      *
-     * @param \Illuminate\Database\Query\Builder $query
-     * @param string|array $roles
-     *
+     * @param  \Illuminate\Database\Query\Builder  $query
+     * @param  string|array  $roles
      * @return \Illuminate\Database\Query\Builder
      */
     public function scopeWhichRoles($query, $roles)
@@ -113,7 +108,7 @@ trait HasRoles
     /**
      * Helper to get the config values.
      *
-     * @param string $key
+     * @param  string  $key
      * @return mixed
      */
     protected static function config($key)

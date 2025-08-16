@@ -20,7 +20,7 @@ class DatabaseTestCase extends CIUnitTestCase
 	 *
 	 * @var string|array
 	 */
-	protected $seed = 'Tests\Support\Database\Seeds\ExampleSeeder';
+	protected $seed = \Tests\Support\Database\Seeds\ExampleSeeder::class;
 
 	/**
 	 * The path to the seeds directory.
@@ -40,14 +40,14 @@ class DatabaseTestCase extends CIUnitTestCase
 	 */
 	protected $namespace = 'Tests\Support';
 
-	public function setUp(): void
+	protected function setUp(): void
 	{
 		parent::setUp();
 
 		// Extra code to run before each test
 	}
 
-	public function tearDown(): void
+	protected function tearDown(): void
 	{
 		parent::tearDown();
 

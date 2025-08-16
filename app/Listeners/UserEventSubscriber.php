@@ -8,7 +8,7 @@ class UserEventSubscriber
 {
     protected $user;
 
-    function __construct(Object $user)
+    public function __construct(Object $user)
     {
         $this->user = $user;
     }
@@ -34,12 +34,12 @@ class UserEventSubscriber
             UserLogable::create([
                 'user_id' => $user->id,
                 'new_data' => $new_data,
-                'logable_type' => get_class($user),
+                'logable_type' => $user::class,
                 'logable_id' => $user->id,
                 'old_data' => [],
                 'type' => 'login',
             ]);
-        } catch (\Throwable $th) {
+        } catch (\Throwable) {
         }
     }
 
@@ -64,12 +64,12 @@ class UserEventSubscriber
             UserLogable::create([
                 'user_id' => $user->id,
                 'new_data' => $new_data,
-                'logable_type' => get_class($user),
+                'logable_type' => $user::class,
                 'logable_id' => $user->id,
                 'old_data' => [],
                 'type' => 'logout',
             ]);
-        } catch (\Throwable $th) {
+        } catch (\Throwable) {
         }
     }
 }

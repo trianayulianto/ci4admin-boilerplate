@@ -20,7 +20,7 @@ class Auth extends BaseConfig
      * @var array
      */
     public $defaults = [
-        'guard'    => 'api',
+        'guard' => 'api',
         'provider' => 'users',
         'password' => 'users',
     ];
@@ -42,8 +42,8 @@ class Auth extends BaseConfig
      * @var array
      */
     public $guards = [
-        'api'   => [
-            'driver'   => JWTGuard::class,
+        'api' => [
+            'driver' => JWTGuard::class,
             'provider' => 'users',
         ],
         // etc your implementation
@@ -67,14 +67,14 @@ class Auth extends BaseConfig
      * @var array
      */
     public $providers = [
-        'users'    => [
+        'users' => [
             'driver' => 'model',
-            'table'  => User::class,
+            'table' => User::class,
         ],
         'database' => [
             'connection' => 'default',
-            'driver'     => 'connection',
-            'table'      => 'users',
+            'driver' => 'connection',
+            'table' => 'users',
         ],
     ];
 
@@ -95,11 +95,11 @@ class Auth extends BaseConfig
      */
     public $passwords = [
         'users' => [
-            'provider'   => 'users',
+            'provider' => 'users',
             'connection' => 'default',
-            'table'      => 'auth_password_resets',
-            'expire'     => 60,
-            'throttle'   => 60,
+            'table' => 'auth_password_resets',
+            'expire' => 60,
+            'throttle' => 60,
         ],
     ];
 

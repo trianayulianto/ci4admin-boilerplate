@@ -3,9 +3,6 @@
 namespace Fluent\Auth\Contracts;
 
 use Closure;
-use Fluent\Auth\Contracts\PasswordResetRepositoryInterface;
-use Fluent\Auth\Contracts\ResetPasswordInterface;
-use Fluent\Auth\Contracts\VerifyEmailInterface;
 
 interface PasswordBrokerInterface
 {
@@ -54,7 +51,6 @@ interface PasswordBrokerInterface
     /**
      * Send a password reset link to a user.
      *
-     * @param  array  $credentials
      * @return string
      */
     public function sendResetLink(array $credentials, ?Closure $callback = null);
@@ -62,7 +58,6 @@ interface PasswordBrokerInterface
     /**
      * Send a password reset link to a user.
      *
-     * @param  array  $credentials
      * @return string
      */
     public function sendVerifyLink(array $credentials, ?Closure $callback = null);
@@ -70,7 +65,6 @@ interface PasswordBrokerInterface
     /**
      * Reset the password for the given token.
      *
-     * @param  array  $credentials
      * @return mixed
      */
     public function reset(array $credentials, Closure $callback);
@@ -78,8 +72,8 @@ interface PasswordBrokerInterface
     /**
      * Get the user for the given credentials.
      *
-     * @param  array  $credentials
      * @return ResetPasswordInterface|VerifyEmailInterface|null
+     *
      * @throws UnexpectedValueException
      */
     public function getUser(array $credentials);

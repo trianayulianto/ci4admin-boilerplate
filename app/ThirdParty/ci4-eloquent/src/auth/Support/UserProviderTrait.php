@@ -4,10 +4,10 @@ namespace Fluent\Auth\Support;
 
 use CodeIgniter\Database\BaseBuilder;
 use CodeIgniter\Model;
-use Illuminate\Database\Eloquent\Model as Eloquent;
 use Fluent\Auth\Contracts\AuthenticatorInterface;
 use Fluent\Auth\Facades\Hash;
 use Fluent\Auth\Helpers\Str;
+use Illuminate\Database\Eloquent\Model as Eloquent;
 
 use function array_key_exists;
 use function count;
@@ -19,7 +19,7 @@ trait UserProviderTrait
     /**
      * Locates an identity object by ID.
      *
-     * @param int|string $userId
+     * @param  int|string  $userId
      * @return AuthenticatorInterface|null
      */
     public function findById($userId)
@@ -30,17 +30,16 @@ trait UserProviderTrait
     /**
      * Locate a user by the given credentials.
      *
-     * @param array $credentials
      * @return AuthenticatorInterface|null
      */
     public function findByCredentials(array $credentials)
     {
         if (
-            empty($credentials) ||
+            $credentials === [] ||
             (count($credentials) === 1 &&
             array_key_exists('password', $credentials))
         ) {
-            return;
+            return null;
         }
 
         /** @var Model $model */
@@ -68,8 +67,8 @@ trait UserProviderTrait
     /**
      * Find a user by their ID and "remember-me" token.
      *
-     * @param int|string $userId
-     * @param string $token
+     * @param  int|string  $userId
+     * @param  string  $token
      * @return AuthenticatorInterface|null
      */
     public function findByRememberToken($userId, $token)
@@ -77,7 +76,7 @@ trait UserProviderTrait
         $retrievedModel = $this->where('id', $userId)->first();
 
         if (! $retrievedModel) {
-            return;
+            return null;
         }
 
         $rememberToken = $retrievedModel->getRememberToken();
@@ -90,7 +89,7 @@ trait UserProviderTrait
     /**
      * Update the "remember me" token for the given user in storage.
      *
-     * @param string $token
+     * @param  string  $token
      * @return mixed
      */
     public function updateRememberToken(AuthenticatorInterface $user, $token = null)
@@ -102,7 +101,6 @@ trait UserProviderTrait
     /**
      * Validate a user against the given credentials.
      *
-     * @param array $credentials
      * @return bool
      */
     public function validateCredentials(AuthenticatorInterface $user, array $credentials)

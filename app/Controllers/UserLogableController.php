@@ -10,11 +10,12 @@ use Irsyadulibad\DataTables\DataTables;
 class UserLogableController extends BaseController
 {
 	protected $model;
-	
-	function __construct()
+
+	public function __construct()
 	{
 		$this->model = new UserLogable;
 	}
+
 	public function index()
 	{
 		defender('api')->canDo('system.activity.index');
@@ -32,14 +33,12 @@ class UserLogableController extends BaseController
 			->addIndexColumn()
 			->select('user_logables.*, users.name as name, users.email as email')
 			->join('users', 'users.id = user_logables.user_id', 'INNER JOIN')
-			->editColumn('type', function ($data) use ($colors) {
-				return '<span class="badge badge-'.$colors[$data].'">'.ucwords($data).'</span>';
-			})
+			->editColumn('type', fn($data) => '<span class="badge badge-'.$colors[$data].'">'.ucwords((string) $data).'</span>')
 			->addColumn('button', function ($data) use ($colors) {
-				$data->new_data = (array) json_decode($data->new_data);
-				$data->old_data = (array) json_decode($data->old_data);
+				$data->new_data = (array) json_decode((string) $data->new_data);
+				$data->old_data = (array) json_decode((string) $data->old_data);
 
-				return render('modules.user_logs.partials._table_button', compact('data', 'colors'));
+				return render('modules.user_logs.partials._table_button', ['data' => $data, 'colors' => $colors]);
 			})
 			->rawColumns(['type', 'button'])
 			->make();

@@ -83,7 +83,7 @@ class Logger extends BaseConfig
 		 * File Handler
 		 * --------------------------------------------------------------------
 		 */
-		'CodeIgniter\Log\Handlers\FileHandler' => [
+		\CodeIgniter\Log\Handlers\FileHandler::class => [
 
 			/*
 			 * The log levels that this handler will handle.

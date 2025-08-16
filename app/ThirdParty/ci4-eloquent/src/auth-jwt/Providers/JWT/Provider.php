@@ -16,21 +16,22 @@ use Illuminate\Support\Arr;
 abstract class Provider
 {
     const ALGO_HS256 = 'HS256';
-    const ALGO_HS384 = 'HS384';
-    const ALGO_HS512 = 'HS512';
-    const ALGO_RS256 = 'RS256';
-    const ALGO_RS384 = 'RS384';
-    const ALGO_RS512 = 'RS512';
-    const ALGO_ES256 = 'ES256';
-    const ALGO_ES384 = 'ES384';
-    const ALGO_ES512 = 'ES512';
 
-    /**
-     * The secret.
-     *
-     * @var string
-     */
-    protected $secret;
+    const ALGO_HS384 = 'HS384';
+
+    const ALGO_HS512 = 'HS512';
+
+    const ALGO_RS256 = 'RS256';
+
+    const ALGO_RS384 = 'RS384';
+
+    const ALGO_RS512 = 'RS512';
+
+    const ALGO_ES256 = 'ES256';
+
+    const ALGO_ES384 = 'ES384';
+
+    const ALGO_ES512 = 'ES512';
 
     /**
      * The array of keys.
@@ -40,24 +41,20 @@ abstract class Provider
     protected $keys;
 
     /**
-     * The used algorithm.
-     *
-     * @var string
-     */
-    protected $algo;
-
-    /**
      * Constructor.
      *
      * @param  string  $secret
      * @param  string  $algo
-     * @param  array  $keys
      * @return void
      */
-    public function __construct($secret, $algo, array $keys)
+    public function __construct(/**
+     * The secret.
+     */
+        protected $secret, /**
+     * The used algorithm.
+     */
+        protected $algo, array $keys)
     {
-        $this->secret = $secret;
-        $this->algo = $algo;
         $this->keys = $keys;
     }
 
@@ -110,7 +107,6 @@ abstract class Provider
     /**
      * Set the keys used to sign the token.
      *
-     * @param  array  $keys
      * @return $this
      */
     public function setKeys(array $keys)

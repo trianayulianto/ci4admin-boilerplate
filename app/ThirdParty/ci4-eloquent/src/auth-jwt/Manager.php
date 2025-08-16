@@ -12,15 +12,11 @@
 
 namespace Fluent\JWTAuth;
 
-use Fluent\JWTAuth\Blacklist;
 use Fluent\JWTAuth\Contracts\Providers\JWTInterface;
 use Fluent\JWTAuth\Exceptions\JWTException;
 use Fluent\JWTAuth\Exceptions\TokenBlacklistedException;
-use Fluent\JWTAuth\Factory;
-use Fluent\JWTAuth\Payload;
 use Fluent\JWTAuth\Support\CustomClaimsTrait;
 use Fluent\JWTAuth\Support\RefreshFlowTrait;
-use Fluent\JWTAuth\Token;
 
 use function array_merge;
 use function call_user_func;
@@ -71,8 +67,8 @@ class Manager
      */
     public function __construct(JWTInterface $provider, Blacklist $blacklist, Factory $payloadFactory)
     {
-        $this->provider       = $provider;
-        $this->blacklist      = $blacklist;
+        $this->provider = $provider;
+        $this->blacklist = $blacklist;
         $this->payloadFactory = $payloadFactory;
     }
 
@@ -92,8 +88,9 @@ class Manager
      * Decode a Token and return the Payload.
      *
      * @param  bool  $checkBlacklist
-     * @throws TokenBlacklistedException
      * @return Payload
+     *
+     * @throws TokenBlacklistedException
      */
     public function decode(Token $token, $checkBlacklist = true)
     {
@@ -139,8 +136,9 @@ class Manager
      * Invalidate a Token by adding it to the blacklist.
      *
      * @param  bool  $forceForever
-     * @throws JWTException
      * @return bool
+     *
+     * @throws JWTException
      */
     public function invalidate(Token $token, $forceForever = false)
     {
@@ -223,7 +221,6 @@ class Manager
     /**
      * Set the claims to be persisted when refreshing a token.
      *
-     * @param  array  $claims
      * @return $this
      */
     public function setPersistentClaims(array $claims)

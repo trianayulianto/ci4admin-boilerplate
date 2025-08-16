@@ -8,12 +8,8 @@ use CodeIgniter\Config\BaseConfig;
  * Defender - Laravel 5 ACL Package
  * Author: PHP Artesãos.
  */
-/**
- * 
- */
 class Defender extends BaseConfig
 {
-
     /*
      * Default User model used by Defender.
      *
@@ -90,5 +86,4 @@ class Defender extends BaseConfig
      * js var name
      */
     public $js_var_name = 'defender';
-
 }

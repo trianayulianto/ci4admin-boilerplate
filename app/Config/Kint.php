@@ -2,8 +2,9 @@
 
 namespace Config;
 
-use CodeIgniter\Config\BaseConfig;
-use Kint\Renderer\AbstractRenderer;
+use Kint\Parser\ConstructablePluginInterface;
+use Kint\Renderer\Rich\TabPluginInterface;
+use Kint\Renderer\Rich\ValuePluginInterface;
 
 /**
  * --------------------------------------------------------------------------
@@ -15,47 +16,54 @@ use Kint\Renderer\AbstractRenderer;
  *
  * @see https://kint-php.github.io/kint/ for details on these settings.
  */
-class Kint extends BaseConfig
+class Kint
 {
-	/*
-	|--------------------------------------------------------------------------
-	| Global Settings
-	|--------------------------------------------------------------------------
-	*/
+    /*
+    |--------------------------------------------------------------------------
+    | Global Settings
+    |--------------------------------------------------------------------------
+    */
 
-	public $plugins = null;
+    /**
+     * @var list<class-string<ConstructablePluginInterface>|ConstructablePluginInterface>|null
+     */
+    public $plugins;
 
-	public $maxDepth = 6;
+    public int $maxDepth           = 6;
 
-	public $displayCalledFrom = true;
+    public bool $displayCalledFrom = true;
 
-	public $expanded = false;
+    public bool $expanded          = false;
 
-	/*
-	|--------------------------------------------------------------------------
-	| RichRenderer Settings
-	|--------------------------------------------------------------------------
-	*/
-	public $richTheme = 'aante-light.css';
+    /*
+    |--------------------------------------------------------------------------
+    | RichRenderer Settings
+    |--------------------------------------------------------------------------
+    */
+    public string $richTheme = 'aante-light.css';
 
-	public $richFolder = false;
+    public bool $richFolder  = false;
 
-	public $richSort = AbstractRenderer::SORT_FULL;
+    /**
+     * @var array<string, class-string<ValuePluginInterface>>|null
+     */
+    public $richObjectPlugins;
 
-	public $richObjectPlugins = null;
+    /**
+     * @var array<string, class-string<TabPluginInterface>>|null
+     */
+    public $richTabPlugins;
 
-	public $richTabPlugins = null;
+    /*
+    |--------------------------------------------------------------------------
+    | CLI Settings
+    |--------------------------------------------------------------------------
+    */
+    public bool $cliColors      = true;
 
-	/*
-	|--------------------------------------------------------------------------
-	| CLI Settings
-	|--------------------------------------------------------------------------
-	*/
-	public $cliColors = true;
+    public bool $cliForceUTF8   = false;
 
-	public $cliForceUTF8 = false;
+    public bool $cliDetectWidth = true;
 
-	public $cliDetectWidth = true;
-
-	public $cliMinWidth = 40;
+    public int $cliMinWidth     = 40;
 }

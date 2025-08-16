@@ -13,7 +13,7 @@ use Carbon\Carbon;
 class EloquentPermissionRepository extends AbstractEloquentRepository implements PermissionRepository
 {
     /**
-     * @param Permission  $model
+     * @param  Permission  $model
      */
     public function __construct($model)
     {
@@ -23,12 +23,11 @@ class EloquentPermissionRepository extends AbstractEloquentRepository implements
     /**
      * Create a new permission using the given name.
      *
-     * @param string $permissionName
-     * @param string $readableName
+     * @param  string  $permissionName
+     * @param  string  $readableName
+     * @return Permission
      *
      * @throws PermissionExistsException
-     *
-     * @return Permission
      */
     public function create($permissionName, $readableName = null)
     {
@@ -40,14 +39,12 @@ class EloquentPermissionRepository extends AbstractEloquentRepository implements
         $readableName = is_null($readableName) ? $permissionName : $readableName;
 
         return $permission = $this->model->create([
-            'name'          => $permissionName,
+            'name' => $permissionName,
             'readable_name' => $readableName,
         ]);
     }
 
     /**
-     * @param array $rolesIds
-     *
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getByRoles(array $rolesIds)
@@ -58,8 +55,6 @@ class EloquentPermissionRepository extends AbstractEloquentRepository implements
     }
 
     /**
-     * @param $user
-     *
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getActivesByUser($user)

@@ -5,6 +5,7 @@ namespace Config;
 use App\Listeners\UserEventSubscriber;
 use CodeIgniter\Events\Events;
 use CodeIgniter\Exceptions\FrameworkException;
+use CodeIgniter\HotReloader\HotReloader;
 
 /*
  * --------------------------------------------------------------------
@@ -24,62 +25,54 @@ use CodeIgniter\Exceptions\FrameworkException;
  */
 
 Events::on('pre_system', function () {
-	if (ENVIRONMENT !== 'testing')
-	{
-		if (ini_get('zlib.output_compression'))
-		{
-			throw FrameworkException::forEnabledZlibOutputCompression();
-		}
+    if (ENVIRONMENT !== 'testing') {
+        if (ini_get('zlib.output_compression')) {
+            throw FrameworkException::forEnabledZlibOutputCompression();
+        }
 
-		while (ob_get_level() > 0)
-		{
-			ob_end_flush();
-		}
+        while (ob_get_level() > 0) {
+            ob_end_flush();
+        }
 
-		ob_start(function ($buffer) {
-			return $buffer;
-		});
-	}
+        ob_start(fn($buffer) => $buffer);
+    }
 
-	/*
-	 * --------------------------------------------------------------------
-	 * Debug Toolbar Listeners.
-	 * --------------------------------------------------------------------
-	 * If you delete, they will no longer be collected.
-	 */
-	if (CI_DEBUG && ! is_cli())
-	{
-		Events::on('DBQuery', 'CodeIgniter\Debug\Toolbar\Collectors\Database::collect');
-		Services::toolbar()->respond();
-	}
+    /*
+     * --------------------------------------------------------------------
+     * Debug Toolbar Listeners.
+     * --------------------------------------------------------------------
+     * If you delete, they will no longer be collected.
+     */
+    if (CI_DEBUG && ! is_cli()) {
+        Events::on('DBQuery', \CodeIgniter\Debug\Toolbar\Collectors\Database::class . '::collect');
+        Services::toolbar()->respond();
+        // Hot Reload route - for framework use on the hot reloader.
+        if (ENVIRONMENT === 'development') {
+            Services::routes()->get('__hot-reload', static function () {
+                (new HotReloader)->run();
+            });
+        }
+    }
 
 });
 
 Events::on('pre_system', function () {
-	// boot auth library
-	helper('auth');
-	// boot defender library
-	helper('defender');
-	// boot laraci library
-	helper('laraci');
+    // boot auth library
+    helper('auth');
+    // boot defender library
+    helper('defender');
+    // boot laraci library
+    helper('laraci');
 });
 
-Events::on('pre_system', [\Fluent\Laraci\EloquentServiceProvider::class, 'register']);
+Events::on('pre_system', \Fluent\Laraci\EloquentServiceProvider::register(...));
 
-Events::on('pre_system', [\Artesaos\Defender\DefenderGuardServiceProvider::class, 'register']);
+Events::on('pre_system', \Artesaos\Defender\DefenderGuardServiceProvider::register(...));
 
-Events::on('login', function () {
-	return (new UserEventSubscriber(auth('api')->user()))->handleUserLogin();
-});
+Events::on('login', fn() => (new UserEventSubscriber(auth('api')->user()))->handleUserLogin());
 
-Events::on('logout', function () {
-	return (new UserEventSubscriber(auth('api')->user()))->handleUserLogout();
-});
+Events::on('logout', fn() => (new UserEventSubscriber(auth('api')->user()))->handleUserLogout());
 
-Events::on(\Fluent\Auth\Contracts\VerifyEmailInterface::class, function ($email) {
-    return (new \App\Notifications\VerificationNotification($email))->send();
-});
+Events::on(\Fluent\Auth\Contracts\VerifyEmailInterface::class, fn($email) => (new \App\Notifications\VerificationNotification($email))->send());
 
-Events::on(\Fluent\Auth\Contracts\ResetPasswordInterface::class, function ($email, $token) {
-    return (new \App\Notifications\ResetPasswordNotification($email, $token))->send();
-});
+Events::on(\Fluent\Auth\Contracts\ResetPasswordInterface::class, fn($email, $token) => (new \App\Notifications\ResetPasswordNotification($email, $token))->send());

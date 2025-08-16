@@ -45,7 +45,6 @@ class Lcobucci extends Provider implements JWTInterface
      *
      * @param  string  $secret
      * @param  string  $algo
-     * @param  array  $keys
      * @param  \Lcobucci\JWT\Configuration|null  $config
      * @return void
      */
@@ -77,7 +76,6 @@ class Lcobucci extends Provider implements JWTInterface
     /**
      * Create a JSON Web Token.
      *
-     * @param  array  $payload
      * @return string
      *
      * @throws JWTException
@@ -90,8 +88,8 @@ class Lcobucci extends Provider implements JWTInterface
             return $builder
                 ->getToken($this->config->signer(), $this->config->signingKey())
                 ->toString();
-        } catch (Exception $e) {
-            throw new JWTException('Could not create token: '.$e->getMessage(), $e->getCode(), $e);
+        } catch (Exception $exception) {
+            throw new JWTException('Could not create token: '.$exception->getMessage(), $exception->getCode(), $exception);
         }
     }
 
@@ -108,8 +106,8 @@ class Lcobucci extends Provider implements JWTInterface
         try {
             /** @var \Lcobucci\JWT\Token\Plain */
             $token = $this->config->parser()->parse($token);
-        } catch (Exception $e) {
-            throw new TokenInvalidException('Could not decode token: '.$e->getMessage(), $e->getCode(), $e);
+        } catch (Exception $exception) {
+            throw new TokenInvalidException('Could not decode token: '.$exception->getMessage(), $exception->getCode(), $exception);
         }
 
         if (! $this->config->validator()->validate($token, ...$this->config->validationConstraints())) {
@@ -131,40 +129,22 @@ class Lcobucci extends Provider implements JWTInterface
 
     /**
      * Create an instance of the builder with all of the claims applied.
-     *
-     * @param  array  $payload
-     * @return \Lcobucci\JWT\Token\Builder
      */
     protected function getBuilderFromClaims(array $payload): Builder
     {
         $builder = $this->config->builder();
 
         foreach ($payload as $key => $value) {
-            switch ($key) {
-                case RegisteredClaims::ID:
-                    $builder->identifiedBy($value);
-                    break;
-                case RegisteredClaims::EXPIRATION_TIME:
-                    $builder->expiresAt(DateTimeImmutable::createFromFormat('U', $value));
-                    break;
-                case RegisteredClaims::NOT_BEFORE:
-                    $builder->canOnlyBeUsedAfter(DateTimeImmutable::createFromFormat('U', $value));
-                    break;
-                case RegisteredClaims::ISSUED_AT:
-                    $builder->issuedAt(DateTimeImmutable::createFromFormat('U', $value));
-                    break;
-                case RegisteredClaims::ISSUER:
-                    $builder->issuedBy($value);
-                    break;
-                case RegisteredClaims::AUDIENCE:
-                    $builder->permittedFor($value);
-                    break;
-                case RegisteredClaims::SUBJECT:
-                    $builder->relatedTo($value);
-                    break;
-                default:
-                    $builder->withClaim($key, $value);
-            }
+            match ($key) {
+                RegisteredClaims::ID => $builder->identifiedBy($value),
+                RegisteredClaims::EXPIRATION_TIME => $builder->expiresAt(DateTimeImmutable::createFromFormat('U', $value)),
+                RegisteredClaims::NOT_BEFORE => $builder->canOnlyBeUsedAfter(DateTimeImmutable::createFromFormat('U', $value)),
+                RegisteredClaims::ISSUED_AT => $builder->issuedAt(DateTimeImmutable::createFromFormat('U', $value)),
+                RegisteredClaims::ISSUER => $builder->issuedBy($value),
+                RegisteredClaims::AUDIENCE => $builder->permittedFor($value),
+                RegisteredClaims::SUBJECT => $builder->relatedTo($value),
+                default => $builder->withClaim($key, $value),
+            };
         }
 
         return $builder;
@@ -172,8 +152,6 @@ class Lcobucci extends Provider implements JWTInterface
 
     /**
      * Build the configuration.
-     *
-     * @return \Lcobucci\JWT\Configuration
      */
     protected function buildConfig(): Configuration
     {
@@ -211,7 +189,7 @@ class Lcobucci extends Provider implements JWTInterface
             return $signer::create();
         }
 
-        return new $signer();
+        return new $signer;
     }
 
     /**

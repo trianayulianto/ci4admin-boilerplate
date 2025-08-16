@@ -6,9 +6,8 @@ if (! function_exists('defender')) {
     /**
      * Provides convenient access to the main defender class.
      *
-     * @param string|null $guard
+     * @param  string|null  $guard
      * @return \Artesaos\Defender\Defender
-     * 
      */
     function defender($guard = null)
     {

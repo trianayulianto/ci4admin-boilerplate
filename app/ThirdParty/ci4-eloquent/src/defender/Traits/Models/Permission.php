@@ -12,13 +12,10 @@ use Illuminate\Database\Eloquent\Model;
  */
 trait Permission
 {
-    /**
-     * @param array $attributes
-     */
     public function __construct(array $attributes = [])
     {
         // Must to be declared before parent::__construct call
-        $this->fillable = $fillable = [
+        $this->fillable = [
             'name',
             'readable_name',
         ];
@@ -59,12 +56,9 @@ trait Permission
     }
 
     /**
-     * @param Model  $parent
-     * @param array  $attributes
-     * @param string $table
-     * @param bool   $exists
+     * @param  string  $table
+     * @param  bool  $exists
      * @param  string|null  $using
-     *
      * @return PermissionUserPivot|\Illuminate\Database\Eloquent\Relations\Pivot
      */
     public function newPivot(Model $parent, array $attributes, $table, $exists, $using = null)
@@ -86,7 +80,7 @@ trait Permission
     /**
      * Helper to get the config values.
      *
-     * @param string $key
+     * @param  string  $key
      * @return mixed
      */
     protected static function config($key)

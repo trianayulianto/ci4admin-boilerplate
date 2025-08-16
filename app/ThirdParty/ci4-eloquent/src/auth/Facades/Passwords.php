@@ -30,8 +30,8 @@ class Passwords
     /**
      * Facade passwords instance service.
      *
-     * @param string $method
-     * @param array $arguments
+     * @param  string  $method
+     * @param  array  $arguments
      * @return PasswordBrokerFactoryInterface|PasswordBrokerInterface
      */
     public static function __callStatic($method, $arguments)

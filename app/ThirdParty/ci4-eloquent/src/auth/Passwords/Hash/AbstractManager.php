@@ -58,6 +58,7 @@ abstract class AbstractManager
      *
      * @param  string|null  $driver
      * @return mixed
+     *
      * @throws InvalidArgumentException
      */
     public function driver($driver = null)
@@ -86,6 +87,7 @@ abstract class AbstractManager
      *
      * @param  string  $driver
      * @return mixed
+     *
      * @throws InvalidArgumentException
      */
     protected function createDriver($driver)
@@ -96,14 +98,14 @@ abstract class AbstractManager
         if (isset($this->customCreators[$driver])) {
             return $this->callCustomCreator($driver);
         } else {
-            $method = 'create' . ucfirst($driver) . 'Driver';
+            $method = 'create'.ucfirst($driver).'Driver';
 
             if (method_exists($this, $method)) {
                 return $this->$method();
             }
         }
 
-        throw new InvalidArgumentException("Driver [$driver] not supported.");
+        throw new InvalidArgumentException(sprintf('Driver [%s] not supported.', $driver));
     }
 
     /**

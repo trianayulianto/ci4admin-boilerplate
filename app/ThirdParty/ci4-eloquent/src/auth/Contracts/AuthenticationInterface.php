@@ -2,8 +2,8 @@
 
 namespace Fluent\Auth\Contracts;
 
-use Illuminate\Database\Eloquent\Model as Eloquent;
 use Fluent\Auth\Exceptions\AuthenticationException;
+use Illuminate\Database\Eloquent\Model as Eloquent;
 
 interface AuthenticationInterface
 {
@@ -11,6 +11,7 @@ interface AuthenticationInterface
      * Determine if current user is authenticated. If not, throw an exception.
      *
      * @return AuthenticatorInterface|ResetPasswordInterface|VerifyEmailInterface
+     *
      * @throws AuthenticationException
      */
     public function authenticate();
@@ -18,7 +19,6 @@ interface AuthenticationInterface
     /**
      * Attempts to authenticate a user with the given $credentials.
      *
-     * @param array $credentials
      * @return bool
      */
     public function attempt(array $credentials, bool $remember = false);
@@ -32,8 +32,6 @@ interface AuthenticationInterface
 
     /**
      * Validate a user's credentials.
-     *
-     * @param  array  $credentials
      */
     public function validate(array $credentials): bool;
 
@@ -59,7 +57,7 @@ interface AuthenticationInterface
     /**
      * Logs a user in based on their ID.
      *
-     * @param int|string $userId
+     * @param  int|string  $userId
      * @return AuthenticatorInterface|bool
      */
     public function loginById($userId, bool $remember = false);

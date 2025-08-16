@@ -41,8 +41,9 @@ abstract class AbstractBaseFilter
     /**
      * Check the request for the presence of a token.
      *
-     * @throws BadRequestHttpException
      * @return void
+     *
+     * @throws BadRequestHttpException
      */
     public function checkForToken(Request $request)
     {
@@ -54,8 +55,9 @@ abstract class AbstractBaseFilter
     /**
      * Attempt to authenticate a user via the token in the request.
      *
-     * @throws UnauthorizedHttpException
      * @return void
+     *
+     * @throws UnauthorizedHttpException
      */
     public function authenticate(Request $request)
     {
@@ -65,15 +67,15 @@ abstract class AbstractBaseFilter
             if (! $this->auth->check()) {
                 throw new AuthenticationException('User not found');
             }
-        } catch (JWTException $e) {
-            throw new AuthenticationException($e->getMessage(), [], $e->getCode());
+        } catch (JWTException $jwtException) {
+            throw new AuthenticationException($jwtException->getMessage(), [], $jwtException->getCode());
         }
     }
 
     /**
      * Set the authentication header.
      *
-     * @param  string|null $token
+     * @param  string|null  $token
      * @return ResponseInterface
      */
     protected function setAuthenticationHeader(Response $response, $token = null)
@@ -81,6 +83,6 @@ abstract class AbstractBaseFilter
         $token = $token ?: $this->auth->refresh();
 
         return $response
-            ->setHeader('Authorization', 'Bearer ' . $token);
+            ->setHeader('Authorization', 'Bearer '.$token);
     }
 }

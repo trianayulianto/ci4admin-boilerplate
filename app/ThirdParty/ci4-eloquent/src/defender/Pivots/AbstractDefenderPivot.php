@@ -15,6 +15,7 @@ abstract class AbstractDefenderPivot extends Pivot
     protected $casts = [
         'value' => 'boolean',
     ];
+
     /**
      * @var array
      */

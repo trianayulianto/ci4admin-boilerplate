@@ -21,39 +21,37 @@ class RoleController extends BaseController
 	public function getData()
 	{
 		defender('api')->canDo('access.roles.index');
-		
+
 		return DataTables::use('roles')
 			->addIndexColumn()
-			->addColumn('assignment', function ($data) {
-				return '<a
-					href="'.route_to('roles.show', $data->id).'" 
+			->addColumn('assignment', fn($data) => '<a
+					href="'.route_to('roles.show', $data->id).'"
 					class="btn btn-link btn-sm text-danger"
 				>
 					Assign Permission
-				</a>';
-			})
-			->addColumn('button', function ($data) {
-				return render('modules.roles.partials._table_button', compact('data'));
-			})
+				</a>')
+			->addColumn('button', fn($data) => render('modules.roles.partials._table_button', ['data' => $data]))
 			->rawColumns(['assignment','button'])
 			->make();
 	}
 
 	public function store($id = null)
 	{
-        if ($this->request->getMethod() === 'post')
+        if ($this->request->getMethod() === 'POST') {
             defender('api')->canDo('access.roles.create');
+        }
 
-        if ($this->request->getMethod() === 'put')
+        if ($this->request->getMethod() === 'PUT') {
             defender('api')->canDo('access.roles.update');
-        
+        }
+
 		if (! $this->validate(['name' => 'required|is_unique[roles.name,id,'.$id.']'])) {
             return $this->fail($this->validator->getErrors());
         }
 
 		$data = (array) $this->request->getPost();
 
-		if ($this->request->getMethod() === 'put') {
+		if ($this->request->getMethod() === 'PUT') {
 			$data = (array) $this->request->getRawInput();
 
 			$message = 'Role name was updated';
@@ -64,10 +62,10 @@ class RoleController extends BaseController
             $newRole = Role::updateOrCreate(['id' => $id], $data);
 
             DB::commit();
-        } catch (\Exception $e) {
+        } catch (\Exception $exception) {
             DB::rollBack();
 
-            return $this->fail(['error' => $e->getMessage()]);
+            return $this->fail(['error' => $exception->getMessage()]);
         }
 
 		return $this->respondCreated([
@@ -92,7 +90,7 @@ class RoleController extends BaseController
 	                ->title();
 
 				return [
-					'name' => "$title",
+					'name' => $title,
 		            'description' => 'User has permisssion for '.$title.' module',
 					'permissions' => Permission::where('name', 'like', $item->group.'.%')
 						->select('id', 'name', 'readable_name')
@@ -102,13 +100,13 @@ class RoleController extends BaseController
 				];
 			});
 
-		return render('modules.roles.index_assign', compact('permissions', 'role'));
+		return render('modules.roles.index_assign', ['permissions' => $permissions, 'role' => $role]);
 	}
 
 	public function assign($id)
 	{
 		defender('api')->canDo('access.roles.assign');
-		
+
 		$role = Role::find($id);
 
 		$data = (array) $this->request->getRawInput();
@@ -117,13 +115,13 @@ class RoleController extends BaseController
 
 		try {
 			$role->syncPermissions((array) $permissions);
-		} catch (\Exception $e) {
-			return $this->fail(['error' => $e->getMessage()]);			
+		} catch (\Exception $exception) {
+			return $this->fail(['error' => $exception->getMessage()]);
 		}
 
 		return $this->respondCreated([
 			'status' => $this->codes['created'],
-			'message' => 'Role\'s and permissions was updated',
+			'message' => "Role's and permissions was updated",
 			'data' => [
 				'permissions' => $role->permissions
 			]
@@ -133,7 +131,7 @@ class RoleController extends BaseController
 	public function destroy($id)
 	{
 		defender('api')->canDo('access.roles.delete');
-		
+
 		$role = Role::find($id);
 
 		$role->delete();

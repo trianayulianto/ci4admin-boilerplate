@@ -17,9 +17,8 @@ interface Defender
     /**
      * Check if the authenticated user has the given permission.
      *
-     * @param string $permission
-     * @param bool   $force
-     *
+     * @param  string  $permission
+     * @param  bool  $force
      * @return bool
      */
     public function hasPermission($permission, $force = false);
@@ -27,9 +26,8 @@ interface Defender
     /**
      * Check if the authenticated user has the given permission.
      *
-     * @param string $permission
-     * @param bool   $force
-     *
+     * @param  string  $permission
+     * @param  bool  $force
      * @return bool
      */
     public function canDo($permission, $force = false);
@@ -38,9 +36,8 @@ interface Defender
      * Check if the authenticated user has the given permission
      * using only the roles.
      *
-     * @param string $permission
-     * @param bool   $force
-     *
+     * @param  string  $permission
+     * @param  bool  $force
      * @return bool
      */
     public function roleHasPermission($permission, $force = false);
@@ -48,8 +45,7 @@ interface Defender
     /**
      * Return if the authenticated user has the given role.
      *
-     * @param string $roleName
-     *
+     * @param  string  $roleName
      * @return bool
      */
     public function hasRole($roleName);
@@ -57,8 +53,7 @@ interface Defender
     /**
      * Return if the authenticated user has the given role.
      *
-     * @param string $roleName
-     *
+     * @param  string  $roleName
      * @return bool
      */
     public function is($roleName);
@@ -66,8 +61,7 @@ interface Defender
     /**
      * Check if a role with the given name exists.
      *
-     * @param string $roleName
-     *
+     * @param  string  $roleName
      * @return bool
      */
     public function roleExists($roleName);
@@ -75,8 +69,7 @@ interface Defender
     /**
      * Check if a permission with the given name exists.
      *
-     * @param string $permissionName
-     *
+     * @param  string  $permissionName
      * @return bool
      */
     public function permissionExists($permissionName);
@@ -84,8 +77,7 @@ interface Defender
     /**
      * Get the role with the given name.
      *
-     * @param string $roleName
-     *
+     * @param  string  $roleName
      * @return \Artesaos\Defender\Role|null
      */
     public function findRole($roleName);
@@ -93,8 +85,7 @@ interface Defender
     /**
      * * Find a role by its id.
      *
-     * @param int $roleId
-     *
+     * @param  int  $roleId
      * @return \Artesaos\Defender\Role|null
      */
     public function findRoleById($roleId);
@@ -102,8 +93,7 @@ interface Defender
     /**
      * Get the permission with the given name.
      *
-     * @param string $permissionName
-     *
+     * @param  string  $permissionName
      * @return \Artesaos\Defender\Permission|null
      */
     public function findPermission($permissionName);
@@ -111,8 +101,7 @@ interface Defender
     /**
      * Find a permission by its id.
      *
-     * @param int $permissionId
-     *
+     * @param  int  $permissionId
      * @return \Artesaos\Defender\Permission|null
      */
     public function findPermissionById($permissionId);
@@ -131,16 +120,14 @@ interface Defender
      * Create a new role.
      * Uses a repository to actually create the role.
      *
-     * @param string $roleName
-     *
+     * @param  string  $roleName
      * @return \Artesaos\Defender\Role
      */
     public function createRole($roleName);
 
     /**
-     * @param string $permissionName
-     * @param string $readableName
-     *
+     * @param  string  $permissionName
+     * @param  string  $readableName
      * @return \Artesaos\Defender\Permission
      */
     public function createPermission($permissionName, $readableName = null);

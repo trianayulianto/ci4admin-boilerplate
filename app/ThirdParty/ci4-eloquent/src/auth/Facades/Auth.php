@@ -49,8 +49,8 @@ class Auth
     /**
      * Facade auth instance service.
      *
-     * @param string $method
-     * @param array $arguments
+     * @param  string  $method
+     * @param  array  $arguments
      * @return AuthFactoryInterface|AuthenticationInterface
      */
     public static function __callStatic($method, $arguments)

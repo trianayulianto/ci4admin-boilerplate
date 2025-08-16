@@ -31,9 +31,9 @@ class ProfileController extends BaseController
 		$user->name = $request->name;
 		$user->email = $request->email;
 
-		$user->password = !empty($request->password)
-			? password_hash($request->password, PASSWORD_BCRYPT)
-			: $user->password;
+		$user->password = empty($request->password)
+			? $user->password
+			: password_hash((string) $request->password, PASSWORD_BCRYPT);
 
 		if ($user->isDirty('email')) {
 			$user->email_verified_at = null;

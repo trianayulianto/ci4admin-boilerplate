@@ -3,8 +3,6 @@
 namespace Fluent\Auth\Helpers;
 
 use function mb_strpos;
-use function strlen;
-use function strncmp;
 
 class Str
 {
@@ -36,7 +34,7 @@ class Str
     public static function startsWith($haystack, $needles)
     {
         foreach ((array) $needles as $needle) {
-            if ((string) $needle !== '' && strncmp($haystack, $needle, strlen($needle)) === 0) {
+            if ((string) $needle !== '' && str_starts_with($haystack, $needle)) {
                 return true;
             }
         }
@@ -46,8 +44,7 @@ class Str
 
     /**
      * Extract username from given email.
-     * 
-     * @param string $email
+     *
      * @return string|empty
      */
     public static function extractName(string $email)

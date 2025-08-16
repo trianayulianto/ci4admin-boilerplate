@@ -1,76 +1,71 @@
-<?php namespace Irsyadulibad\DataTables\Utilities;
+<?php
+
+namespace Irsyadulibad\DataTables\Utilities;
 
 use CodeIgniter\Config\Services;
 
 class Request
 {
+    private $request;
 
-	private $request;
+    public function __construct()
+    {
+        $this->request = Services::request();
+    }
 
-	public function __construct()
-	{
-		$this->request = Services::request();
-	}
+    public static function staticInstance()
+    {
+        return new self;
+    }
 
-	public static function staticInstance()
-	{
-		return new self;
-	}
+    public function getColumns()
+    {
+        $cols = $this->get('columns');
 
-	public function getColumns()
-	{
-		$cols = $this->get('columns');
+        return $cols ?? null;
+    }
 
-		return $cols ?? null;
-	}
+    public function getKeyword()
+    {
+        $search = esc($this->get('search'));
 
-	public function getKeyword()
-	{
-		$search = esc($this->get('search'));
+        return $search['value'] ?? null;
+    }
 
-		return $search['value'] ?? null;
-	}
+    public function getLimiting()
+    {
+        return [
+            'limit' => intval($this->get('length') ?? 10),
+            'offset' => (int) $this->get('start'),
+        ];
+    }
 
-	public function getLimiting()
-	{
-		$data = [
-			'limit' => intval($this->get('length') ?? 10),
-			'offset' => (int) $this->get('start')
-		];
+    public function getDraw()
+    {
+        return (int) $this->get('draw');
+    }
 
-		return $data;
-	}
+    public function getOrdering()
+    {
+        if (isset($this->get('order')[0])) {
+            $field = esc($this->get('order')[0]['column'] ?? '');
+            $ascDsc = esc($this->get('order')[0]['dir'] ?? '');
 
-	public function getDraw()
-	{
-		return (int) $this->get('draw');
-	}
+            $column = isset($this->get('columns')[$field]) ? esc($this->get('columns')[$field]['data'] ?? '') : '';
 
-	public function getOrdering()
-	{
-		if(isset($this->get('order')[0])) {
-			$field = esc($this->get('order')[0]['column'] ?? '');
-			$ascDsc = esc($this->get('order')[0]['dir'] ?? '');
+        } else {
+            $column = '';
+            $ascDsc = 'ASC';
+        }
 
-			if(isset($this->get('columns')[$field])) {
-				$column = esc($this->get('columns')[$field]['data'] ?? '');
-			} else {
-				$column = '';
-			}
+        return [
+            'column' => $column,
+            'sort' => $ascDsc,
+        ];
+    }
 
-		} else {
-			$column = '';
-			$ascDsc = 'ASC';
-		}
-
-		return [
-			'column' => $column,
-			'sort' => $ascDsc
-			];
-	}
-
-	private function get($name = '')
-	{
-		return $this->request->getGet($name);
-	}
+    private function get($name = '')
+    {
+        return $this->request->getGet($name);
+    }
 }

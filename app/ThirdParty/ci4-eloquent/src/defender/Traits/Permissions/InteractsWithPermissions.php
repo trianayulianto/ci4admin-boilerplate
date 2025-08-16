@@ -13,19 +13,16 @@ trait InteractsWithPermissions
     /**
      * Attach the given permission.
      *
-     * @param array|\Artesaos\Defender\Permission $permission
-     * @param array                               $options
+     * @param  array|\Artesaos\Defender\Permission  $permission
      */
     public function attachPermission($permission, array $options = [])
     {
-        if (! is_array($permission)) {
-            if ($this->existPermission($permission->name)) {
-                return;
-            }
+        if (! is_array($permission) && $this->existPermission($permission->name)) {
+            return;
         }
 
         $this->permissions()->attach($permission, [
-            'value'   => Arr::get($options, 'value', true),
+            'value' => Arr::get($options, 'value', true),
             'expires' => Arr::get($options, 'expires', null),
         ]);
     }
@@ -33,18 +30,15 @@ trait InteractsWithPermissions
     /**
      * Get the a permission using the permission name.
      *
-     * @param string $permissionName
-     *
+     * @param  string  $permissionName
      * @return bool
      */
     public function existPermission($permissionName)
     {
-        $permission = $this->permissions->first(function ($key, $value) use ($permissionName) {
-            return ((isset($key->name)) ? $key->name : $value->name) == $permissionName;
-        });
+        $permission = $this->permissions->first(fn ($key, $value) => ($key->name ?? $value->name) == $permissionName);
 
         if (! empty($permission)) {
-            $active = (is_null($permission->pivot->expires) or $permission->pivot->expires->isFuture());
+            $active = (is_null($permission->pivot->expires) || $permission->pivot->expires->isFuture());
 
             if ($active) {
                 return (bool) $permission->pivot->value;
@@ -57,8 +51,7 @@ trait InteractsWithPermissions
     /**
      * Alias to the detachPermission method.
      *
-     * @param \Artesaos\Defender\Permission $permission
-     *
+     * @param  \Artesaos\Defender\Permission  $permission
      * @return int
      */
     public function revokePermission($permission)
@@ -69,8 +62,7 @@ trait InteractsWithPermissions
     /**
      * Detach the given permission from the model.
      *
-     * @param \Artesaos\Defender\Permission $permission
-     *
+     * @param  \Artesaos\Defender\Permission  $permission
      * @return int
      */
     public function detachPermission($permission)
@@ -81,15 +73,13 @@ trait InteractsWithPermissions
     /**
      * Sync the given permissions.
      *
-     * @param array $permissions
-     * @param array  $options
      *
      * @return array
      */
-    public function syncPermissions(array $permissions, array $options = []) 
+    public function syncPermissions(array $permissions, array $options = [])
     {
         $this->combinePivot($permissions, [
-            'value'   => Arr::get($options, 'value', true),
+            'value' => Arr::get($options, 'value', true),
             'expires' => Arr::get($options, 'expires', null),
         ]);
 
@@ -118,14 +108,14 @@ trait InteractsWithPermissions
         if ($expiredPermissions->count() > 0) {
             return $this->permissions()->detach($expiredPermissions->modelKeys());
         }
+
+        return null;
     }
 
     /**
      * Extend an existing temporary permission.
      *
-     * @param string $permission
-     * @param array  $options
-     *
+     * @param  string  $permission
      * @return bool|null
      */
     public function extendPermission($permission, array $options)
@@ -138,13 +128,13 @@ trait InteractsWithPermissions
                 );
             }
         }
+
+        return null;
     }
 
     /**
      * Create pivot array from given values
      *
-     * @param array $permissions
-     * @param array $options
      * @return array combine $options
      */
     public function combinePivot(array &$permissions, array $options = [])
@@ -156,12 +146,14 @@ trait InteractsWithPermissions
             // Combine them to pivot array
             $pivotArray += [$pivot => $value];
         }
+
         // Get the total of arrays we need to fill
         $total = count($permissions);
         // Make filler array
         $filler = array_fill(0, $total, $pivotArray);
         // Combine and return filler pivot array with data
         $permissions = array_combine($permissions, $filler);
+
         // return result
         return $permissions;
     }

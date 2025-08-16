@@ -29,12 +29,9 @@ trait RoleHasPermissions
     }
 
     /**
-     * @param Model  $parent
-     * @param array  $attributes
-     * @param string $table
-     * @param bool   $exists
+     * @param  string  $table
+     * @param  bool  $exists
      * @param  string|null  $using
-     *
      * @return PermissionRolePivot|\Illuminate\Database\Eloquent\Relations\Pivot
      */
     public function newPivot(Model $parent, array $attributes, $table, $exists, $using = null)
@@ -51,7 +48,7 @@ trait RoleHasPermissions
     /**
      * Helper to get the config values.
      *
-     * @param string $key
+     * @param  string  $key
      * @return mixed
      */
     protected static function config($key)

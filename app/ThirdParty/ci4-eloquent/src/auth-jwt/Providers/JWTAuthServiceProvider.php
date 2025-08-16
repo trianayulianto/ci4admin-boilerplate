@@ -14,12 +14,10 @@ class JWTAuthServiceProvider extends AbstractServiceProvider
      */
     public static function register()
     {
-        Auth::extend(JWTGuard::class, function ($auth, $name, array $config) {
-            return new JWTGuard(
-                Services::getSharedInstance('jwt'),
-                Services::getSharedInstance('request'),
-                $auth->createUserProvider($config['provider']),
-            );
-        });
+        Auth::extend(JWTGuard::class, fn ($auth, $name, array $config) => new JWTGuard(
+            Services::getSharedInstance('jwt'),
+            Services::getSharedInstance('request'),
+            $auth->createUserProvider($config['provider']),
+        ));
     }
 }

@@ -30,12 +30,9 @@ trait HasPermissions
     }
 
     /**
-     * @param Model  $parent
-     * @param array  $attributes
-     * @param string $table
-     * @param bool   $exists
+     * @param  string  $table
+     * @param  bool  $exists
      * @param  string|null  $using
-     *
      * @return PermissionUserPivot
      */
     public function newPivot(Model $parent, array $attributes, $table, $exists, $using = null)
@@ -52,7 +49,7 @@ trait HasPermissions
     /**
      * Helper to get the config values.
      *
-     * @param string $key
+     * @param  string  $key
      * @return mixed
      */
     protected static function config($key)

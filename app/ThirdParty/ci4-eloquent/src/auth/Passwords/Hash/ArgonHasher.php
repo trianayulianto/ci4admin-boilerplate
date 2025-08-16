@@ -2,15 +2,14 @@
 
 namespace Fluent\Auth\Passwords\Hash;
 
+use const PASSWORD_ARGON2I;
+
 use Fluent\Auth\Contracts\HasherInterface;
-use Fluent\Auth\Passwords\Hash\AbstractHasher;
 use RuntimeException;
 
 use function is_string;
 use function password_hash;
 use function password_needs_rehash;
-
-use const PASSWORD_ARGON2I;
 
 class ArgonHasher extends AbstractHasher implements HasherInterface
 {
@@ -45,14 +44,13 @@ class ArgonHasher extends AbstractHasher implements HasherInterface
     /**
      * Create a new hasher instance.
      *
-     * @param  array  $options
      * @return void
      */
     public function __construct(array $options = [])
     {
-        $this->time            = $options['time'] ?? $this->time;
-        $this->memory          = $options['memory'] ?? $this->memory;
-        $this->threads         = $options['threads'] ?? $this->threads;
+        $this->time = $options['time'] ?? $this->time;
+        $this->memory = $options['memory'] ?? $this->memory;
+        $this->threads = $options['threads'] ?? $this->threads;
         $this->verifyAlgorithm = $options['verify'] ?? $this->verifyAlgorithm;
     }
 
@@ -60,16 +58,16 @@ class ArgonHasher extends AbstractHasher implements HasherInterface
      * Hash the given value.
      *
      * @param  string  $value
-     * @param  array  $options
      * @return string
+     *
      * @throws RuntimeException
      */
     public function make($value, array $options = [])
     {
         $hash = @password_hash($value, $this->algorithm(), [
             'memory_cost' => $this->memory($options),
-            'time_cost'   => $this->time($options),
-            'threads'     => $this->threads($options),
+            'time_cost' => $this->time($options),
+            'threads' => $this->threads($options),
         ]);
 
         if (! is_string($hash)) {
@@ -94,8 +92,8 @@ class ArgonHasher extends AbstractHasher implements HasherInterface
      *
      * @param  string  $value
      * @param  string  $hashedValue
-     * @param  array  $options
      * @return bool
+     *
      * @throws RuntimeException
      */
     public function check($value, $hashedValue, array $options = [])
@@ -111,15 +109,14 @@ class ArgonHasher extends AbstractHasher implements HasherInterface
      * Check if the given hash has been hashed using the given options.
      *
      * @param  string  $hashedValue
-     * @param  array  $options
      * @return bool
      */
     public function needsRehash($hashedValue, array $options = [])
     {
         return password_needs_rehash($hashedValue, $this->algorithm(), [
             'memory_cost' => $this->memory($options),
-            'time_cost'   => $this->time($options),
-            'threads'     => $this->threads($options),
+            'time_cost' => $this->time($options),
+            'threads' => $this->threads($options),
         ]);
     }
 
@@ -162,7 +159,6 @@ class ArgonHasher extends AbstractHasher implements HasherInterface
     /**
      * Extract the memory cost value from the options array.
      *
-     * @param  array  $options
      * @return int
      */
     protected function memory(array $options)
@@ -173,7 +169,6 @@ class ArgonHasher extends AbstractHasher implements HasherInterface
     /**
      * Extract the time cost value from the options array.
      *
-     * @param  array  $options
      * @return int
      */
     protected function time(array $options)
@@ -184,7 +179,6 @@ class ArgonHasher extends AbstractHasher implements HasherInterface
     /**
      * Extract the threads value from the options array.
      *
-     * @param  array  $options
      * @return int
      */
     protected function threads(array $options)

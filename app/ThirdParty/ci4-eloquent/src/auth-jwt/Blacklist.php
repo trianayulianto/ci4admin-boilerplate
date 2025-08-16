@@ -13,7 +13,6 @@
 namespace Fluent\JWTAuth;
 
 use Fluent\JWTAuth\Contracts\Providers\StorageInterface;
-use Fluent\JWTAuth\Payload;
 use Fluent\JWTAuth\Support\UtilsTrait;
 
 use function value;

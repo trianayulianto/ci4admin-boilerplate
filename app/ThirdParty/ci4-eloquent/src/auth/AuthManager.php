@@ -7,7 +7,6 @@ use CodeIgniter\Config\Factories;
 use CodeIgniter\Config\Services;
 use Fluent\Auth\Config\Auth;
 use Fluent\Auth\Contracts\AuthenticationInterface;
-use Fluent\Auth\UserDatabase;
 use Fluent\Auth\Contracts\AuthFactoryInterface;
 use InvalidArgumentException;
 
@@ -62,9 +61,7 @@ class AuthManager implements AuthFactoryInterface
     {
         $this->config = $factory::config('Auth', ['getShared' => $getShared]);
 
-        $this->userResolver = function ($guard = null) {
-            return $this->guard($guard)->user();
-        };
+        $this->userResolver = (fn ($guard = null) => $this->guard($guard)->user());
     }
 
     /**
@@ -94,9 +91,7 @@ class AuthManager implements AuthFactoryInterface
 
         $this->setDefaultDriver($name);
 
-        $this->userResolver = function ($name = null) {
-            return $this->guard($name)->user();
-        };
+        $this->userResolver = (fn ($name = null) => $this->guard($name)->user());
     }
 
     /**
@@ -143,7 +138,7 @@ class AuthManager implements AuthFactoryInterface
     public function createUserProvider($provider = null)
     {
         if (is_null($config = $this->getProviderConfiguration($provider))) {
-            return;
+            return null;
         }
 
         if (isset($this->customProviderCreators[$driver = $config['driver']])) {
@@ -154,16 +149,13 @@ class AuthManager implements AuthFactoryInterface
             );
         }
 
-        switch ($driver) {
-            case 'model':
-                return new $config['table']();
-            case 'connection':
-                return new UserDatabase($config['table'], $config['connection']);
-            default:
-                throw new InvalidArgumentException(
-                    "Authentication user provider [{$driver}] is not defined."
-                );
-        }
+        return match ($driver) {
+            'model' => new $config['table'],
+            'connection' => new UserDatabase($config['table'], $config['connection']),
+            default => throw new InvalidArgumentException(
+                sprintf('Authentication user provider [%s] is not defined.', $driver)
+            ),
+        };
     }
 
     /**
@@ -203,8 +195,8 @@ class AuthManager implements AuthFactoryInterface
             $routes->get('register', 'Auth\RegisterController::index', ['as' => 'register']);
 
             $routes->post('register', 'Auth\RegisterController::register', [
-                'as' => 'register.post', 
-                'filter' => 'throttle:6,1'
+                'as' => 'register.post',
+                'filter' => 'throttle:6,1',
             ]);
         }
 
@@ -212,15 +204,15 @@ class AuthManager implements AuthFactoryInterface
             $routes->get('password/request', 'Auth\ForgotPasswordController::index', ['as' => 'password.request']);
 
             $routes->post('password/email', 'Auth\ForgotPasswordController::send', [
-                'as' => 'password.email', 
-                'filter' => 'throttle:6,1'
+                'as' => 'password.email',
+                'filter' => 'throttle:6,1',
             ]);
 
             $routes->get('password/reset/(:any)', 'Auth\ResetPasswordController::index/$1', ['as' => 'password.reset']);
 
             $routes->post('password/update', 'Auth\ResetPasswordController::reset', [
-                'as' => 'password.update', 
-                'filter' => 'throttle:6,1'
+                'as' => 'password.update',
+                'filter' => 'throttle:6,1',
             ]);
         }
 
@@ -228,27 +220,27 @@ class AuthManager implements AuthFactoryInterface
             $routes->get('email/verify', 'Auth\VerificationController::index', ['as' => 'verification.notice']);
 
             $routes->get('email/verify/(:any)', 'Auth\VerificationController::verify/$1', [
-                'as' => 'verification.verify'
+                'as' => 'verification.verify',
             ]);
 
             $routes->post('email/resend', 'Auth\VerificationController::resend', [
-                'as' => 'verification.resend', 
-                'filter' => 'throttle:6,1'
+                'as' => 'verification.resend',
+                'filter' => 'throttle:6,1',
             ]);
         }
 
         $routes->get('login', 'Auth\AuthenticateController::index', ['as' => 'login']);
 
         $routes->post('login', 'Auth\AuthenticateController::login', [
-            'as' => 'login.post', 
-            'filter' => 'throttle:6,1'
+            'as' => 'login.post',
+            'filter' => 'throttle:6,1',
         ]);
 
         $routes->post('refresh', 'Auth\AuthenticateController::refresh', [
             'as' => 'refresh',
-            'filter' => 'throttle:1,60'
+            'filter' => 'throttle:1,60',
         ]);
-        
+
         $routes->post('logout', 'Auth\AuthenticateController::logout', ['as' => 'logout']);
     }
 
@@ -257,6 +249,7 @@ class AuthManager implements AuthFactoryInterface
      *
      * @param  string  $name
      * @return AuthenticationInterface
+     *
      * @throws InvalidArgumentException
      */
     protected function resolve($name)
@@ -268,7 +261,7 @@ class AuthManager implements AuthFactoryInterface
         }
 
         throw new InvalidArgumentException(
-            "Auth driver [{$config['driver']}] for guard [{$name}] is not defined."
+            sprintf('Auth driver [%s] for guard [%s] is not defined.', $config['driver'], $name)
         );
     }
 
@@ -284,14 +277,13 @@ class AuthManager implements AuthFactoryInterface
             return $this->config->guards[$name];
         }
 
-        throw new InvalidArgumentException("Auth guard [{$name}] is not defined.");
+        throw new InvalidArgumentException(sprintf('Auth guard [%s] is not defined.', $name));
     }
 
     /**
      * Call a custom driver creator.
      *
      * @param  string  $name
-     * @param  array  $config
      * @return mixed
      */
     protected function callCustomCreator($name, array $config)
@@ -310,13 +302,15 @@ class AuthManager implements AuthFactoryInterface
         if ($provider = $provider ?: $this->getDefaultUserProvider()) {
             return $this->config->providers[$provider];
         }
+
+        return null;
     }
 
     /**
      * Dynamically call the default driver instance.
      *
-     * @param string $method
-     * @param array $arguments
+     * @param  string  $method
+     * @param  array  $arguments
      * @return AuthenticationInterface
      */
     public function __call($method, $arguments)

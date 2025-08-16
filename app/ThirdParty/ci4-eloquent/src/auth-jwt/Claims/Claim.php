@@ -12,6 +12,8 @@
 
 namespace Fluent\JWTAuth\Claims;
 
+use const JSON_UNESCAPED_SLASHES;
+
 use Fluent\JWTAuth\Contracts\ClaimInterface;
 use Fluent\JWTAuth\Exceptions\InvalidClaimException;
 use Illuminate\Contracts\Support\Arrayable;
@@ -20,9 +22,7 @@ use JsonSerializable;
 
 use function json_encode;
 
-use const JSON_UNESCAPED_SLASHES;
-
-abstract class Claim implements Arrayable, ClaimInterface, Jsonable, JsonSerializable
+abstract class Claim implements \Stringable, Arrayable, ClaimInterface, Jsonable, JsonSerializable
 {
     /**
      * The claim name.
@@ -51,8 +51,9 @@ abstract class Claim implements Arrayable, ClaimInterface, Jsonable, JsonSeriali
      * Set the claim value, and call a validate method.
      *
      * @param  mixed  $value
-     * @throws InvalidClaimException
      * @return $this
+     *
+     * @throws InvalidClaimException
      */
     public function setValue($value)
     {
@@ -172,10 +173,8 @@ abstract class Claim implements Arrayable, ClaimInterface, Jsonable, JsonSeriali
 
     /**
      * Get the payload as a string.
-     *
-     * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->toJson();
     }

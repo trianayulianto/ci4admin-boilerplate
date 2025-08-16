@@ -24,7 +24,7 @@ class PasswordBroker implements PasswordBrokerInterface
     public function __construct(PasswordResetRepositoryInterface $tokens, UserProviderInterface $users)
     {
         $this->tokens = $tokens;
-        $this->users  = $users;
+        $this->users = $users;
     }
 
     /**
@@ -47,7 +47,7 @@ class PasswordBroker implements PasswordBrokerInterface
 
         $token = $this->tokens->create($user);
 
-        if ($callback) {
+        if ($callback instanceof \Closure) {
             $callback($user, $token);
         } else {
             // Once we have the reset token, we are ready to send the message out to this
@@ -77,7 +77,7 @@ class PasswordBroker implements PasswordBrokerInterface
             return static::RESET_THROTTLED;
         }
 
-        if ($callback) {
+        if ($callback instanceof \Closure) {
             $callback($user);
         } else {
             // We are ready to send verify the message out to this user with a link
@@ -118,7 +118,6 @@ class PasswordBroker implements PasswordBrokerInterface
     /**
      * Validate a password reset for the given credentials.
      *
-     * @param  array  $credentials
      * @return ResetPasswordInterface|string
      */
     protected function validateReset(array $credentials)

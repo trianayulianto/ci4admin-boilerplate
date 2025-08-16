@@ -20,7 +20,7 @@ class CreatePermissionPivotTables extends Migration
             	'constraint' => 20,
             	'unsigned' => true
 			],
-			"$role_key" => [
+			$role_key => [
 				'type' => 'bigint',
             	'constraint' => 20,
             	'unsigned' => true
@@ -44,7 +44,7 @@ class CreatePermissionPivotTables extends Migration
             	'constraint' => 20,
             	'unsigned' => true
 			],
-			"$permission_key" => [
+			$permission_key => [
 				'type' => 'bigint',
             	'constraint' => 20,
             	'unsigned' => true
@@ -71,12 +71,12 @@ class CreatePermissionPivotTables extends Migration
 		 * permission_role table
 		 */
 		$this->forge->addField([
-			"$role_key" => [
+			$role_key => [
 				'type' => 'bigint',
             	'constraint' => 20,
             	'unsigned' => true
 			],
-			"$permission_key" => [
+			$permission_key => [
 				'type' => 'bigint',
             	'constraint' => 20,
             	'unsigned' => true

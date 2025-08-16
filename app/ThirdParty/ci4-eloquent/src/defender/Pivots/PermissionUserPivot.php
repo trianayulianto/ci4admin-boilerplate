@@ -5,6 +5,4 @@ namespace Artesaos\Defender\Pivots;
 /**
  * Class PermissionUserPivot.
  */
-class PermissionUserPivot extends AbstractDefenderPivot
-{
-}
+class PermissionUserPivot extends AbstractDefenderPivot {}

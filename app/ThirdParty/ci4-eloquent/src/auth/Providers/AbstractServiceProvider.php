@@ -9,5 +9,5 @@ abstract class AbstractServiceProvider
      *
      * @return void
      */
-    abstract static function register();
+    abstract public static function register();
 }

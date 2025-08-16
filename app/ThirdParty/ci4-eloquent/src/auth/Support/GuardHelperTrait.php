@@ -19,6 +19,9 @@ trait GuardHelperTrait
     /** @var AuthenticatorInterface|ResetPasswordInterface|VerifyEmailInterface */
     protected $user;
 
+    /** @var bool */
+    protected $loggedOut = false;
+
     /**
      * {@inheritdoc}
      */
@@ -28,7 +31,7 @@ trait GuardHelperTrait
             return $user;
         }
 
-        throw new AuthenticationException();
+        throw new AuthenticationException;
     }
 
     /**
@@ -48,7 +51,6 @@ trait GuardHelperTrait
     }
 
     /**
-     *
      * {@inheritdoc}
      */
     public function guest()

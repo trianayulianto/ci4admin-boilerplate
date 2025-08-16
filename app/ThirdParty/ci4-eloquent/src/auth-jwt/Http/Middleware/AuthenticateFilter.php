@@ -29,7 +29,5 @@ class AuthenticateFilter extends AbstractBaseFilter implements FilterInterface
     /**
      * {@inheritdoc}
      */
-    public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
-    {
-    }
+    public function after(RequestInterface $request, ResponseInterface $response, $arguments = null) {}
 }

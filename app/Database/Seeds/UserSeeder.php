@@ -13,7 +13,7 @@ class UserSeeder extends Seeder
 		    'email' => 'superuser@mail.test',
 		    'password' => password_hash('password', PASSWORD_BCRYPT),
 		    'email_verified_at' => date('Y-m-d H:i:s'),
-		    'remember_token' => rand(),
+		    'remember_token' => random_int(0, mt_getrandmax()),
 			'created_at' => date("Y-m-d H:i:s")
 	    ];
 	    

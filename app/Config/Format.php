@@ -40,9 +40,9 @@ class Format extends BaseConfig
 	 * @var array<string, string>
 	 */
 	public $formatters = [
-		'application/json' => 'CodeIgniter\Format\JSONFormatter',
-		'application/xml'  => 'CodeIgniter\Format\XMLFormatter',
-		'text/xml'         => 'CodeIgniter\Format\XMLFormatter',
+		'application/json' => \CodeIgniter\Format\JSONFormatter::class,
+		'application/xml'  => \CodeIgniter\Format\XMLFormatter::class,
+		'text/xml'         => \CodeIgniter\Format\XMLFormatter::class,
 	];
 
 	/**
@@ -62,17 +62,14 @@ class Format extends BaseConfig
 	];
 
 	//--------------------------------------------------------------------
-
-	/**
-	 * A Factory method to return the appropriate formatter for the given mime type.
-	 *
-	 * @param string $mime
-	 *
-	 * @return FormatterInterface
-	 *
-	 * @deprecated This is an alias of `\CodeIgniter\Format\Format::getFormatter`. Use that instead.
-	 */
-	public function getFormatter(string $mime)
+    /**
+     * A Factory method to return the appropriate formatter for the given mime type.
+     *
+     *
+     * @return FormatterInterface
+     * @deprecated This is an alias of `\CodeIgniter\Format\Format::getFormatter`. Use that instead.
+     */
+    public function getFormatter(string $mime)
 	{
 		return Services::format()->getFormatter($mime);
 	}

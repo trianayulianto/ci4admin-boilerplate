@@ -2,14 +2,13 @@
 
 namespace Fluent\Auth\Passwords\Hash;
 
+use const PASSWORD_BCRYPT;
+
 use Fluent\Auth\Contracts\HasherInterface;
-use Fluent\Auth\Passwords\Hash\AbstractHasher;
 use RuntimeException;
 
 use function password_hash;
 use function password_needs_rehash;
-
-use const PASSWORD_BCRYPT;
 
 class BcryptHasher extends AbstractHasher implements HasherInterface
 {
@@ -30,12 +29,11 @@ class BcryptHasher extends AbstractHasher implements HasherInterface
     /**
      * Create a new hasher instance.
      *
-     * @param  array  $options
      * @return void
      */
     public function __construct(array $options = [])
     {
-        $this->rounds          = $options['rounds'] ?? $this->rounds;
+        $this->rounds = $options['rounds'] ?? $this->rounds;
         $this->verifyAlgorithm = $options['verify'] ?? $this->verifyAlgorithm;
     }
 
@@ -43,8 +41,8 @@ class BcryptHasher extends AbstractHasher implements HasherInterface
      * Hash the given value.
      *
      * @param  string  $value
-     * @param  array  $options
      * @return string
+     *
      * @throws RuntimeException
      */
     public function make($value, array $options = [])
@@ -65,8 +63,8 @@ class BcryptHasher extends AbstractHasher implements HasherInterface
      *
      * @param  string  $value
      * @param  string  $hashedValue
-     * @param  array  $options
      * @return bool
+     *
      * @throws RuntimeException
      */
     public function check($value, $hashedValue, array $options = [])
@@ -82,7 +80,6 @@ class BcryptHasher extends AbstractHasher implements HasherInterface
      * Check if the given hash has been hashed using the given options.
      *
      * @param  string  $hashedValue
-     * @param  array  $options
      * @return bool
      */
     public function needsRehash($hashedValue, array $options = [])
@@ -108,7 +105,6 @@ class BcryptHasher extends AbstractHasher implements HasherInterface
     /**
      * Extract the cost value from the options array.
      *
-     * @param  array  $options
      * @return int
      */
     protected function cost(array $options = [])

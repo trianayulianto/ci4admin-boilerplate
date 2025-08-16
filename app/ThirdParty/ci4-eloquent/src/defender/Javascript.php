@@ -16,7 +16,6 @@ class Javascript implements JavascriptContract
     protected $defender;
 
     /**
-     * @param Defender $defender
      * @see Defender
      */
     public function __construct(Defender $defender)
@@ -45,9 +44,7 @@ class Javascript implements JavascriptContract
     {
         $user = $this->defender->getUser();
 
-        $roles = $user ? $user->roles()->get()->toBase() : null;
-
-        return $roles;
+        return $user ? $user->roles()->get()->toBase() : null;
     }
 
     /**
@@ -58,8 +55,6 @@ class Javascript implements JavascriptContract
         /** @var HasDefender $user */
         $user = $this->defender->getUser();
 
-        $permissions = $user ? $user->getAllPermissions() : null;
-
-        return $permissions;
+        return $user ? $user->getAllPermissions() : null;
     }
 }

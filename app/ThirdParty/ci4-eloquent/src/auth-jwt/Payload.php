@@ -12,6 +12,8 @@
 
 namespace Fluent\JWTAuth;
 
+use const JSON_UNESCAPED_SLASHES;
+
 use ArrayAccess;
 use BadMethodCallException;
 use Countable;
@@ -19,23 +21,20 @@ use Fluent\JWTAuth\Claims\Claim;
 use Fluent\JWTAuth\Claims\Collection;
 use Fluent\JWTAuth\Exceptions\PayloadException;
 use Fluent\JWTAuth\Validators\PayloadValidator;
-use JsonSerializable;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Support\Arr;
+use JsonSerializable;
 
 use function array_map;
 use function count;
-use function get_class;
 use function is_array;
 use function json_encode;
 use function preg_match;
 use function sprintf;
 use function value;
 
-use const JSON_UNESCAPED_SLASHES;
-
-class Payload implements ArrayAccess, Arrayable, Countable, Jsonable, JsonSerializable
+class Payload implements \Stringable, Arrayable, ArrayAccess, Countable, Jsonable, JsonSerializable
 {
     /**
      * The collection of claims.
@@ -68,13 +67,12 @@ class Payload implements ArrayAccess, Arrayable, Countable, Jsonable, JsonSerial
     /**
      * Checks if a payload matches some expected values.
      *
-     * @param  array  $values
      * @param  bool  $strict
      * @return bool
      */
     public function matches(array $values, $strict = false)
     {
-        if (empty($values)) {
+        if ($values === []) {
             return false;
         }
 
@@ -92,7 +90,6 @@ class Payload implements ArrayAccess, Arrayable, Countable, Jsonable, JsonSerial
     /**
      * Checks if a payload strictly matches some expected values.
      *
-     * @param  array  $values
      * @return bool
      */
     public function matchesStrict(array $values)
@@ -112,7 +109,7 @@ class Payload implements ArrayAccess, Arrayable, Countable, Jsonable, JsonSerial
 
         if ($claim !== null) {
             if (is_array($claim)) {
-                return array_map([$this, 'get'], $claim);
+                return array_map($this->get(...), $claim);
             }
 
             return Arr::get($this->toArray(), $claim);
@@ -187,10 +184,8 @@ class Payload implements ArrayAccess, Arrayable, Countable, Jsonable, JsonSerial
 
     /**
      * Get the payload as a string.
-     *
-     * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->toJson();
     }
@@ -224,6 +219,7 @@ class Payload implements ArrayAccess, Arrayable, Countable, Jsonable, JsonSerial
      *
      * @param  mixed  $key
      * @param  mixed  $value
+     *
      * @throws PayloadException
      */
     #[\ReturnTypeWillChange]
@@ -236,8 +232,9 @@ class Payload implements ArrayAccess, Arrayable, Countable, Jsonable, JsonSerial
      * Don't allow changing the payload as it should be immutable.
      *
      * @param  string  $key
-     * @throws PayloadException
      * @return void
+     *
+     * @throws PayloadException
      */
     #[\ReturnTypeWillChange]
     public function offsetUnset($key)
@@ -272,14 +269,15 @@ class Payload implements ArrayAccess, Arrayable, Countable, Jsonable, JsonSerial
      *
      * @param  string  $method
      * @param  array  $parameters
-     * @throws BadMethodCallException
      * @return mixed
+     *
+     * @throws BadMethodCallException
      */
     public function __call($method, $parameters)
     {
         if (preg_match('/get(.+)\b/i', $method, $matches)) {
             foreach ($this->claims as $claim) {
-                if (get_class($claim) === 'Fluent\\JWTAuth\\Claims\\' . $matches[1]) {
+                if ($claim::class === 'Fluent\\JWTAuth\\Claims\\'.$matches[1]) {
                     return $claim->getValue();
                 }
             }

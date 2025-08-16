@@ -37,11 +37,11 @@ class VerificationController extends BaseController
         }
 
         // Check if hash equal with current user email.
-        if (! hash_equals($hash, sha1(auth()->user()->email))) {
+        if (! hash_equals($hash, sha1((string) auth()->user()->email))) {
             return redirect()->route('verification.notice')->with('error', lang('Passwords.token'));
         }
 
-        $signature = hash_hmac('sha256', auth()->user()->email, config('Encryption')->key);
+        $signature = hash_hmac('sha256', (string) auth()->user()->email, (string) config('Encryption')->key);
 
         // Check signature key
         if (! hash_equals($signature, $this->request->getVar('signature'))) {

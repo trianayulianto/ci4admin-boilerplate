@@ -12,6 +12,4 @@
 
 namespace Fluent\JWTAuth\Exceptions;
 
-class PayloadException extends JWTException
-{
-}
+class PayloadException extends JWTException {}

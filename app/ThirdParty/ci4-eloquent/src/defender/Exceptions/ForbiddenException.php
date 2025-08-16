@@ -8,9 +8,9 @@ namespace Artesaos\Defender\Exceptions;
 class ForbiddenException extends DefenderException
 {
     /**
-     * @param string $message
+     * @param  string  $message
      */
-    public function __construct($message = 'You don\'t have permission to access this resource')
+    public function __construct($message = "You don't have permission to access this resource")
     {
         parent::__construct($message);
     }

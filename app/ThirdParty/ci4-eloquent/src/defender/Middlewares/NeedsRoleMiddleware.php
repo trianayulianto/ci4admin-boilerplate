@@ -12,8 +12,6 @@ use CodeIgniter\HTTP\ResponseInterface;
 class NeedsRoleMiddleware extends AbstractDefenderMiddleware implements FilterInterface
 {
     /**
-     * @param \CodeIgniter\HTTP\RequestInterface $request
-     *
      * @return mixed
      */
     public function before(RequestInterface $request, $arguments = null)
@@ -24,7 +22,5 @@ class NeedsRoleMiddleware extends AbstractDefenderMiddleware implements FilterIn
     /**
      * {@inheritdoc}
      */
-    public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
-    {
-    }
+    public function after(RequestInterface $request, ResponseInterface $response, $arguments = null) {}
 }

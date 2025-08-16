@@ -12,6 +12,7 @@ interface AuthFactoryInterface
      *
      * @param  string|null  $provider
      * @return UserProviderInterface
+     *
      * @throws InvalidArgumentException
      */
     public function createUserProvider($provider = null);

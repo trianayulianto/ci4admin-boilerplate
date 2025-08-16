@@ -12,7 +12,7 @@ return [
     | these language lines according to your application's requirements.
     |
     */
-    'failed'    => 'These credentials do not match our records.',
+    'failed' => 'These credentials do not match our records.',
     'throttler' => 'You submitted over {0} requests within a minute. Please try again in {1} seconds.',
-    'throttle'  => 'Too many login attempts. Please try again in {0} seconds.',
+    'throttle' => 'Too many login attempts. Please try again in {0} seconds.',
 ];

@@ -9,12 +9,10 @@ class HomeController extends BaseController
 	public function index()
 	{
 		$permissions = Permission::query()
-			->when($this->request->getGet('search', null), function ($q, $s) {
-				return $q->where('name', 'like', '%'.$s.'%');
-			})
+			->when($this->request->getGet('search', null), fn($q, $s) => $q->where('name', 'like', '%'.$s.'%'))
 			->paginate(10);
 
-		return render('welcome', compact('permissions'));
+		return render('welcome', ['permissions' => $permissions]);
 	}
 
 	//--------------------------------------------------------------------

@@ -26,32 +26,28 @@ class UserController extends BaseController
 		return DataTables::use('users')
 			->addIndexColumn()
 			->select('id, name, email')
-			->addColumn('assignment', function ($data) {
-				return '<a
-					href="'.route_to('users.show', $data->id).'" 
+			->addColumn('assignment', fn($data) => '<a
+					href="'.route_to('users.show', $data->id).'"
 					class="btn btn-link btn-sm text-danger"
 				>
 					Assign Permission
-				</a>';
-			})
-			->filter(function ($query) {
-				return $query->whereNotIn('id', [1, user_id()]);
-			})
-			->addColumn('button', function ($data) {
-				return render('modules.users.partials._table_button', compact('data'));
-			})
+				</a>')
+			->filter(fn($query) => $query->whereNotIn('id', [1, user_id()]))
+			->addColumn('button', fn($data) => render('modules.users.partials._table_button', ['data' => $data]))
 			->rawColumns(['assignment', 'button'])
 			->make();
 	}
 
 	public function store($id = null)
 	{
-        if ($this->request->getMethod() === 'post')
+        if ($this->request->getMethod() === 'POST') {
             defender('api')->canDo('account.users.create');
+        }
 
-        if ($this->request->getMethod() === 'put')
+        if ($this->request->getMethod() === 'PUT') {
             defender('api')->canDo('account.users.update');
-        
+        }
+
 		$rules = [
 			'name' => 'required|min_length[3]',
 			'email' => 'required|valid_email|is_unique[users.email,id,'.$id.']',
@@ -65,7 +61,7 @@ class UserController extends BaseController
 
 		$data = (array) $this->request->getPost();
 
-		if ($this->request->getMethod() === 'put') {
+		if ($this->request->getMethod() === 'PUT') {
 			$data = (array) $this->request->getRawInput();
 
 			$message = 'User data was updated';
@@ -74,7 +70,7 @@ class UserController extends BaseController
 		if (!is_null($id) && is_null($data["password"])) {
 			$data["password"] = User::find($id)->password;
 		} else {
-			$data["password"] = password_hash($data["password"], PASSWORD_BCRYPT);
+			$data["password"] = password_hash((string) $data["password"], PASSWORD_BCRYPT);
 		}
 
 		DB::beginTransaction();
@@ -85,10 +81,10 @@ class UserController extends BaseController
 			$user->markEmailAsVerified();
 
 			DB::commit();
-		} catch (\Exception $e) {
+		} catch (\Exception $exception) {
 			DB::rollBack();
 
-			return $this->fail(['error' => $e->getMessage()]);
+			return $this->fail(['error' => $exception->getMessage()]);
 		}
 
 		return $this->respondCreated([
@@ -101,7 +97,7 @@ class UserController extends BaseController
 	public function show($id)
 	{
 		defender('api')->canDo('account.users.assign');
-		
+
 		$user = User::with('permissions')->where('id', $id)->first();
 
 		$permissions = Permission::select(DB::raw("SUBSTRING_INDEX(`name`, '.', 2) as `group`"))
@@ -113,7 +109,7 @@ class UserController extends BaseController
 	                ->title();
 
 				return [
-					'name' => "$title",
+					'name' => $title,
 		            'description' => 'User has permisssion for '.$title.' modules',
 					'permissions' => Permission::where('name', 'like', $item->group.'.%')
 						->select('id', 'name', 'readable_name')
@@ -122,10 +118,8 @@ class UserController extends BaseController
 						->toArray()
 				];
 			});
-		
-		// dd($permissions->toArray());
 
-		return render('modules.users.index_assign', compact('permissions', 'user'));
+		return render('modules.users.index_assign', ['permissions' => $permissions, 'user' => $user]);
 	}
 
 	public function assign($id)
@@ -147,13 +141,13 @@ class UserController extends BaseController
 		try {
 			$user->syncRoles((array) $roles);
 			$user->syncPermissions((array) $permissions);
-		} catch (\Exception $e) {
-			return $this->fail(['error' => $e->getMessage()]);			
+		} catch (\Exception $exception) {
+			return $this->fail(['error' => $exception->getMessage()]);
 		}
 
 		return $this->respondCreated([
 			'status' => ResponseInterface::HTTP_CREATED,
-			'message' => 'User\'s roles and permissions was updated',
+			'message' => "User's roles and permissions was updated",
 			'data' => [
 				'roles' => $user->roles,
 				'permissions' => $user->permissions

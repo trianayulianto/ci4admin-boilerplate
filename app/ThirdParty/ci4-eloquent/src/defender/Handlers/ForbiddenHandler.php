@@ -7,7 +7,7 @@ use Artesaos\Defender\Exceptions\ForbiddenException;
 
 class ForbiddenHandler implements ForbiddenHandlerContract
 {
-    public function handle()
+    public function handle(): never
     {
         throw new ForbiddenException;
     }

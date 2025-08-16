@@ -26,8 +26,8 @@ class Hash
     /**
      * Facade hash instance service.
      *
-     * @param string $method
-     * @param array $arguments
+     * @param  string  $method
+     * @param  array  $arguments
      * @return AbstractManager|HashManager|HasherInterface
      */
     public static function __callStatic($method, $arguments)

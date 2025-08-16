@@ -1,151 +1,156 @@
-<?php namespace Irsyadulibad\DataTables;
+<?php
+
+namespace Irsyadulibad\DataTables;
 
 use CodeIgniter\Format\JSONFormatter;
 
 abstract class DataTableMethods
 {
-	protected $tables = [];
+    public $builder;
 
-	protected $fields = [];
+    public $request;
 
-	protected $aliases = [];
+    protected $tables = [];
 
-	protected $totalRecords;
+    protected $fields = [];
 
-	protected $filteredRecords;
+    protected $aliases = [];
 
-	protected $isFilterApplied = false;
+    protected $totalRecords;
 
-	protected $processColumn = [
-		'appends' => [],
-		'hidden' => [],
-		'index' => false,
-		'raws' => [],
-		'edit' => []
-	];
+    protected $filteredRecords;
 
-	public function select(String $fields)
-	{
-		$this->builder->select($fields);
+    protected $isFilterApplied = false;
 
-		$this->setAliases($fields);
-		return $this;
-	}
+    protected $processColumn = [
+        'appends' => [],
+        'hidden' => [],
+        'index' => false,
+        'raws' => [],
+        'edit' => [],
+    ];
 
-	public function where(Array $data)
-	{
-		$this->builder->where($data);
+    public function select(string $fields)
+    {
+        $this->builder->select($fields);
 
-		return $this;
-	}
+        $this->setAliases($fields);
 
-	public function orWhere(Array $data)
-	{
-		$this->builder->orWhere($data);
+        return $this;
+    }
 
-		return $this;
-	}
+    public function where(array $data)
+    {
+        $this->builder->where($data);
 
-	public function join($table, $cond, $type = '')
-	{
-		$this->addTable($table);
-		$this->builder->join($table, $cond, $type);
+        return $this;
+    }
 
-		return $this;
-	}
+    public function orWhere(array $data)
+    {
+        $this->builder->orWhere($data);
 
-	public function filter(callable $callback)
+        return $this;
+    }
+
+    public function join($table, $cond, $type = '')
+    {
+        $this->addTable($table);
+        $this->builder->join($table, $cond, $type);
+
+        return $this;
+    }
+
+    public function filter(callable $callback)
     {
         $callback($this->builder);
 
         return $this;
     }
 
-	public function hideColumns(Array $cols)
-	{
-		$this->processColumn['hidden'] = $cols;
+    public function hideColumns(array $cols)
+    {
+        $this->processColumn['hidden'] = $cols;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function rawColumns(Array $cols)
-	{
-		$this->processColumn['raws'] = $cols;
+    public function rawColumns(array $cols)
+    {
+        $this->processColumn['raws'] = $cols;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function addColumn(String $name, $callback)
-	{
-		$this->processColumn['appends'][] = [
-			'name' => $name,
-			'callback' => $callback
-		];
+    public function addColumn(string $name, $callback)
+    {
+        $this->processColumn['appends'][] = [
+            'name' => $name,
+            'callback' => $callback,
+        ];
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function addIndexColumn()
-	{
-		$this->processColumn['index'] = true;
+    public function addIndexColumn()
+    {
+        $this->processColumn['index'] = true;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function editColumn(String $name, $callback)
-	{
-		$this->processColumn['edit'][] = [
-			'name' => $name,
-			'callback' => $callback
-		];
+    public function editColumn(string $name, $callback)
+    {
+        $this->processColumn['edit'][] = [
+            'name' => $name,
+            'callback' => $callback,
+        ];
 
-		return $this;
-	}
+        return $this;
+    }
 
-	protected function render($results, $make)
-	{
-		$formatter = new JSONFormatter;
+    protected function render($results, $make)
+    {
+        $formatter = new JSONFormatter;
 
-		$output = [
-			'draw' => $this->request->getDraw(),
-			'recordsTotal' => $this->totalRecords,
-			'recordsFiltered' => $this->filteredRecords,
-			'data' => $results
-		];
+        $output = [
+            'draw' => $this->request->getDraw(),
+            'recordsTotal' => $this->totalRecords,
+            'recordsFiltered' => $this->filteredRecords,
+            'data' => $results,
+        ];
+        if ($make) {
+            return $formatter->format($output);
+        }
 
-		if($make) return $formatter->format($output);
-		return d($output);
-	}
+        return d($output);
+    }
 
-	protected function filterRecords()
-	{
-		if($this->isFilterApplied) {
-			$this->filteredRecords = $this->count();
-		} else {
-			$this->filteredRecords = $this->totalRecords;
-		}
+    protected function filterRecords()
+    {
+        $this->filteredRecords = $this->isFilterApplied ? $this->count() : $this->totalRecords;
+    }
 
-	}
+    private function setAliases($fields)
+    {
+        foreach (explode(',', (string) $fields) as $val) {
+            if (stripos($val, 'as')) {
+                $alias = trim((string) preg_replace('/(.*)\s+as\s+(\w*)/i', '$2', $val));
+                $field = trim((string) preg_replace('/(.*)\s+as\s+(\w*)/i', '$1', $val));
 
-	private function setAliases($fields)
-	{
-		foreach(explode(',', $fields) as $val) {
-			if(stripos($val, 'as')) {
-				$alias = trim(preg_replace('/(.*)\s+as\s+(\w*)/i', '$2', $val));
-				$field = trim(preg_replace('/(.*)\s+as\s+(\w*)/i', '$1', $val));
+                $this->aliases[$alias] = $field;
+            }
+        }
 
-				$this->aliases[$alias] = $field;
-			}
-		}
+        return true;
+    }
 
-		return true;
-	}
+    private function addTable($table)
+    {
+        if (stripos((string) $table, 'as')) {
+            $table = trim((string) preg_replace('/(.*)\s+as\s+(\w*)/i', '$1', (string) $table));
+        }
 
-	private function addTable($table) {
-		if(stripos($table, 'as')) {
-			$table = trim(preg_replace('/(.*)\s+as\s+(\w*)/i', '$1', $table));
-		}
-
-		$this->tables[] = $table;
-	}
+        $this->tables[] = $table;
+    }
 }

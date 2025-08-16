@@ -52,9 +52,11 @@ class AuthHeaders implements ParserInterface
     {
         $header = $request->header($this->header) ?: $this->fromAltHeaders($request);
 
-        if ($header && preg_match('/' . $this->prefix . '\s*(\S+)\b/i', $header, $matches)) {
+        if ($header && preg_match('/'.$this->prefix.'\s*(\S+)\b/i', $header, $matches)) {
             return $matches[1];
         }
+
+        return null;
     }
 
     /**

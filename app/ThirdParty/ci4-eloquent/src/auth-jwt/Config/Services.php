@@ -2,8 +2,8 @@
 
 namespace Fluent\JWTAuth\Config;
 
-use CodeIgniter\Config\Factories;
 use CodeIgniter\Config\BaseService;
+use CodeIgniter\Config\Factories;
 use Fluent\JWTAuth\Blacklist;
 use Fluent\JWTAuth\Claims\Factory as ClaimsFactory;
 use Fluent\JWTAuth\Contracts\Providers\JWTInterface;
@@ -18,8 +18,6 @@ use Fluent\JWTAuth\Manager;
 use Fluent\JWTAuth\Providers\JWT\Lcobucci;
 use Fluent\JWTAuth\Providers\Storage\CacheStorage;
 use Fluent\JWTAuth\Validators\PayloadValidator;
-use Lcobucci\JWT\Builder;
-use Lcobucci\JWT\Parser;
 
 class Services extends BaseService
 {
@@ -38,7 +36,7 @@ class Services extends BaseService
             static::getSharedInstance('manager'),
             static::getSharedInstance('httpparser')
         ))
-        ->lockSubject(static::config('lock_subject'));
+            ->lockSubject(static::config('lock_subject'));
     }
 
     /**
@@ -57,8 +55,8 @@ class Services extends BaseService
             static::getSharedInstance('blacklist'),
             static::getSharedInstance('factory')
         ))
-        ->setBlacklistEnabled(static::config('blacklist_enabled'))
-        ->setPersistentClaims(static::config('persistent_claims'));
+            ->setBlacklistEnabled(static::config('blacklist_enabled'))
+            ->setPersistentClaims(static::config('persistent_claims'));
     }
 
     /**
@@ -110,7 +108,7 @@ class Services extends BaseService
             (new ClaimsFactory(static::getSharedInstance('request')))
                 ->setTTL(static::config('ttl'))
                 ->setLeeway(static::config('leeway')),
-            (new PayloadValidator())
+            (new PayloadValidator)
                 ->setRefreshTTL(static::config('refresh_ttl'))
                 ->setRequiredClaims(static::config('required_claims'))
         );
@@ -130,10 +128,10 @@ class Services extends BaseService
         return new HttpParser(
             static::getSharedInstance('request'),
             [
-                new AuthHeaders(),
-                new Cookies(),
-                new InputSource(),
-                new QueryString(),
+                new AuthHeaders,
+                new Cookies,
+                new InputSource,
+                new QueryString,
             ]
         );
     }
@@ -141,7 +139,7 @@ class Services extends BaseService
     /**
      * Helper to get the config values.
      *
-     * @param string $key
+     * @param  string  $key
      * @return mixed
      */
     protected static function config($key)

@@ -12,9 +12,6 @@ trait Role
 {
     use RoleHasPermissions;
 
-    /**
-     * @param array $attributes
-     */
     public function __construct(array $attributes = [])
     {
         $this->fillable = [
@@ -44,7 +41,7 @@ trait Role
     /**
      * Helper to get the config values.
      *
-     * @param string $key
+     * @param  string  $key
      * @return mixed
      */
     protected static function config($key)

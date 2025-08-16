@@ -30,7 +30,7 @@ abstract class AbstractValidator implements ValidatorInterface
     {
         try {
             $this->check($value);
-        } catch (JWTException $e) {
+        } catch (JWTException) {
             return false;
         }
 

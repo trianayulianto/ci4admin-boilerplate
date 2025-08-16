@@ -32,8 +32,9 @@ trait DatetimeTrait
      * Set the claim value, and call a validate method.
      *
      * @param  mixed  $value
-     * @throws InvalidClaimException
      * @return $this
+     *
+     * @throws InvalidClaimException
      */
     public function setValue($value)
     {

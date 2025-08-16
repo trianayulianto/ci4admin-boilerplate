@@ -1,117 +1,120 @@
-<?php namespace Irsyadulibad\DataTables;
+<?php
 
-use CodeIgniter\Config\Services;
+namespace Irsyadulibad\DataTables;
+
 use Irsyadulibad\DataTables\Utilities\Request;
 
 class TableProcessor extends DataTableMethods
 {
+    public $builder;
 
-	protected $builder;
+    public $request;
 
-	private $db;
+    public function __construct(private $db, $table)
+    {
+        $this->request = new Request;
 
-	// private $table;
+        $this->tables[] = $table;
+        $this->builder = $this->db->table($table);
+    }
 
-	public function __construct($db, $table)
-	{
-		$this->request = new Request;
+    public function make($make = true)
+    {
+        $this->setListFields();
+        $this->doQuery();
+        $results = $this->results();
 
-		$this->tables[] = $table;
-		$this->db = $db;
-		$this->builder = $db->table($table);
-	}
+        return $this->render($results, $make);
+    }
 
-	public function make($make = true)
-	{
-		$this->setListFields();
-		$this->doQuery();
-		$results = $this->results();
+    public function count()
+    {
+        return $this->builder->countAllResults(false);
+    }
 
-		return $this->render($results, $make);
-	}
+    private function doQuery()
+    {
+        $this->totalRecords = $this->count();
+        $this->filtering();
+        $this->filterRecords();
+        $this->ordering();
+        $this->limiting();
+    }
 
-	public function count()
-	{
-		return $this->builder->countAllResults(false);
-	}
+    private function filtering()
+    {
+        $fields = $this->request->getColumns();
+        $keyword = $this->request->getKeyword();
 
-	private function doQuery()
-	{
-		$this->totalRecords = $this->count();
-		$this->filtering();
-		$this->filterRecords();
-		$this->ordering();
-		$this->limiting();
-	}
+        if (is_null($keyword)) {
+            return;
+        }
 
-	private function filtering()
-	{
-		$fields = $this->request->getColumns();
-		$keyword = $this->request->getKeyword();
+        $this->builder->groupStart();
+        $counter = count($fields);
 
-		if(is_null($keyword)) return;
+        for ($i = 0; $i < $counter; $i++) {
+            $where = false;
+            $field = $fields[$i]['data'];
+            $searchable = $fields[$i]['searchable'];
 
-		$this->builder->groupStart();
+            if (! $searchable) {
+                continue;
+            }
 
-		for($i = 0; $i < count($fields); $i++) {
-			$where = false;
-			$field = $fields[$i]['data'];
-			$searchable = $fields[$i]['searchable'];
+            if (array_key_exists($field, $this->aliases)) {
+                $field = $this->aliases[$field];
+                ($i < 1) ? $this->builder->like($field, $keyword) : $this->builder->orLike($field, $keyword);
+            } elseif (in_array($field, $this->fields)) {
+                $mainTable = $this->tables[0];
+                ($i < 1) ? $this->builder->like(sprintf('%s.%s', $mainTable, $field), $keyword) : $this->builder->orLike(sprintf('%s.%s', $mainTable, $field), $keyword);
+            } else {
+                continue;
+            }
+        }
 
-			if(!$searchable) continue;
+        $this->builder->groupEnd();
 
-			if(array_key_exists($field, $this->aliases)){
-				$field = $this->aliases[$field];
-				($i < 1) ? $this->builder->like($field, $keyword) : $this->builder->orLike($field, $keyword);
-			}else if(in_array($field, $this->fields)){
-				$mainTable = $this->tables[0];
-				($i < 1) ? $this->builder->like("$mainTable.$field", $keyword) : $this->builder->orLike("$mainTable.$field", $keyword);
-			}else{
-				continue;
-			}
-		}
+        $this->isFilterApplied = true;
+    }
 
-		$this->builder->groupEnd();
+    private function ordering()
+    {
+        $order = $this->request->getOrdering();
+        $column = $order['column'];
 
-		$this->isFilterApplied = true;
-	}
+        if (! array_key_exists($column, $this->aliases) && ! in_array($column, $this->fields)) {
+            return;
+        }
 
-	private function ordering()
-	{
-		$order = $this->request->getOrdering();
-		$column = $order['column'];
+        $this->builder->orderBy($column, $order['sort']);
+    }
 
-		if(!array_key_exists($column, $this->aliases) && !in_array($column, $this->fields))
-			return;
+    private function limiting()
+    {
+        $req = $this->request->getLimiting();
 
-		$this->builder->orderBy($column, $order['sort']);
-	}
+        $this->builder->limit($req['limit'], $req['offset']);
+    }
 
-	private function limiting()
-	{
-		$req = $this->request->getLimiting();
+    private function setListFields()
+    {
+        foreach ($this->tables as $table) {
+            $fields = $this->db->getFieldNames($table);
 
-		$this->builder->limit($req['limit'], $req['offset']);
-	}
+            $this->fields = array_merge($this->fields, $fields);
+        }
+    }
 
-	private function setListFields() {
-		foreach($this->tables as $table) {
-			$fields = $this->db->getFieldNames($table);
+    private function results()
+    {
+        $result = $this->builder->get();
 
-			$this->fields = array_merge($this->fields, $fields);
-		}
-	}
+        $processor = new DataProcessor(
+            $result,
+            $this->processColumn
+        );
 
-	private function results()
-	{
-		$result = $this->builder->get();
-
-		$processor = new DataProcessor(
-			$result,
-			$this->processColumn
-		);
-		
-		return $processor->process();
-	}
-
+        return $processor->process();
+    }
 }

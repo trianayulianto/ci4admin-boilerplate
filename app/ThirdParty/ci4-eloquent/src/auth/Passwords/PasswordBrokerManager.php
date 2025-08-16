@@ -8,7 +8,6 @@ use Fluent\Auth\Config\Services;
 use Fluent\Auth\Contracts\PasswordBrokerFactoryInterface;
 use Fluent\Auth\Contracts\PasswordBrokerInterface;
 use Fluent\Auth\Contracts\PasswordResetRepositoryInterface;
-use Fluent\Auth\Passwords\PasswordBroker;
 use InvalidArgumentException;
 
 class PasswordBrokerManager implements PasswordBrokerFactoryInterface
@@ -45,6 +44,7 @@ class PasswordBrokerManager implements PasswordBrokerFactoryInterface
      *
      * @param  string  $name
      * @return PasswordBrokerInterface
+     *
      * @throws InvalidArgumentException
      */
     protected function resolve($name)
@@ -63,7 +63,6 @@ class PasswordBrokerManager implements PasswordBrokerFactoryInterface
     /**
      * Create a token repository instance based on the given configuration.
      *
-     * @param  array  $config
      * @return PasswordResetRepositoryInterface
      */
     protected function createTokenRepository(array $config)
@@ -83,7 +82,7 @@ class PasswordBrokerManager implements PasswordBrokerFactoryInterface
             return $this->config->passwords[$name];
         }
 
-        throw new InvalidArgumentException("Password resetter [{$name}] is not defined.");
+        throw new InvalidArgumentException(sprintf('Password resetter [%s] is not defined.', $name));
     }
 
     /**

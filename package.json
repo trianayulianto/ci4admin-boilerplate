@@ -1,9 +1,5 @@
 {
-    "name": "Laravel Mix",
-    "engines": {
-        "node": "14.x",
-        "npm": "7.x"
-    },
+    "name": "laravel-mix",
     "private": true,
     "scripts": {
         "dev": "npm run development",

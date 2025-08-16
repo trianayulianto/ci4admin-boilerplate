@@ -2,8 +2,8 @@
 
 namespace Fluent\Laraci\Collectors;
 
-use Illuminate\Database\Capsule\Manager as Capsule;
 use CodeIgniter\Debug\Toolbar\Collectors\BaseCollector;
+use Illuminate\Database\Capsule\Manager as Capsule;
 
 /**
  * EloquentCollector
@@ -14,13 +14,12 @@ class EloquentCollector extends BaseCollector
      * Whether this collector needs to display
      * content in a tab or not.
      *
-     * @var boolean
+     * @var bool
      */
     protected $hasTabContent = true;
 
     /**
      * Array of database connections.
-     *
      */
     protected $connections;
 
@@ -45,7 +44,7 @@ class EloquentCollector extends BaseCollector
      */
     public function getTitleDetails(): string
     {
-        return get_class($this->connections);
+        return $this->connections::class;
     }
 
     /**
@@ -60,29 +59,27 @@ class EloquentCollector extends BaseCollector
 
         $queries = $this->connections->getQueryLog();
         if ($queries) {
-	        $queryDuplicates = array_count_values(array_column($queries, 'query'));
-	        $queryDuplicates = array_filter($queryDuplicates, function ($item) {
-	        	return $item > 1;
-	        });
-	        $queryDuplicatesCount = array_sum($queryDuplicates);
-        	$queryCount = count($queries);
-        	$unique = $queryCount - $queryDuplicatesCount;
+            $queryDuplicates = array_count_values(array_column($queries, 'query'));
+            $queryDuplicates = array_filter($queryDuplicates, fn ($item) => $item > 1);
+            $queryDuplicatesCount = array_sum($queryDuplicates);
+            $queryCount = count($queries);
+            $unique = $queryCount - $queryDuplicatesCount;
             $queries = array_slice($queries, 0, $max);
 
-            $html  = "<h3>{$queryCount} statements were executed. {$queryDuplicatesCount} of which were duplicated. {$unique} unique.</h3>";
-            $html .= '<hr>';
+            $html = sprintf('<h2>%d statements were executed. %s of which were duplicated. %d unique.</h2>', $queryCount, $queryDuplicatesCount, $unique);
             $html .= '<table><thead>';
-            $html .= "<tr>";
+            $html .= '<tr>';
             $html .= "<th style='width:60px;'>Time</th>";
             $html .= "<th style='width:360px;'>Query String</th>";
-            $html .= "</tr>";
+            $html .= '</tr>';
             $html .= '</thead><tbody>';
             foreach ($queries as $value) {
-	            $html .= "<tr>";
-	            $html .= "<td style='width:60px;'>{$value['time']} ms</td>";
-	            $html .= "<td style='width:360px;'><code>{$value['query']}</code></td>";
-	            $html .= "</tr>";
+                $html .= '<tr>';
+                $html .= sprintf("<td style='width:60px;'>%s ms</td>", $value['time']);
+                $html .= sprintf("<td style='width:360px;'><code style='color: #DD4814;'><em>%s</em></code></td>", $value['query']);
+                $html .= '</tr>';
             }
+
             $html .= '</tbody></table>';
         } else {
             $html = '<p>No Queries.</p>';
@@ -116,6 +113,6 @@ class EloquentCollector extends BaseCollector
      */
     private function getConnections()
     {
-        $this->connections = (new Capsule())->connection();
+        $this->connections = (new Capsule)->connection();
     }
 }

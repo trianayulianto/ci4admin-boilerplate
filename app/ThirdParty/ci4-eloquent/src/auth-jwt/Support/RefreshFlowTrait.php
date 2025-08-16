@@ -24,12 +24,12 @@ trait RefreshFlowTrait
     /**
      * Set the refresh flow flag.
      *
-     * @param  bool  $RefreshFlowTrait
+     * @param  bool  $refreshFlow
      * @return $this
      */
     public function setRefreshFlow($refreshFlow = true)
     {
-        $this->refreshFlowTrait = $refreshFlow;
+        $this->refreshFlow = $refreshFlow;
 
         return $this;
     }

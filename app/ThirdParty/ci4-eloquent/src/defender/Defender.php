@@ -2,27 +2,15 @@
 
 namespace Artesaos\Defender;
 
+use Artesaos\Defender\Contracts\Defender as ContractsDefender;
 use Artesaos\Defender\Contracts\Repositories\PermissionRepository;
 use Artesaos\Defender\Contracts\Repositories\RoleRepository;
-use Artesaos\Defender\Contracts\Defender as ContractsDefender;
 
 /**
  * Class Defender.
  */
 class Defender implements ContractsDefender
 {
-    /**
-     * User Model
-     */
-    private $user;
-
-    /**
-     * The RoleRepository implementation.
-     *
-     * @var RoleRepository
-     */
-    private $roleRepository;
-
     /**
      * The PermissionRepository implementation.
      *
@@ -38,14 +26,16 @@ class Defender implements ContractsDefender
     /**
      * Class constructor.
      *
-     * @param Application          $app
-     * @param RoleRepository       $roleRepository
-     * @param PermissionRepository $permissionRepository
+     * @param  Application  $app
      */
-    public function __construct($user, RoleRepository $roleRepository, PermissionRepository $permissionRepository)
+    public function __construct(/**
+     * User Model
+     */
+        private $user, /**
+     * The RoleRepository implementation.
+     */
+        private readonly RoleRepository $roleRepository, PermissionRepository $permissionRepository)
     {
-        $this->user = $user;
-        $this->roleRepository = $roleRepository;
         $this->permissionRepository = $permissionRepository;
     }
 
@@ -62,9 +52,8 @@ class Defender implements ContractsDefender
     /**
      * Check if the authenticated user has the given permission.
      *
-     * @param string $permission
-     * @param bool   $force
-     *
+     * @param  string  $permission
+     * @param  bool  $force
      * @return bool
      */
     public function hasPermission($permission, $force = false)
@@ -79,9 +68,8 @@ class Defender implements ContractsDefender
     /**
      * Check if the authenticated user has the given permission.
      *
-     * @param string $permission
-     * @param bool   $force
-     *
+     * @param  string  $permission
+     * @param  bool  $force
      * @return bool
      */
     public function canDo($permission, $force = false)
@@ -97,9 +85,8 @@ class Defender implements ContractsDefender
      * Check if the authenticated user has the given permission
      * using only the roles.
      *
-     * @param string $permission
-     * @param bool   $force
-     *
+     * @param  string  $permission
+     * @param  bool  $force
      * @return bool
      */
     public function roleHasPermission($permission, $force = false)
@@ -114,8 +101,7 @@ class Defender implements ContractsDefender
     /**
      * Return if the authenticated user has the given role.
      *
-     * @param string $roleName
-     *
+     * @param  string  $roleName
      * @return bool
      */
     public function hasRole($roleName)
@@ -130,8 +116,7 @@ class Defender implements ContractsDefender
     /**
      * Return if the authenticated user has any of the given roles.
      *
-     * @param string $roles
-     *
+     * @param  string  $roles
      * @return bool
      */
     public function hasRoles($roles)
@@ -146,8 +131,7 @@ class Defender implements ContractsDefender
     /**
      * Return if the authenticated user has the given role.
      *
-     * @param string|array $roleName
-     *
+     * @param  string|array  $roleName
      * @return bool
      */
     public function is($roleName)
@@ -162,8 +146,7 @@ class Defender implements ContractsDefender
     /**
      * Check if a role with the given name exists.
      *
-     * @param string $roleName
-     *
+     * @param  string  $roleName
      * @return bool
      */
     public function roleExists($roleName)
@@ -174,8 +157,7 @@ class Defender implements ContractsDefender
     /**
      * Check if a permission with the given name exists.
      *
-     * @param string $permissionName
-     *
+     * @param  string  $permissionName
      * @return bool
      */
     public function permissionExists($permissionName)
@@ -186,8 +168,7 @@ class Defender implements ContractsDefender
     /**
      * Get the role with the given name.
      *
-     * @param string $roleName
-     *
+     * @param  string  $roleName
      * @return \Artesaos\Defender\Role|null
      */
     public function findRole($roleName)
@@ -198,8 +179,7 @@ class Defender implements ContractsDefender
     /**
      * * Find a role by its id.
      *
-     * @param int $roleId
-     *
+     * @param  int  $roleId
      * @return mixed
      */
     public function findRoleById($roleId)
@@ -210,8 +190,7 @@ class Defender implements ContractsDefender
     /**
      * Get the permission with the given name.
      *
-     * @param string $permissionName
-     *
+     * @param  string  $permissionName
      * @return \Artesaos\Defender\Permission|null
      */
     public function findPermission($permissionName)
@@ -222,8 +201,7 @@ class Defender implements ContractsDefender
     /**
      * Find a permission by its id.
      *
-     * @param int $permissionId
-     *
+     * @param  int  $permissionId
      * @return \Artesaos\Defender\Permission|null
      */
     public function findPermissionById($permissionId)
@@ -251,8 +229,7 @@ class Defender implements ContractsDefender
      * Create a new role.
      * Uses a repository to actually create the role.
      *
-     * @param string $roleName
-     *
+     * @param  string  $roleName
      * @return \Artesaos\Defender\Role
      */
     public function createRole($roleName)
@@ -261,9 +238,8 @@ class Defender implements ContractsDefender
     }
 
     /**
-     * @param string $permissionName
-     * @param string $readableName
-     *
+     * @param  string  $permissionName
+     * @param  string  $readableName
      * @return Permission
      */
     public function createPermission($permissionName, $readableName = null)

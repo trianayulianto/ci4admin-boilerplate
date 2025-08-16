@@ -11,15 +11,11 @@ final class PaginationFilter implements FilterInterface
 {
     public function before(RequestInterface $request, $arguments = null)
     {
-		if ($request->getMethod() === 'get') {
+        if ($request->getMethod() === 'get') {
 
-            Paginator::currentPathResolver(function () use ($request) {
-                return (string) $request->getUri()->getPath();
-            });
+            Paginator::currentPathResolver(fn () => (string) $request->getUri()->getPath());
 
-            Paginator::queryStringResolver(function () use ($request) {
-                return (string) $request->getUri()->getQuery();
-            });
+            Paginator::queryStringResolver(fn () => (string) $request->getUri()->getQuery());
 
             Paginator::currentPageResolver(function ($pageName = 'page') use ($request) {
                 $page = $request->getGet($pageName);
@@ -33,9 +29,9 @@ final class PaginationFilter implements FilterInterface
 
         }
     }
- 
+
     public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
     {
-        // 
+        //
     }
 }

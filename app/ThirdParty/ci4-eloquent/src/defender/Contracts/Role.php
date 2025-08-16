@@ -2,9 +2,9 @@
 
 namespace Artesaos\Defender\Contracts;
 
-
 /**
  * Interface Role.
+ *
  * @var \Illuminate\Database\Eloquent\Model
  */
 interface Role

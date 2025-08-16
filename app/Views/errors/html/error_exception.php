@@ -22,7 +22,7 @@
 			<h1><?= esc($title), esc($exception->getCode() ? ' #' . $exception->getCode() : '') ?></h1>
 			<p>
 				<?= nl2br(esc($exception->getMessage())) ?>
-				<a href="https://www.duckduckgo.com/?q=<?= urlencode($title . ' ' . preg_replace('#\'.*\'|".*"#Us', '', $exception->getMessage())) ?>"
+				<a href="https://www.duckduckgo.com/?q=<?= urlencode($title . ' ' . preg_replace('#\'.*\'|".*"#Us', '', (string) $exception->getMessage())) ?>"
 				   rel="noreferrer" target="_blank">search &rarr;</a>
 			</p>
 		</div>
@@ -88,14 +88,14 @@
 										<?php
 										$params = null;
 										// Reflection by name is not available for closure function
-										if (substr($row['function'], -1) !== '}')
+										if (!str_ends_with((string) $row['function'], '}'))
 										{
 											$mirror = isset($row['class']) ? new \ReflectionMethod($row['class'], $row['function']) : new \ReflectionFunction($row['function']);
 											$params = $mirror->getParameters();
 										}
 										foreach ($row['args'] as $key => $value) : ?>
 											<tr>
-												<td><code><?= esc(isset($params[$key]) ? '$' . $params[$key]->name : "#$key") ?></code></td>
+												<td><code><?= esc(isset($params[$key]) ? '$' . $params[$key]->name : '#' . $key) ?></code></td>
 												<td><pre><?= esc(print_r($value, true)) ?></pre></td>
 											</tr>
 										<?php endforeach ?>
@@ -335,7 +335,7 @@
 							</tr>
 						</thead>
 						<tbody>
-						<?php foreach ($headers as $name => $value) : ?>
+						<?php foreach (array_keys($headers) as $name) : ?>
 							<tr>
 								<td><?= esc($name, 'html') ?></td>
 								<td><?= esc($response->getHeaderLine($name), 'html') ?></td>

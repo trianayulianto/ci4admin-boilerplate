@@ -12,6 +12,4 @@
 
 namespace Fluent\JWTAuth\Exceptions;
 
-class TokenBlacklistedException extends TokenInvalidException
-{
-}
+class TokenBlacklistedException extends TokenInvalidException {}

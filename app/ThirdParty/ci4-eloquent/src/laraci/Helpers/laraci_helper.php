@@ -6,11 +6,11 @@
 |--------------------------------------------------------------------------
 */
 
-use Fluent\Laraci\Config\Services;
-use eftec\bladeone\BladeOne as Blade;
 use CodeIgniter\I18n\Time;
+use eftec\bladeone\BladeOne as Blade;
+use Fluent\Laraci\Config\Services;
 
-if (!function_exists('request')) {
+if (! function_exists('request')) {
     function request()
     {
         return \Config\Services::request();
@@ -20,7 +20,7 @@ if (!function_exists('request')) {
 /**
  * Blade's view render.
  */
-if (!function_exists('render')) {
+if (! function_exists('render')) {
 
     function render($view, $data = [])
     {
@@ -38,11 +38,11 @@ if (!function_exists('render')) {
 /**
  * view render for eloquent pagination
  */
-if (!function_exists('paginator')) {
+if (! function_exists('paginator')) {
     function paginator($data, $view = 'partials.pagination')
     {
         $window = \Illuminate\Pagination\UrlWindow::make($data);
-        
+
         $elements = [
             $window['first'],
             is_array($window['slider']) ? '...' : null,
@@ -50,10 +50,10 @@ if (!function_exists('paginator')) {
             is_array($window['last']) ? '...' : null,
             $window['last'],
         ];
-        
+
         return render($view, [
-            'paginator' => $data, 
-            'elements'  => array_filter($elements)
+            'paginator' => $data,
+            'elements' => array_filter($elements),
         ]);
     }
 }
@@ -61,9 +61,10 @@ if (!function_exists('paginator')) {
 /**
  * Time parser.
  */
-if ( ! function_exists('time_parser') ) {
-    
-    function timeParser($value) {
+if (! function_exists('time_parser')) {
+
+    function timeParser($value)
+    {
         return Time::parse($value, 'Asia/Jakarta');
     }
 

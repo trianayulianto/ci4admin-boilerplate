@@ -4,7 +4,6 @@ namespace Fluent\Auth\Passwords\Hash;
 
 use function password_get_info;
 use function password_verify;
-use function strlen;
 
 abstract class AbstractHasher
 {
@@ -24,12 +23,11 @@ abstract class AbstractHasher
      *
      * @param  string  $value
      * @param  string  $hashedValue
-     * @param  array  $options
      * @return bool
      */
     public function check($value, $hashedValue, array $options = [])
     {
-        if (strlen($hashedValue) === 0) {
+        if ((string) $hashedValue === '') {
             return false;
         }
 

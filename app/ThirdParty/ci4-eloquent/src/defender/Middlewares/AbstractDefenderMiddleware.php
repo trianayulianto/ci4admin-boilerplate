@@ -25,7 +25,6 @@ abstract class AbstractDefenderMiddleware
 
     /**
      * The current logged in user has correct role.
-     *
      */
     protected function hasRoles($roles)
     {
@@ -34,35 +33,36 @@ abstract class AbstractDefenderMiddleware
         }
 
         if (is_null($roles) || in_array('*', $roles)) {
-            if (!($this->user->roles)) {
+            if (! ($this->user->roles)) {
                 return $this->forbiddenResponse();
             }
 
-            return;
+            return null;
         }
 
         if ($this->user->isSuperUser()) {
-            return;
+            return null;
         }
 
-        if (is_array($roles) and count($roles) > 0) {
+        if (is_array($roles) && $roles !== []) {
             $hasResult = true;
 
             foreach ($roles as $role) {
                 $hasRole = $this->user->hasRole($role);
 
-                $hasResult = $hasResult & $hasRole;
+                $hasResult &= $hasRole;
             }
 
-            if (! $hasResult) {
+            if ($hasResult === 0) {
                 return $this->forbiddenResponse();
             }
         }
+
+        return null;
     }
 
     /**
      * The current logged in user has permission.
-     * 
      */
     protected function hasPermissions($permissions)
     {
@@ -71,30 +71,32 @@ abstract class AbstractDefenderMiddleware
         }
 
         if (is_null($permissions)) {
-            if (!($this->user->permissions)) {
+            if (! ($this->user->permissions)) {
                 return $this->forbiddenResponse();
             }
 
-            return;
+            return null;
         }
 
         if ($this->user->isSuperUser()) {
-            return;
+            return null;
         }
 
-        if (is_array($permissions) and count($permissions) > 0) {
+        if (is_array($permissions) && $permissions !== []) {
             $canResult = true;
 
             foreach ($permissions as $permission) {
                 $canPermission = $this->user->hasPermission($permission);
 
-                $canResult = $canResult & $canPermission;
+                $canResult &= $canPermission;
             }
 
-            if (! $canResult) {
+            if ($canResult === 0) {
                 return $this->forbiddenResponse();
             }
         }
+
+        return null;
     }
 
     /**
@@ -106,17 +108,17 @@ abstract class AbstractDefenderMiddleware
     {
         $config = self::config('forbidden_callback');
 
-        $handler = new $config();
+        $handler = new $config;
 
-        return ($handler instanceof ForbiddenHandler) 
-            ? $handler->handle() 
+        return ($handler instanceof ForbiddenHandler)
+            ? $handler->handle()
             : Services::response()->setStatusCode(403, 'Forbidden.');
     }
-    
+
     /**
      * Helper to get the config values.
      *
-     * @param string $key
+     * @param  string  $key
      * @return mixed
      */
     protected static function config($key)

@@ -12,7 +12,8 @@ trait CanResetPasswordTrait
      *
      * @return string
      */
-    public function getEmailForPasswordReset() {
+    public function getEmailForPasswordReset()
+    {
         return $this->email;
     }
 
@@ -22,7 +23,8 @@ trait CanResetPasswordTrait
      * @param  string  $token
      * @return void
      */
-    public function sendPasswordResetNotification($token) {
+    public function sendPasswordResetNotification($token)
+    {
         return Events::trigger(ResetPasswordInterface::class, $this->getEmailForPasswordReset(), $token);
     }
 }

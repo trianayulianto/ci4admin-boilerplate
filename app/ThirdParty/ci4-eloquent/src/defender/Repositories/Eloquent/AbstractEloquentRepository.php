@@ -16,11 +16,11 @@ abstract class AbstractEloquentRepository implements AbstractRepository
     protected $model;
 
     /**
-     * @param \Illuminate\Database\Eloquent\Model $model
+     * @param  \Illuminate\Database\Eloquent\Model  $model
      */
     public function __construct($model)
     {
-        $this->model = new $model();
+        $this->model = new $model;
     }
 
     /**
@@ -45,8 +45,7 @@ abstract class AbstractEloquentRepository implements AbstractRepository
     /**
      * Return paginated results.
      *
-     * @param int $perPage Number of results per page
-     *
+     * @param  int  $perPage  Number of results per page
      * @return static
      */
     public function paginate($perPage = 10)
@@ -57,7 +56,6 @@ abstract class AbstractEloquentRepository implements AbstractRepository
     /**
      * Return a new instance of the current model.
      *
-     * @param array $attributes
      *
      * @return static
      */
@@ -67,8 +65,7 @@ abstract class AbstractEloquentRepository implements AbstractRepository
     }
 
     /**
-     * @param int $id
-     *
+     * @param  int  $id
      * @return Model|null
      */
     public function findById($id)
@@ -77,8 +74,7 @@ abstract class AbstractEloquentRepository implements AbstractRepository
     }
 
     /**
-     * @param string $name
-     *
+     * @param  string  $name
      * @return \Illuminate\Database\Eloquent\Model|null
      */
     public function findByName($name)
@@ -87,9 +83,8 @@ abstract class AbstractEloquentRepository implements AbstractRepository
     }
 
     /**
-     * @param string|int $value
-     * @param string     $key
-     *
+     * @param  string|int  $value
+     * @param  string  $key
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getList($value, $key = 'id')
@@ -100,8 +95,7 @@ abstract class AbstractEloquentRepository implements AbstractRepository
     /**
      * Set Relationships.
      *
-     * @param array $with Relationships
-     *
+     * @param  array  $with  Relationships
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function make(array $with = [])

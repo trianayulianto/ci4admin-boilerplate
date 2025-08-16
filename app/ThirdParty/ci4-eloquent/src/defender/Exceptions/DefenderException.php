@@ -7,6 +7,4 @@ use Exception;
 /**
  * Class DefenderException.
  */
-abstract class DefenderException extends Exception
-{
-}
+abstract class DefenderException extends Exception {}
