@@ -1,7 +1,7 @@
-const mix = require('laravel-mix');
+const mix = require("laravel-mix");
 
-mix.setPublicPath('public')
-mix.setResourceRoot('../');
+mix.setPublicPath("public");
+mix.setResourceRoot("../");
 
 /*
  |--------------------------------------------------------------------------
@@ -14,12 +14,10 @@ mix.setResourceRoot('../');
  |
  */
 
-mix.js('resources/js/app.js', 'public/js');
+mix.js("resources/js/app.js", "public/js");
 
 mix.extract();
 
-mix.scripts([
-    'resources/js/custom.js'
-], 'public/js/custom.js');
+mix.scripts(["resources/js/custom.js"], "public/js/custom.js");
 
-mix.sass('resources/sass/app.scss', 'public/css');
+mix.sass("resources/sass/app.scss", "public/css");

@@ -1,16 +1,16 @@
-window._ = require('lodash');
+window._ = require("lodash");
 
 try {
-    window.Popper = require('popper.js').default;
-    window.$ = window.jQuery = require('jquery');
-    
-    window.Cookies = require('js-cookie');
+  window.Popper = require("popper.js").default;
+  window.$ = window.jQuery = require("jquery");
 
-	require('bootstrap');
-    require('jquery-easing');
+  window.Cookies = require("js-cookie");
 
-    // datatables
-    require('datatables.net-bs4')($);
+  require("bootstrap");
+  require('jquery.easing')(jQuery);
+
+  // datatables
+  require("datatables.net-bs4")($);
 } catch (e) {}
 
 /**
