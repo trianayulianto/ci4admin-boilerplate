@@ -17,6 +17,15 @@
 # CI_ENVIRONMENT = production
 
 #--------------------------------------------------------------------
+# DOCKER ENVIRONMENT
+#--------------------------------------------------------------------
+# DB_HOST=mariadb
+# DB_PORT=3306
+# DB_DATABASE=ci4admin
+# DB_USERNAME=ci4admin
+# DB_PASSWORD=password
+
+#--------------------------------------------------------------------
 # JWT
 #--------------------------------------------------------------------
 
@@ -26,7 +35,7 @@
 # APP
 #--------------------------------------------------------------------
 
-# app.baseURL = ''
+# app.baseURL = 'https:://localhost'
 # app.forceGlobalSecureRequests = false
 
 # app.sessionDriver = 'CodeIgniter\Session\Handlers\FileHandler'
@@ -43,18 +52,19 @@
 # DATABASE
 #--------------------------------------------------------------------
 
-# database.default.hostname = localhost
-# database.default.database = ci4
-# database.default.username = root
-# database.default.password = root
 # database.default.DBDriver = MySQLi
+# database.default.hostname = ${DB_HOST}
+# database.default.port = ${DB_PORT}
+# database.default.database = ${DB_DATABASE}
+# database.default.username = ${DB_USERNAME}
+# database.default.password = ${DB_PASSWORD}
 # database.default.DBPrefix =
 
+# database.tests.DBDriver = MySQLi
 # database.tests.hostname = localhost
 # database.tests.database = ci4
 # database.tests.username = root
 # database.tests.password = root
-# database.tests.DBDriver = MySQLi
 # database.tests.DBPrefix =
 
 #--------------------------------------------------------------------
